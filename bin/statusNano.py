@@ -11,7 +11,11 @@ from variableDictionary import varDict
 import sys
 
 
-def statusNano (argv = "Status"):
+def statusNano (argv = ["Status"]):
+
+    # assemble statusNano command
+    # send command code using commNano
+    # process Pi output and print flags 
 
     command_send = []
     command_code = "b1:26"
@@ -33,9 +37,12 @@ def statusNano (argv = "Status"):
         e = main(command_send)
     
     # main(command_send) will return a string of the form b'\x1a\x01\x00\x14\x05\x02'
-
-    
-
+    resp = list(e)
+    print("StatusNano response:", resp)
+    if resp[1] == 1:
+        return True
+    else:
+        return False
 
 
 if __name__ == "__main__":

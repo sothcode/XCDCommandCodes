@@ -24,8 +24,9 @@ def reportNano (argv):
             print ( "Maximum number of variables to report at a time is 10. Please request fewer variables.")
             return
         else:
-            main(command_send)
-            return
+            print(command_send)
+            msg = main(command_send)
+            return msg
     else:
         print(" \
  No arguments given. reportNano parameters are: \n \
