@@ -1,0 +1,16 @@
+
+XAXIS = 0
+
+enable
+velocityloop 1
+delay 2000
+disable
+
+delay 1000
+
+enable
+velocityloop -1
+delay 2000
+disable
+
+

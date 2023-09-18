@@ -1,0 +1,19 @@
+V3=10000 // Initialize V3 with big value.
+V4=0 // Initialize V4 with small value.
+
+for V19=0 to 99 // Repeat 100 times.
+	move 5 // Move to initial point.
+	while S_BUSY // Wait for physical motion end.
+	end
+	set TIME=0 // Reset TIME.
+	move 15 // Move
+	while S_BUSY // Wait for physical motion end.
+	end
+	V0=TIME // Latch elapsed TIME.
+	if V0<V3
+		V3=V0
+	end
+	if V0>V4 // Update maximum TIME.
+		V4=V0
+	end
+end //End of "for V19=0 to 99"

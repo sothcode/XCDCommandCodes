@@ -1,0 +1,26 @@
+
+
+XAXIS = 1
+enable
+
+delay 1000
+
+V0 = FPOS
+velocityloop -2
+delay 2000
+while abs(FPOS - V0) > 20*ENR
+V0 = FPOS
+delay 200
+end
+
+V0 = FPOS
+velocityloop 2
+delay 2000
+while abs(FPOS - V0) > 20*ENR
+V0 = FPOS
+delay 200
+end
+
+disable
+
+

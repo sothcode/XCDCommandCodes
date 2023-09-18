@@ -1,0 +1,18 @@
+
+
+XAXIS = 1
+enable
+set S_IND = 0
+V0 = 0
+
+delay 1000
+
+velocityloop -1.0
+
+while S_IND = 0
+end
+disable
+
+//delay 1000
+V1 = FPOS
+

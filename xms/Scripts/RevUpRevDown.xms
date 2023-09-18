@@ -1,0 +1,22 @@
+
+
+XAXIS = 1
+enable
+set S_IND = 0
+V0 = 0
+
+delay 1000
+
+V1 = FPOS
+for V0 = 1 to 10
+move V1 + 1
+V3 = V1 + 1
+delay 4000
+
+move V1
+V3 = V1
+delay 4000
+
+end
+
+disable

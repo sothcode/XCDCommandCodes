@@ -1,0 +1,5 @@
+XCD2 Cofigurator: C:\Users\bazmoun\Desktop\MotorControlSoftware\MotorControlSoftware\Files_2_SB_Kristina\Configurator\V2.0.2\Executable\XCD2 Configurator.exe
+
+XCD2 Commander: C:\Users\bazmoun\Desktop\MotorControlSoftware\MotorControlSoftware\Files_2_SB_Kristina\SW-XCD2-1.11.4003\XCD2_Commander.exe
+
+

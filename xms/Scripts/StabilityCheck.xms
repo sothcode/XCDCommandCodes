@@ -1,0 +1,21 @@
+
+
+XAXIS = 1
+enable
+set S_IND = 0
+V0 = 0
+
+delay 1000
+
+velocityloop 0.5
+
+while 1
+delay 200
+disable
+delay 1000
+enable
+delay 200
+velocityloop 0.5
+end
+
+

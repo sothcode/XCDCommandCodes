@@ -1,0 +1,17 @@
+
+
+XAXIS = 1
+enable
+
+delay 1000
+
+V0 = FPOS
+for V1 = 1 to 12
+V2 = V0 + V1/12
+move V2
+delay 4000
+end
+
+delay 4000
+disable
+

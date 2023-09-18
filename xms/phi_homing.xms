@@ -1,0 +1,51 @@
+// first test back and forth movement
+enable
+velocityloop 2.0
+delay 500
+disable
+
+V1 = FPOS      // initializes encoder iterator
+delay 1000
+
+enable
+velocityloop -2.0
+delay 500
+disable
+
+// next find first hard stop
+enable
+while abs(V1 - FPOS) > 20*ENR
+   V1 = FPOS
+   velocityloop 2.0
+   delay 500
+end
+disable
+
+V2 = FPOS      // sets first hard stop
+
+enable
+velocityloop -2.0
+delay 500
+disable
+
+// then find other hard stop
+enable
+while abs(V1 - FPOS) > 20*ENR
+   V1 = FPOS
+   velocityloop -2.0
+   delay 500
+end
+disable
+
+V3 = FPOS      // sets second hard stop
+
+// then find encoder latch pos if visible
+enable
+set S_IND = 0
+velocityloop 2.0
+while S_IND = 0
+end
+disable
+
+V4 = FPOS      // sets encoder latch pos
+set S_IND = 0  // resets encoder latch flag

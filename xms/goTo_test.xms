@@ -1,0 +1,21 @@
+XAXIS = 0
+
+V0 = 0.5
+V1 = -0.2
+V2 = 0
+
+if V0 <> 0 & V1 <> 0 
+   delay 2000
+   velocityloop 2.0
+   delay 2000
+   velocityloop 0.0
+   delay 2000
+   if V0 >= V2 & V1 <= V2
+      delay 2000
+      enable
+      move V2
+      disable
+   end
+else
+   delay 2000
+end
