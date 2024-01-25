@@ -6,8 +6,29 @@ import sys
 import struct
 
 
-def decodeRead():
-    return
+def decodeRead( resp ):
+    packlen = int.from_bytes(resp[1:2], byteorder='little')
+    # print(packlen)
+    packlen = packlen - 3
+
+    if (packlen & 3 == 0):
+        num_vals = int(packlen/4)
+        decode = [None]*num_vals
+
+        for i in range(0, num_vals):
+            decode[i] = struct.unpack('!f', resp[4*i+4:4*i+8])
+
+    else:
+        print("Error decoding report values in response.")
+        return resp
+
+
+    #    number, = struct.unpack('!I', struct.pack('!f', float(val)))
+    #    r4 = number.to_bytes(4,byteorder='little',signed=False)
+    #    val_command = [int(r4[0]), int(r4[1]), int(r4[2]), int(r4[3])]
+    #    command += val_command
+    #    count += 4
+    return decode
 
 
 def _readline(ser):
@@ -28,8 +49,11 @@ def _readline(ser):
             line += c
         else:
             break
-        resp = e4 + a5 + a4 + d5 + bytes(line)
-    return resp
+    # resp = e4 + a5 + a4 + d5 + bytes(line)
+    resp = bytes(line)
+    print(resp)
+    vals = decodeRead(resp)
+    return vals
 
 
 def reportXCD2( argv ):
