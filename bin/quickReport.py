@@ -6,8 +6,29 @@ import sys
 import struct
 
 
-def decodeRead():
-    return
+def decodeRead( resp ):
+    packlen = int.from_bytes(resp[1:2], byteorder='little')
+    # print(packlen)
+    packlen = packlen - 3
+
+    if (packlen & 3 == 0):
+        num_vals = int(packlen/4)
+        decode = [None]*num_vals
+
+        for i in range(0, num_vals):
+            decode[i] = struct.unpack('!f', resp[4*i+4:4*i+8])
+
+    else:
+        print("Error decoding report values in response.")
+        return 0
+
+
+    #    number, = struct.unpack('!I', struct.pack('!f', float(val)))
+    #    r4 = number.to_bytes(4,byteorder='little',signed=False)
+    #    val_command = [int(r4[0]), int(r4[1]), int(r4[2]), int(r4[3])]
+    #    command += val_command
+    #    count += 4
+    return decode
 
 
 def _readline(ser):
@@ -28,15 +49,18 @@ def _readline(ser):
             line += c
         else:
             break
-        resp = e4 + a5 + a4 + d5 + bytes(line)
-    return resp
+    # resp = e4 + a5 + a4 + d5 + bytes(line)
+    resp = bytes(line)
+    print(resp)
+    vals = decodeRead(resp)
+    return vals
 
 
 def reportXCD2( argv ):
     if argv:
         if len(argv) > 10:
             print("Too many variables trying to be assigned.  Max 10 variables can be assigned at once.")
-            return
+            return False, 0
 
         var_names = argv
         print(var_names)
@@ -55,14 +79,14 @@ def reportXCD2( argv ):
             else:
                 print("Variable name - " + var + " -  not recognized. Variable list given as:")
                 print(varDict.keys())
-                return
+                return False, 0
 
     else:
         print("No arguments given. reportXCD2 parameters are: \n \
                1) Variable- Mandatory, variable to report value of. For full list of variables, refer to variableDictionary. \n \
                2-10) Variable - Optional, other variables to report. \
                ")
-        return
+        return False, 0
 
     # reassign packet length and block length bytes
     command[4] = int(count+6)
@@ -87,16 +111,16 @@ def reportXCD2( argv ):
             response = '{}'.format(_readline(ser))
             ser.close()
             print(response)
-            return response
-        return "9999999"
+            return True, response
+        print("Serial port not open - check to see that usb is properly connected, or motor is powered.")
+        return False, 0
 
     except serial.serialutil.SerialException:
-        return "Serial Exception- check to see that usb is properly connected, or motor is powered."
+        print("Serial Exception- check to see that usb is properly connected, or motor is powered.")
+        return False, 0
 
-    return
+    return False, 0
 
 
 if __name__ == "__main__":
    reportXCD2(sys.argv[1:])
-
-
