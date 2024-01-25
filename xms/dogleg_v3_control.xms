@@ -1,0 +1,131 @@
+// set flags and parameters
+// V0 -- commandByte
+//    -- V0 = 0 is IDLE
+//    -- V0 = 1 is homing procedure
+//    -- V0 = 2 is goto procedure
+//    -- V0 = 3 
+//    -- V0 = 4
+//    -- V0 = 5
+// V1 -- encoder iterator variable
+// V2 -- phi motor right stop (CW hard stop)
+// V3 -- phi motor left stop (CCW hard stop)
+// V4 -- phi motor encoder latch pos (home tick)
+// V5 -- long theta
+// V6 -- 
+// V7 -- 
+// V8 -- dogleg reference
+// V10 - valueByte, used for goto procedure
+// V11 - number of revolutions
+// V19 - statusByte
+//     - V19 = 0 SUCCESS/IDLE
+//     - V19 = 1 FAILURE
+//     - V19 = 9 BUSY
+
+XAXIS = 0
+ENR = 6.103515625e-5
+MTL = 4000000
+DZMIN = ENR
+DZMAX = 4*ENR
+KP = 10
+VEL = 1
+
+// time for system start up sequence
+delay 2000
+
+// Set commandByte state to IDLE
+V0 = 0
+V8 = 0
+V10 = 0
+V19 = 0
+
+// Start infinite loop
+while 1  
+
+   // dogleg homing procedure
+   if V0 = 5
+
+      // set statusBYTE BUSY
+      V19 = 9
+
+      // set encoder latch pos flag to 0
+      set S_IND = 0
+
+      // store current position as V8, also store in V9 for eval
+      V8 = FPOS
+      V9 = FPOS
+
+      // check number of revolutions before any movement
+      // if within +/-3 revs, perform homing operation
+      if abs(V11) < 3
+         
+         // find next instance of encoder latch pos by rotating CCW
+         // every quarter turn, move back
+         enable
+         while S_IND = 0
+            velocityloop 2.0
+            if abs(V9 - FPOS) > 0.25
+               velocityloop 0.0
+               move FPOS - 0.01
+         end
+         disable
+
+         // increment number of revs V11, record encoder mfr offset V8
+         // reset encoder latch flag
+         V11 = V11 + 1
+         V8 = FPOS - V8
+         set S_IND = 0
+
+      end
+   end
+
+
+
+   // dogleg goto procedure
+   if V0 = 6
+      
+      // set statusBYTE BUSY
+      V19 = 9
+
+      // set encoder latch pos flag to 0
+      set S_IND = 0
+
+      // store current position as V8, also store in V9 for eval
+      V8 = FPOS
+      V9 = FPOS
+
+      // check number of revolutions before any movement
+      // if within +/-3 revs, perform homing operation
+      if abs(V11) < 3
+         
+         // find next instance of encoder latch pos by rotating CCW
+         // every quarter turn, move back
+         enable
+         while S_IND = 0
+            velocityloop 2.0
+            if abs(V9 - FPOS) > 0.25
+               velocityloop 0.0
+               move FPOS - 0.01
+         end
+         disable
+
+         // increment number of revs V11, record encoder mfr offset V8
+         // reset encoder latch flag
+         V11 = V11 + 1
+         V8 = FPOS - V8
+         set S_IND = 0
+
+      end
+   end
+
+
+   // dogleg small step procedure
+   if V0 = 9
+
+      // set statusBYTE BUSY
+      V19 = 9
+
+      // 
+      move FPOS + V10
+   end
+
+end

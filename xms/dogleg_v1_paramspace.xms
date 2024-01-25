@@ -1,0 +1,34 @@
+XAXIS = 0
+
+//enable
+//for V0 = 0 to 10
+//   velocityloop 0.1 + 0.1*V0
+//   delay 2000
+//end
+//disable
+
+//VEL = 0.1
+//for V0=0 to 3
+//enable
+//velocityloop 0.5
+//delay 1000
+//disable
+//end
+
+for V0=0 to 2
+  for V1=0 to 3
+     V2 = 10+V0
+     V3 = 100*(1+V1)
+     enable
+     openloop V2
+     delay V3
+     disable
+     delay 2000
+     enable
+     openloop -V2
+     delay V3
+     disable
+     delay 2000
+  end
+  delay 5000
+end

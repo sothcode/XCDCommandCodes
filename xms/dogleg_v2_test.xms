@@ -1,0 +1,10 @@
+XAXIS = 0
+
+enable
+
+openloop 100
+delay 10000
+openloop -100
+delay 10000
+
+disable

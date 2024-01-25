@@ -1,0 +1,54 @@
+XAXIS = 1
+ENR = 6.103515625e-5
+MTL = 4000000
+
+V1 = FPOS
+V10 = 2.3
+V11 = -2
+
+delay 2000
+set S_IND = 0
+
+while 
+
+while abs(V11) < 3
+
+if V10 < FPOS
+   enable
+   while S_IND = 0
+      while abs(V1 - FPOS) < 0.25
+         velocityloop -2.0
+      end
+      velocityloop 0.0
+      move FPOS + 0.01
+      delay 1000 
+
+      V1 = FPOS
+   end
+   disable
+
+   V11 = V11 - 1
+   
+end
+
+
+if V10 > FPOS
+   enable
+   while S_IND = 0
+      while abs(V1 - FPOS) < 0.25
+         velocityloop 2.0
+      end
+      velocityloop 0.0
+      move FPOS - 0.01
+      delay 1000 
+
+      V1 = FPOS
+   end
+   disable
+
+   V11 = V11 + 1
+   set S_IND = 0
+end
+
+
+end

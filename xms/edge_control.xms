@@ -4,14 +4,18 @@
 //    -- V0 = 1 is homing procedure
 //    -- V0 = 2 is goto procedure
 // V1 -- encoder iterator variable
-// V2 -- right home flag (CW hard stop)
-// V3 -- left home flag (CCW hard stop)
-// V4 -- encoder latch pos (home tick)
+// V2 -- phi motor right stop (CW hard stop)
+// V3 -- phi motor left stop (CCW hard stop)
+// V4 -- phi motor encoder latch pos (home tick)
+// V5 -- long theta
+// V6 -- 
+// V7 -- 
+// V8 -- 
 // V10 - valueByte, used for goto procedure
 // V19 - statusByte
-//     - V19 = 0 is  
-//     - V19 = 1 is "BUSY"
-//     - V19 = 
+//     - V19 = 0 SUCCESS/IDLE
+//     - V19 = 1 FAILURE
+//     - V19 = 9 BUSY
 XAXIS = 0
 
 // time for system start up sequence
@@ -20,20 +24,22 @@ delay 2000
 // Set commandByte state to IDLE
 V0 = 0
 V1 = 0
-V2 = 0
-V3 = 0
-V4 = 0
-V10 = 0.467
+V10 = 0.33
 V19 = 0
 
 // Start infinite loop
 while 1  
 
-   // homing procedure
+   // phi homing procedure
    if V0 = 1
 
-      // set statusBYTE
-      V19 = 1
+      // set statusBYTE BUSY
+      V19 = 9
+
+      // initialize storage variables
+      V2 = 0
+      V3 = 0
+      V4 = 0
 
       // first test back and forth
       enable
@@ -91,24 +97,38 @@ while 1
       V4 = FPOS
       set S_IND = 0
 
-      // reset to IDLE state
-      V0 = 1
+      // check V2, V3, V4 flags and set statusBYTE accordingly
+      if V2 <> 0 & V3 <> 0 & V4 <> 0
+         V19 = 0
+      else
+         V19 = 1
+      end
+
+      // then reset to IDLE
+      V0 = 0
+
    end
 
 
 
-   // goto procedure
-   if V0 = 0
+   // phi goto procedure
+   if V0 = 2
       
-      // move until value V10
-      
+      // check if V10 a valid input
+      // if so, move until value V10
+      // if not, throw error code
+      V19 = 9
       enable
       if V2 <> 0 & V3 <> 0
          if V2 >= V10 & V3 <= V10
+            delay 2000
             move V10
-            V19 = 1
+            delay 2000
+
+            V19 = 0
+
          else
-            V19 = 2
+            V19 = 1
          end
       end
       disable
@@ -116,9 +136,115 @@ while 1
       // reset to IDLE state
       V0 = 0
    end
-   
-   // reset statusBYTE
-   V19 = 0
+
+
+
+   // theta homing procedure
+   if V0 = 3
+
+      // set statusBYTE BUSY
+      V19 = 9
+
+      // first move back and forth
+      enable
+      velocityloop 1.5
+      delay 500
+      disable
+
+      // initializes encoder iterator
+      V1 = FPOS
+      delay 1000
+
+      enable
+      velocityloop -1.5
+      delay 500
+      disable
+
+      
+
+   end
+
+
+
+   // theta goto procedure
+   if V0 = 4
+
+      // set statusBYTE BUSY
+      V19 = 9
+
+      
+
+   end
+
+
+
+   // dogleg homing procedure
+   if V0 = 5
+
+      // set statusBYTE BUSY
+      V19 = 9
+
+      // initialize storage variables
+      V2 = 0
+      V3 = 0
+      V4 = 0
+
+      // first test back and forth
+      enable
+      velocityloop 2.0
+      delay 500
+      disable
+
+      // initializes encoder iterator
+      V1 = FPOS
+      delay 1000
+
+      enable
+      velocityloop -2.0
+      delay 500
+      disable
+
+      // next find first hard stop 
+      while abs(V1 - FPOS) > 20*ENR
+         V1 = FPOS
+         enable
+         velocityloop 2.0
+         delay 1000
+         disable
+      end
+
+
+   // dogleg goto procedure
+   if V0 = 6
+         
+      // check if V10 a valid input
+      // if so, move until value V10
+      // if not, throw error code
+      V19 = 9
+      enable
+      if V2 <> 0 & V3 <> 0
+         if V2 >= V10 & V3 <= V10
+            delay 2000
+            move V10
+            delay 2000
+
+            V19 = 0
+
+         else
+            V19 = 1
+         end
+      end
+      disable
+      
+      // reset to IDLE state
+      V0 = 0
+      
+   end
+
+
+
+   // 
+
 
    // retry loop every half second
    delay 500

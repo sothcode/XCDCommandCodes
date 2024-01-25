@@ -1,0 +1,46 @@
+XAXIS = 1
+ENR = 6.103515625e-5
+MTL = 4000000
+DZMIN = ENR
+DZMAX = 4*ENR
+KP = 10
+VEL = 1
+
+// time for system start up sequence
+delay 2000
+
+// V10 valueBYTE, V11 numREVS, V19 statusBYTE
+V10 = 0
+V11 = 1
+V19 = 0
+
+// set encoder latch POS flag to 0
+set S_IND = 0
+
+// store current position as V8, also store in V9 for eval
+V8 = FPOS
+V9 = FPOS
+
+// check number of revolutions before any movement
+// if within +/-3 revs, perform homing operation
+if abs(V11) < 3
+       
+   // find next instance of encoder latch pos by rotating CCW
+   // every quarter turn, move back
+   enable
+   while S_IND = 0
+      velocityloop 2.0
+      if abs(V9 - FPOS) > 0.25
+         velocityloop 0.0
+         move FPOS - 0.01
+      end
+   end
+   disable
+
+   // increment number of revs V11, record encoder mfr offset V8
+   // reset encoder latch flag
+   V11 = V11 + 1
+   V8 = FPOS - V8
+   set S_IND = 0
+
+end
