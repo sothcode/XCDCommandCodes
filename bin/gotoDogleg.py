@@ -11,6 +11,19 @@ sleeptime=0.5 #in seconds
 debug=False
 
 
+
+#variable names we need
+position_feedback_name="FPOS"
+status_name="V19"
+command_word_name="V0"
+command_argument_name="V10"
+
+#variable values we need
+goto_command_value=6
+status_busy_value=9
+status_new_command_value=8
+
+
 #temp:
 #def writeXCD2(argv):
 #    print("write",argv[0],argv[1])
@@ -55,7 +68,10 @@ def sendcommand(com,arg):
     writeXCD2([command_word_name,com])
 
     #now wait until the status changes to indicate the command has been acted on:
+    if debug:
+        print ("command: priming status check before wait")
     status=readback(status_name)
+    print("command says status is ",status)
     while status==status_new_command_value:
         if debug:
             print ("command: waiting for device to ack command:")
@@ -66,16 +82,6 @@ def sendcommand(com,arg):
     
 
 
-#variable names we need
-position_feedback_name="FPOS"
-status_name="V19"
-command_word_name="V0"
-command_argument_name="V10"
-
-#variable values we need
-goto_command_value=6
-status_busy_value=9
-status_new_command_value=8
 
 
 #check args
@@ -97,8 +103,8 @@ if debug:
     print("goto:  Check status:")
 status=readback(status_name)
 
-if status==status_busy_value:
-    print("NOT EXECUTED. Controller is busy.")
+if status!=0:
+    print("NOT EXECUTED. Controller status is not 0.")
     sys.exit()
 try:
     input = float(sys.argv[1])
