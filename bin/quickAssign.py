@@ -95,7 +95,8 @@ def writeXCD2( argv ):
         if (ser.isOpen()):
             phrase = bytes(command)
             ser.write(phrase)
-            response = '{}'.format(_readline(ser))
+            #response = '{}'.format(_readline(ser))
+            response=_readline(ser)
             ser.close()
             print(response)
             return response

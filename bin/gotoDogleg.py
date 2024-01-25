@@ -23,7 +23,42 @@ def readback(arg):
     if check==False:
         print("CRITICAL FAILURE. Communication error.")
         sys.exit()
-    return ret
+    return ret[0]
+
+def sendcommand(com,arg):
+    if debug:
+        print("goto:  Check status:")
+    status=readback(status_name)
+    if status==status_busy_value:
+        print("NOT EXECUTED. Controller is busy.")
+        sys.exit()
+    try:
+        input = float(sys.argv[1])
+    except ValueError:
+        print("Error: Not a valid number")
+        sys.exit()
+
+    if debug:
+        print("command: set arguement:")    
+    writeXCD2([command_argument_name, arg)    
+   if debug:
+        print("command: set status to new_command:")    
+    writeXCD2([command_argument_name, arg)    
+    #set the command byte last, so we know we don't have a race condition
+    if debug:
+        print("command: set command byte:")    
+    writeXCD2([command_word_name,com])
+
+    #now wait until the status changes to indicate the command has been acted on:
+    status=readback(status_name)
+    while status==status_new_command_value:
+        if debug:
+            print ("command: waiting for device to ack command:")
+        status=readback(status_name)
+        time.sleep(sleeptime)
+
+    return
+    
 
 
 #variable names we need
@@ -35,10 +70,11 @@ command_argument_name="V10"
 #variable values we need
 goto_command_value=6
 status_busy_value=9
+status_received_value=8
 
 #tuning settings
 sleeptime=0.5 #in seconds
-debug=True
+debug=False
 
 #check args
 
@@ -68,14 +104,7 @@ except ValueError:
     print("Error: Not a valid number")
     sys.exit()
 
-if debug:
-    print("goto:  Set destination:")    
-#set controller destination to the argument
-writeXCD2([command_argument_name, input])
-#set the controller flag to move
-if debug:
-    print("goto:  Set command 'move':")    
-writeXCD2([command_word_name,goto_command_value])
+sendcommand(goto_command_value,input) # this sleeps until it sees the status change from new_command
 
 #monitor the controller position and report at intervals of sleeptime
 if debug:
