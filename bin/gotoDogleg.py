@@ -15,6 +15,7 @@ debug=False
 #variable names we need
 position_feedback_name="FPOS"
 status_name="V19"
+rotations_name="V11"
 command_word_name="V0"
 command_argument_name="V10"
 
@@ -122,9 +123,11 @@ if debug:
 position=readback(position_feedback_name)
 if debug:
     print("goto:  Check status:");
-status=readback(status_name)
+status=status_busy_value
 while status==status_busy_value:
-    print("position:",readback(position_feedback_name)," status:",status)
+    status=readback(status_name)
+    turns=readback(rotations_name)
+    print("position:",readback(position_feedback_name)," status:",status, "turns:",turns)
     if debug:
         print ("goto: loop: check status:")
     status=readback(status_name)
