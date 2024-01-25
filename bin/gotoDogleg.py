@@ -41,6 +41,8 @@ def readback(arg):
     if check==False:
         print("CRITICAL FAILURE. Communication error.")
         sys.exit()
+    if debug:
+        print("_readback result: ", ret[0])
     return ret[0]
 
 def sendcommand(com,arg):
