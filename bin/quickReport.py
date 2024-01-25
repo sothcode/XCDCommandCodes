@@ -18,13 +18,13 @@ def decodeRead( resp ):
         print("expected payload of ", nBytesExpected, " bytes but resp contains ", nBytes, " bytes.  Failing.")
         return 0
 
-    if(nBytes %4 !-0): #same as '&3 != 0'
+    if(nBytes %4 !=0): #same as '&3 != 0'
         print("payload has ", nBytes, "bytes, which is not a whole number of floats.  Failing.")
         return 0
 
     nFloats=int(nBytes/4)
     decode=[0]*nFloats
-    for i in range(0,nFloats)
+    for i in range(0,nFloats):
         decode[i]=struct.unpack_from('<f', byte_array, i*4+3)
     return decode
 
@@ -65,12 +65,12 @@ def _readline(ser):
     nPayloadBytes=NN-2
 
     # read the requested number of bytes as stipulated in the header to read commands and arguments
-    line = bytearray([nPayloadBytes])
-    for i in range(0,nPayloadBytes-2): #this is inclusive, so skips NN-1, which is the stop index.
+    line = bytearray([]) #[NN]) #an array whose first element is NN
+    for i in range(0,nPayloadBytes): #this is inclusive, so skips NN-1, which is the stop index.
         c = ser.read(1)
         if c:
             # print(c)
-            line += c
+            line[i]= c
         else:
             break
     # resp = e4 + a5 + a4 + d5 + bytes(line)
