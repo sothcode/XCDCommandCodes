@@ -9,7 +9,7 @@ import struct
 def decodeRead( resp ):
     #resp structure is: (blocklength)(groupid)(reportid)(4bytes of float)(4bytes of float)... etc.
     #resp may contain multiple floating point numbers, all of which are little-endian.
-    packlen=int.from_bytes(resp[0],byteorder='little')
+    packlen=resp[0] #=struct.unpack.from_bytes(resp[:1],byteorder='little')
     # print(packlen)
     nBytesExpected=packlen-3
     nBytes=len(resp)-3
@@ -61,16 +61,16 @@ def _readline(ser):
     d5 = ser.read(1) # Prefix - Start index
     NN = ser.read(1) # Prefix - Packet length in bytes (includes start index, not sync bytes or address)
     NN = int.from_bytes(NN, "big")
-    #'NN' includes two bytes we don't need:  1 is the byte which contains NN itself, which we have already read.  the other is the byte at the very end, which we do not need to read.  Hence we need nBytes:
-    nPayloadBytes=NN-2
+    #'NN' includes three bytes we don't need:  1 is the byte which contains NN itself, which we have already read.  the next is the start index, which we have already read.  The last is the byte at the very end, which we do not need to read.  Hence we need nBytes:
+    nPayloadBytes=NN-3
 
     # read the requested number of bytes as stipulated in the header to read commands and arguments
     line = bytearray([]) #[NN]) #an array whose first element is NN
-    for i in range(0,nPayloadBytes): #this is inclusive, so skips NN-1, which is the stop index.
+    for i in range(0,nPayloadBytes): #this is a total of NN-2 reads, sk
         c = ser.read(1)
         if c:
             # print(c)
-            line[i]= c
+            line+= c
         else:
             break
     # resp = e4 + a5 + a4 + d5 + bytes(line)
