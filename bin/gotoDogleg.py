@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+
 from quickAssign import writeXCD2
 from quickReport import reportXCD2
 import sys
