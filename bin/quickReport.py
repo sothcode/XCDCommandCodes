@@ -5,6 +5,8 @@ from variableDictionaryXCD2 import varDict
 import sys
 import struct
 
+debug=False
+
 
 def decodeRead( resp ):
     #resp structure is: (blocklength)(groupid)(reportid)(4bytes of float)(4bytes of float)... etc.
@@ -52,7 +54,8 @@ def _readline(ser):
     resp = line #bytes(line)
     hex_values = ' '.join(hex(byte) for byte in line)
     #print("_readline old:",resp)
-    print("_readline:",hex_values)
+    if debug:
+        print("_readline:",hex_values)
     vals = decodeRead(resp)
     return vals
 
@@ -94,7 +97,8 @@ def reportXCD2( argv ):
     command[5] = int(count+3)
     # add stop byte
     command += [218]
-    print(command)
+    if debug:
+        print(command)
 
     # the next portion of code is what establishes communication with the controller
     # and sends the bytestring command by serial comm
@@ -112,7 +116,8 @@ def reportXCD2( argv ):
             #response = '{}'.format(_readline(ser))
             response=_readline(ser)
             ser.close()
-            print(response)
+            if debug:
+                print(response)
             return True, response
         print("Serial port not open - check to see that usb is properly connected, or motor is powered.")
         return False, 0
