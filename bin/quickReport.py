@@ -28,31 +28,6 @@ def decodeRead( resp ):
         decode[i]=struct.unpack_from('<f', resp, i*4+3)
     return decode
 
-    #to be removed if the above works:
-    
-    packlen = int.from_bytes(resp[1:2], byteorder='little')
-    packlen = packlen - 3
-
-    if (packlen & 3 == 0):
-        num_vals = int(packlen/4)
-        decode = [None]*num_vals
-
-        for i in range(0, num_vals):
-            decode[i] = struct.unpack('!f', resp[4*i+4:4*i+8])
-
-    else:
-        print("Error decoding report values in response.")
-        return 0
-
-
-    #    number, = struct.unpack('!I', struct.pack('!f', float(val)))
-    #    r4 = number.to_bytes(4,byteorder='little',signed=False)
-    #    val_command = [int(r4[0]), int(r4[1]), int(r4[2]), int(r4[3])]
-    #    command += val_command
-    #    count += 4
-    return decode
-
-
 def _readline(ser):
     # read and interpret the reply's "header" and name it in bytes (5 bytes)
     e4 = ser.read(1) # Prefix - UART sync byte 1 (constant x\E4)
@@ -76,8 +51,8 @@ def _readline(ser):
     # resp = e4 + a5 + a4 + d5 + bytes(line)
     resp = bytes(line)
     hex_values = ' '.join(hex(byte) for byte in line)
-    print("_readline old:",resp)
-    print("_readline new:",hex_values)
+    #print("_readline old:",resp)
+    print("_readline:",hex_values)
     vals = decodeRead(resp)
     return vals
 
