@@ -6,6 +6,11 @@ import sys
 import time
 #import random #for testing
 
+#tuning settings
+sleeptime=0.5 #in seconds
+debug=False
+
+
 #temp:
 #def writeXCD2(argv):
 #    print("write",argv[0],argv[1])
@@ -27,7 +32,7 @@ def readback(arg):
 
 def sendcommand(com,arg):
     if debug:
-        print("goto:  Check status:")
+        print("command:  Check status:")
     status=readback(status_name)
     if status==status_busy_value:
         print("NOT EXECUTED. Controller is busy.")
@@ -39,11 +44,11 @@ def sendcommand(com,arg):
         sys.exit()
 
     if debug:
-        print("command: set arguement:")    
-    writeXCD2([command_argument_name, arg)    
-   if debug:
+        print("command: set argument:")    
+    writeXCD2([command_argument_name, arg])    
+    if debug:
         print("command: set status to new_command:")    
-    writeXCD2([command_argument_name, arg)    
+    writeXCD2([status_name, status_new_command_value])    
     #set the command byte last, so we know we don't have a race condition
     if debug:
         print("command: set command byte:")    
@@ -70,11 +75,8 @@ command_argument_name="V10"
 #variable values we need
 goto_command_value=6
 status_busy_value=9
-status_received_value=8
+status_new_command_value=8
 
-#tuning settings
-sleeptime=0.5 #in seconds
-debug=False
 
 #check args
 
@@ -93,7 +95,7 @@ destination=sys.argv[1]
 #check if controller is busy.  If so, exit with explanation
 if debug:
     print("goto:  Check status:")
-    status=readback(status_name)
+status=readback(status_name)
 
 if status==status_busy_value:
     print("NOT EXECUTED. Controller is busy.")
