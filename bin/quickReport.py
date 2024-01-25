@@ -51,7 +51,7 @@ def _readline(ser):
             break
     # resp = e4 + a5 + a4 + d5 + bytes(line)
     resp = bytes(line)
-    print(resp, "\n")
+    print(resp)
     vals = decodeRead(resp)
     return vals
 
