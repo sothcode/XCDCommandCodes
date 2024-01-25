@@ -45,13 +45,13 @@ def _readline(ser):
     for i in range(0,NN-2):
         c = ser.read(1)
         if c:
-            print(c)
+            # print(c)
             line += c
         else:
             break
     # resp = e4 + a5 + a4 + d5 + bytes(line)
     resp = bytes(line)
-    print(resp)
+    print(resp, "\n")
     vals = decodeRead(resp)
     return vals
 
