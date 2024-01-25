@@ -18,7 +18,7 @@ def decodeRead( resp ):
         print("expected payload of ", nBytesExpected, " bytes but resp contains ", nBytes, " bytes.  Failing.")
         return 0
 
-    if(nBytes %4 !-0): #same as '&3 != 0'
+    if(nBytes %4 !=0): #same as '&3 != 0'
         print("payload has ", nBytes, "bytes, which is not a whole number of floats.  Failing.")
         return 0
 
