@@ -25,7 +25,7 @@ def decodeRead( resp ):
     nFloats=int(nBytes/4)
     decode=[0]*nFloats
     for i in range(0,nFloats):
-        decode[i]=struct.unpack_from('<f', resp, i*4+3)
+        decode[i]=struct.unpack_from('<f', resp, i*4+3)[0]
     return decode
 
 def _readline(ser):
@@ -49,7 +49,7 @@ def _readline(ser):
         else:
             break
     # resp = e4 + a5 + a4 + d5 + bytes(line)
-    resp = bytes(line)
+    resp = line #bytes(line)
     hex_values = ' '.join(hex(byte) for byte in line)
     #print("_readline old:",resp)
     print("_readline:",hex_values)
