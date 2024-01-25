@@ -5,6 +5,7 @@ from variableDictionaryXCD2 import varDict
 import sys
 import struct
 
+debug=False
 
 def _readline(ser):
     # read and interpret the reply's "header" and name it in bytes (5 bytes)
@@ -35,7 +36,8 @@ def writeXCD2( argv ):
 
         var_names = argv[::2]
         real_vals = argv[1::2]
-        print(var_names, real_vals)
+        if debug:
+            print(var_names, real_vals)
         # if len(var_names) != len(real_vals):
         #    print("Formatting error: likely missing/extra variable or value to be assigned. Please check input.")
         #    return
@@ -80,7 +82,8 @@ def writeXCD2( argv ):
     command[5] = int(count+3)
     # add stop byte
     command += [218]
-    print(command)
+    if debug:
+        print(command)
 
     # the next portion of code is what establishes communication with the controller
     # and sends the bytestring command by serial comm
@@ -98,7 +101,8 @@ def writeXCD2( argv ):
             #response = '{}'.format(_readline(ser))
             response=_readline(ser)
             ser.close()
-            print(response)
+            if debug:
+                print(response)
             return response
         return "9999999"
 
@@ -109,4 +113,5 @@ def writeXCD2( argv ):
 
 
 if __name__ == "__main__":
-   writeXCD2(sys.argv[1:])
+    debug=true
+    writeXCD2(sys.argv[1:])

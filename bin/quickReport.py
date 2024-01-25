@@ -130,4 +130,5 @@ def reportXCD2( argv ):
 
 
 if __name__ == "__main__":
-   reportXCD2(sys.argv[1:])
+    debug=True
+    reportXCD2(sys.argv[1:])
