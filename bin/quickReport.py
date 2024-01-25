@@ -20,7 +20,7 @@ def decodeRead( resp ):
 
     else:
         print("Error decoding report values in response.")
-        return resp
+        return 0
 
 
     #    number, = struct.unpack('!I', struct.pack('!f', float(val)))
@@ -60,7 +60,7 @@ def reportXCD2( argv ):
     if argv:
         if len(argv) > 10:
             print("Too many variables trying to be assigned.  Max 10 variables can be assigned at once.")
-            return
+            return False, 0
 
         var_names = argv
         print(var_names)
@@ -79,14 +79,14 @@ def reportXCD2( argv ):
             else:
                 print("Variable name - " + var + " -  not recognized. Variable list given as:")
                 print(varDict.keys())
-                return
+                return False, 0
 
     else:
         print("No arguments given. reportXCD2 parameters are: \n \
                1) Variable- Mandatory, variable to report value of. For full list of variables, refer to variableDictionary. \n \
                2-10) Variable - Optional, other variables to report. \
                ")
-        return
+        return False, 0
 
     # reassign packet length and block length bytes
     command[4] = int(count+6)
@@ -111,16 +111,16 @@ def reportXCD2( argv ):
             response = '{}'.format(_readline(ser))
             ser.close()
             print(response)
-            return response
-        return "9999999"
+            return True, response
+        print("Serial port not open - check to see that usb is properly connected, or motor is powered.")
+        return False, 0
 
     except serial.serialutil.SerialException:
-        return "Serial Exception- check to see that usb is properly connected, or motor is powered."
+        print("Serial Exception- check to see that usb is properly connected, or motor is powered.")
+        return False, 0
 
-    return
+    return False, 0
 
 
 if __name__ == "__main__":
    reportXCD2(sys.argv[1:])
-
-
