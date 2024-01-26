@@ -45,7 +45,7 @@ def writeToFile( filename ):
                 print("_readback result: ", varVal[0])
         
             # Logs the change to the log for a change
-            file.write('%s %s\n' % (varName, varVal))
+            file.write('%s %s\n' % (varName, varVal[0]))
 
 
     return 
@@ -61,7 +61,7 @@ def readFromFile( filename ):
         for line in file:
             (varName, varVal) = line.split()
 
-            writeXCD2([varName, varVal[0]])
+            writeXCD2(varName, varVal)
         
     return
 
