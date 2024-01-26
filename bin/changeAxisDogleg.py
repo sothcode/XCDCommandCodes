@@ -85,12 +85,12 @@ def changeAxis( targetIDstr ):
         print("Target axis is same as current axis.")
         return
 
-    # write all variables to file
+    # write all variables to file corresponding to current ID
+    currentIDstr = IDlookup[currentID]
+    IDlookup = {v:k for k, v in AXID.items()}
     writeToFile( currentIDstr + '.txt' )
 
     # find file corresponding to target ID and load from it
-    IDlookup = {v:k for k, v in AXID.items()}
-    currentIDstr = IDlookup[currentID]
     readFromFile( targetIDstr + '.txt' )
 
     print("Axis change success!!")
