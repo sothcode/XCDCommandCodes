@@ -95,7 +95,7 @@ varUniqueID={
 'L7_TH_S': 75,
 'L7_TH_L': 76,
 'L7_PH': 77,
-'L7_AT': 78,
+'L7_AT': 78
 }
 
 varDict = {

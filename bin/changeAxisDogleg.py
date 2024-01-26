@@ -89,7 +89,7 @@ def changeAxis( targetIDstr ):
     writeToFile( targetIDstr + '.txt' )
 
     # find file corresponding to target ID and load from it
-    IDlookup = {v:k for k, v in AXID}
+    IDlookup = {v:k for k, v in AXID.items()}
     currentIDstr = IDlookup[currentID]
     readFromFile( currentIDstr + '.txt' )
 
