@@ -35,7 +35,7 @@ def sendcommand(com,arg):
     if debug:
         print("command:  Check status:")
     status=readback(ADDR['STATUS'])
-    if status!=STAT['READY']
+    if status!=STAT['READY']:
         print("NOT EXECUTED.  Error: Controller is not in ready state.  Status=",status)
         sys.exit()
     try:
