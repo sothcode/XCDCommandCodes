@@ -40,9 +40,9 @@ def sendcommand(com,arg):
         print("NOT EXECUTED.  Error: Controller is not in ready state.  Status=",status)
         sys.exit()
     try:
-        input = float(sys.argv[1])
+        input = float(arg)
     except ValueError:
-        print("NOT EXECUTED.  Error: Not a valid number, arg=",sys.argv[1])
+        print("NOT EXECUTED.  Error: Not a valid number, arg=",arg)
         sys.exit()
 
     if debug:

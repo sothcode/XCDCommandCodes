@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from quickAssign import sendcommand
+from quickAssign import sendcommand, writeXCD2
 from quickReport import readback
 import sys
 import time
@@ -26,5 +26,5 @@ if debug:
     print("clear:  Check status:")
 status=readback(ADDR['STATUS'])
 writeXCD2([ADDR['STATUS'], 0])
-new_statuss=readback(ADDR['STATUS'])
-print("DONE.  Dogleg status was ",status, ",is now ",new_status)
+new_status=readback(ADDR['STATUS'])
+print("DONE.  Dogleg status was",status, ",is now",new_status)

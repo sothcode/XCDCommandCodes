@@ -7,6 +7,7 @@ import time
 from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
 from variableDictionaryXCD2 import varStatusValues as STAT
 from variableDictionaryXCD2 import varDoglegCommands as COMM
+from changeAxisDogleg import changeAxis
 #import random #for testing
 
 #tuning settings
@@ -15,12 +16,19 @@ debug=False
 
 
 #check args
-
-if len(sys.argv) != 2: #note that sys.argv has arg 1 as the command itself
-    print("NOT EXECUTED. Wrong number of arguments.  Correct usage is ./gotoDogleg.py [position]")
+if len(sys.argv)==2:
+    #keep current leg, assume arg is destination.
+    destination=sys.argv[1]
+else if len(sys.argv)==3:
+    #assume first arg is leg, assume second arg is destination.
+    changeAxis(sys.argv[1])
+    destination=sys.argv[2]
+else:
+    print("NOT EXECUTED. Wrong number of arguments.  Correct usage is:")
+    print("     ./gotoDogleg.py [position]")
+    print("  or ./gotoDogleg.py L#_DL#_A# [position]")
     sys.exit()
 #if wrong arguments, exit with explanation
-destination=sys.argv[1]
 
 #{later:
 #get current rotations
@@ -66,7 +74,7 @@ while status==STAT['BUSY']:
 if debug:
      print ("goto: finishing up.  check status and readback:")
 if status==STAT['READY']:
-    print("SUCCESS. gotoDogleg complete.  status:",readback(ADDR['STATUS'])," position:",readback(ADDR['FPOS']), "nTurns:",readback(ADDR['TURNS']));
+    print("SUCCESS. gotoDogleg complete.  status:",readback(ADDR['STATUS'])," position:{:.4g}".format(readback(ADDR['FPOS'])), "nTurns:",readback(ADDR['TURNS']));
 else:
-    print("FAIL. gotoDogleg failed.  status:",readback(ADDR['STATUS'])," position:",readback(ADDR['FPOS']), "nTurns:",readback(ADDR['TURNS']));
+    print("FAIL. gotoDogleg failed.  status:",readback(ADDR['STATUS'])," position:{:.4g}".format(readback(ADDR['FPOS'])), "nTurns:",readback(ADDR['TURNS']));
 
