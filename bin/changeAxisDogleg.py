@@ -86,12 +86,12 @@ def changeAxis( targetIDstr ):
         return
 
     # write all variables to file
-    writeToFile( targetIDstr + '.txt' )
+    writeToFile( currentIDstr + '.txt' )
 
     # find file corresponding to target ID and load from it
     IDlookup = {v:k for k, v in AXID.items()}
     currentIDstr = IDlookup[currentID]
-    readFromFile( currentIDstr + '.txt' )
+    readFromFile( targetIDstr + '.txt' )
 
     print("Axis change success!!")
 
