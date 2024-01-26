@@ -113,5 +113,5 @@ def writeXCD2( argv ):
 
 
 if __name__ == "__main__":
-    debug=true
+    debug=True
     writeXCD2(sys.argv[1:])
