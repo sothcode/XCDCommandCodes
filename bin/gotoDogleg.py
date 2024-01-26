@@ -19,7 +19,7 @@ debug=False
 if len(sys.argv)==2:
     #keep current leg, assume arg is destination.
     destination=sys.argv[1]
-else if len(sys.argv)==3:
+elif len(sys.argv)==3:
     #assume first arg is leg, assume second arg is destination.
     changeAxis(sys.argv[1])
     destination=sys.argv[2]
