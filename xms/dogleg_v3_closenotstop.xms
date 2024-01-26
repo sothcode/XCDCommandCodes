@@ -1,0 +1,49 @@
+if V10 < FPOS
+   while V11 > -3 & abs(V10 - FPOS) > 0.05
+      enable
+      while S_IND = 0
+         while abs(V1 - FPOS) < 0.25
+            if abs(V10 - FPOS) > 0.1
+               velocityloop -abs(V10 - FPOS)
+            else
+               V10 = FPOS
+            end
+         end
+         velocityloop 0.0
+         move FPOS + 0.01
+         delay 2000 
+
+         V1 = FPOS
+      end
+      disable
+      
+      V11 = V11 - 1
+      set S_IND = 0
+   end
+
+end
+
+if V10 > FPOS
+   while V11 < 3 & abs(V10 - FPOS) > 0.05
+      enable
+      while S_IND = 0
+         while abs(V1 - FPOS) < 0.25
+            if abs(V10 - FPOS) > 0.1
+               velocityloop abs(V10 - FPOS)
+            else
+               V10 = FPOS
+            end
+         end
+         velocityloop 0.0
+         move FPOS - 0.01
+         delay 2000 
+
+         V1 = FPOS
+      end
+      disable
+      
+      V11 = V11 + 1
+      set S_IND = 0
+      delay 2000
+   end
+end
