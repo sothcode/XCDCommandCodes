@@ -1,3 +1,22 @@
+// set flags and parameters
+// V0 -- commandByte
+//    -- V0 = 0 is IDLE
+//    -- V0 = 5 is dogleg homing procedure
+//    -- V0 = 6 is dogleg goto procedure
+//    -- V0 = -1 is set FPOS to value
+// V1 -- encoder storage variable
+// V9 -- dogleg offset
+// V10 - valueByte, used to store values to be assigned
+// V11 - numRevs, used to keep dogleg within +/-3 rots
+// V16 - dirMove, used to determine CCW or CW rotation
+// V17 - numSteps = abs(4*relPos) numver of quarter-turn steps
+// V18 - relPos, calculated distance to desired position
+// V19 - statusByte
+//     - V19 = 0 SUCCESS/IDLE
+//     - V19 = 1 FAIL by out of bounds
+//     - V19 = 8 WAITING - command issued by RPi but waiting for xms
+//     - V19 = 9 BUSY
+
 XAXIS = 1
 ENR = 6.103515625e-5
 MTL = 4000000
@@ -6,22 +25,16 @@ DZMAX = 4*ENR
 KP = 10
 VEL = 1
 
-// need to invert feedback from dogleg
-// chose to invert feedback rather than drive output in
-// order to not influence the drive characteristics of the
-// motor and also since encoder position abt wheel was
-// flipped in dogleg v3
+// invert dogleg encoder feedback (bit 18)
 config 900, 0x00051001
-// 0x00051001 = 0000 0000 0000 0101 0001 0000 0000 0001
-// bit 18 corresponds to inverse feedback
+
 
 
 // time for system start up sequence
 delay 2000
 
-// V10 valueBYTE, V11 numREVS, V19 statusBYTE
+// initialize commandBYTE, statusBYTE to IDLE
 V0 = 0
-V1 = FPOS
 V19 = 0
 
 // set encoder latch POS flag to 0
@@ -29,6 +42,53 @@ set S_IND = 0
 
 // Start infinite loop
 while 1  
+
+   // dogleg homing procedure - find home tick, record dist
+   // relative to starting position
+   if V0 = 5
+   
+      // set statusBYTE BUSY
+      V19 = 9
+
+      // store current position
+      V1 = FPOS
+
+      // check if out of bounds
+      if abs(V11) > 3
+         V19 = 1
+         V0 = 0
+      else
+
+         // calculate direction
+         V16 = 1
+         if V11 > 0
+            V16 = -1
+         end
+
+         enable
+         while S_IND = 0 & V11*V16 < 3
+            move FPOS + V16*0.1
+            delay 500
+            move FPOS - V16*0.01
+            delay 100
+         end
+         disable
+
+         V9 = V1 - FPOS
+         set S_IND = 0
+
+         // set statusBYTE SUCCESS
+         V19 = 0
+
+      end
+
+      // reset to IDLE state
+      V0 = 0
+
+   // end dogleg homing procedure
+   end
+
+
 
    // dogleg goto procedure
    if V0 = 6
@@ -88,6 +148,20 @@ while 1
       V0 = 0
 
    // end dogleg goto procedure
+   end
+
+
+
+   // sets FPOS to certain value for debugging
+   if V0 = -1
+
+      // set statusBYTE BUSY
+      V19 = 9
+
+      // set 
+      set FPOS = V10
+
+   // end set FPOS
    end
 
    // retry loop every half second
