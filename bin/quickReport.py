@@ -2,6 +2,8 @@
 import time
 import serial
 from variableDictionaryXCD2 import varDict
+from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
+from variableDictionaryXCD2 import varStatusValues as STAT
 import sys
 import struct
 
@@ -29,6 +31,15 @@ def decodeRead( resp ):
     for i in range(0,nFloats):
         decode[i]=struct.unpack_from('<f', resp, i*4+3)[0]
     return decode
+
+def readback(arg):
+    check,ret = reportXCD2([arg])
+    if check==False:
+        print("CRITICAL FAILURE. Communication error.")
+        sys.exit()
+    if debug:
+        print("_readback result: ", ret[0])
+    return ret[0]
 
 def _readline(ser):
     # read and interpret the reply's "header" and name it in bytes (5 bytes)

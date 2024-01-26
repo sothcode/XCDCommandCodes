@@ -2,6 +2,27 @@
 
 import sys
 
+varDoglegCommands = {
+# Variables listed below are definitions used
+'GOTO': 6,
+'HOME': 5
+}
+
+varInterfaceAddresses= {
+'COMMAND':'V0',
+'ARG':'V10',
+'TURNS':'V11',
+'STATUS':'V19',
+'FPOS':'FPOS'
+}
+
+varStatusValues={
+'READY':0,
+'FAIL_OUT_OF_BOUNDS':1,
+'NEWCOMMAND':8,
+'BUSY':9
+}
+
 varDict = {
 # Variables listed below are taken from the XCD2 software manual. For more information, see https://www.nanomotion.com/wp-content/uploads/2018/05/xcd2458000-00_rev-b-fw-manual.pdf
 

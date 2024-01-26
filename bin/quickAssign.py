@@ -2,10 +2,13 @@
 import time
 import serial
 from variableDictionaryXCD2 import varDict
+from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
+from variableDictionaryXCD2 import varStatusValues as STAT
 import sys
 import struct
 
 debug=False
+sleeptime=0.1
 
 def _readline(ser):
     # read and interpret the reply's "header" and name it in bytes (5 bytes)
@@ -27,6 +30,44 @@ def _readline(ser):
         resp = e4 + a5 + a4 + d5 + bytes(line)
     return resp
 
+
+def sendcommand(com,arg):
+    if debug:
+        print("command:  Check status:")
+    status=readback(ADDR['STATUS'])
+    if status!=STAT['READY']
+        print("NOT EXECUTED.  Error: Controller is not in ready state.  Status=",status)
+        sys.exit()
+    try:
+        input = float(sys.argv[1])
+    except ValueError:
+        print("NOT EXECUTED.  Error: Not a valid number, arg=",sys.argv[1])
+        sys.exit()
+
+    if debug:
+        print("command: set argument:")    
+    writeXCD2([ADDR['ARG'], arg])    
+    if debug:
+        print("command: set status to new_command:")    
+    writeXCD2([ADDR['STATUS'], STAT['NEWCOMMAND']])
+    #set the command byte last, so we know we don't have a race condition
+    if debug:
+        print("command: set command byte:")    
+    writeXCD2([ADDR['COMMAND'],com])
+
+    #now wait until the status changes to indicate the command has been acted on:
+    if debug:
+        print ("command: priming status check before wait")
+    status=readback(ADDR['STATUS'])
+    print("command says status is ",status)
+    while status==STAT['NEWCOMMAND']:
+        if debug:
+            print ("command: waiting for device to ack command:")
+        status=readback(ADDR['STATUS'])
+        time.sleep(sleeptime)
+
+    return
+    
 
 def writeXCD2( argv ):
     if argv:
