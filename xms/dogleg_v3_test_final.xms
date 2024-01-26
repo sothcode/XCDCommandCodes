@@ -54,7 +54,7 @@ while 1
       V1 = FPOS
 
       // check if out of bounds
-      if abs(V11) > 3
+      if abs(V11) >= 3
          V19 = 1
          V0 = 0
       else
@@ -65,17 +65,34 @@ while 1
             V16 = -1
          end
 
+         // get pretty close (within quarter turn)
          enable
-         while S_IND = 0 & V11*V16 < 3
-            move FPOS + V16*0.1
+         while S_IND = 0 & abs(V11) < 3
+            move FPOS + V16*0.25
             delay 500
             move FPOS - V16*0.01
             delay 100
          end
          disable
 
-         V9 = V1 - FPOS
+         // flag will have flipped so reset, update V11
          set S_IND = 0
+         V11 = V11 + V16
+         
+         //turn in other direction until flag flips again
+         enable
+         velocityloop -V16*1.5
+         while S_IND = 0
+         end
+         velocityloop 0.0
+         disable
+
+         // again reset flag, update V11
+         set S_IND = 0
+         V11 = V11 - V16
+
+         // calculate distance between start and home
+         V9 = V1 - FPOS
 
          // set statusBYTE SUCCESS
          V19 = 0
