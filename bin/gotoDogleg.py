@@ -23,6 +23,8 @@ command_argument_name="V10"
 goto_command_value=6
 status_busy_value=9
 status_new_command_value=8
+status_failure_value=1
+status_ready_value=0
 
 
 #temp:
@@ -138,5 +140,8 @@ while status==status_busy_value:
 #report final position and success
 if debug:
      print ("goto: finishing up.  check status and readback:")
-print("DONE. gotoDogleg complete.  status:",readback(status_name)," position:",readback(position_feedback_name));
+if status==status_ready_value:
+    print("SUCCESS. gotoDogleg complete.  status:",readback(status_name)," position:",readback(position_feedback_name));
+else:
+    print("FAIL. gotoDogleg failed.  status:",readback(status_name)," position:",readback(position_feedback_name));
 
