@@ -1,0 +1,96 @@
+XAXIS = 1
+ENR = 6.103515625e-5
+MTL = 4000000
+DZMIN = ENR
+DZMAX = 4*ENR
+KP = 10
+VEL = 1
+
+// need to invert feedback from dogleg
+// chose to invert feedback rather than drive output in
+// order to not influence the drive characteristics of the
+// motor and also since encoder position abt wheel was
+// flipped in dogleg v3
+config 900, 0x00051001
+// 0x00051001 = 0000 0000 0000 0101 0001 0000 0000 0001
+// bit 18 corresponds to inverse feedback
+
+
+// time for system start up sequence
+delay 2000
+
+// V10 valueBYTE, V11 numREVS, V19 statusBYTE
+V0 = 0
+V1 = FPOS
+V19 = 0
+
+// set encoder latch POS flag to 0
+set S_IND = 0
+
+// Start infinite loop
+while 1  
+
+   // dogleg goto procedure
+   if V0 = 6
+
+      // set statusBYTE BUSY
+      V19 = 9
+
+      // calculate if destination is out of bounds
+      V18 = V10 - FPOS
+
+      if abs(V18 + V11) > 3
+         V19 = 1
+         V0 = 0
+      else
+         // calculate number of steps to take V17
+         V17 = abs(4*V18)
+
+         // calculate direction
+         V16 = 1
+         if V18 < 0
+            V16 = -1
+         end
+
+         enable
+         while V17 > 1 & V11*V16 < 3
+            move FPOS + V16*0.25
+            delay 500
+            move FPOS - V16*0.01
+            delay 100
+  
+            if S_IND <> 0
+               V11 = V11 + V16
+               set S_IND = 0
+            end
+
+            V17 = V17 - 1
+         end
+
+         if V11*V16 < 3
+            move V10
+            delay 1000
+      
+            if S_IND <> 0
+               V11 = V11 + V16
+               set S_IND = 0
+            end
+
+         end
+         disable
+      
+         // set statusBYTE SUCCESS
+         V19 = 0
+
+      end
+
+      // reset to IDLE state
+      V0 = 0
+
+   // end dogleg goto procedure
+   end
+
+   // retry loop every half second
+   delay 100
+
+end

@@ -2,53 +2,71 @@ XAXIS = 1
 ENR = 6.103515625e-5
 MTL = 4000000
 
-V1 = FPOS
+// need to invert feedback from dogleg
+// chose to invert feedback rather than drive output in
+// order to not influence the drive characteristics of the
+// motor and also since encoder position abt wheel was
+// flipped in dogleg v3
+config 900, 0x00051001
+// 0x00051001 = 0000 0000 0000 0101 0001 0000 0000 0001
+// bit 18 corresponds to inverse feedback
+
+set FPOS = 0
 V10 = 2.3
-V11 = -2
+V11 = -3
 
 delay 2000
 set S_IND = 0
 
-while 
+V18 = V10 - FPOS
 
-while abs(V11) < 3
+if abs(V18 + V11) > 3
+   V19 = 1
+   V0 = 0
+else
+   // calculate number of steps to take V17
+   V17 = abs(4*V18)
 
-if V10 < FPOS
+   // calculate direction
+   V16 = 1
+   if V18 < 0
+      V16 = -1
+   end
    enable
-   while S_IND = 0
-      while abs(V1 - FPOS) < 0.25
-         velocityloop -2.0
+   while V17 > 1 & V11*V16 < 3
+      move FPOS + V16*0.25
+      delay 500
+      move FPOS - V16*0.01
+      delay 100
+  
+      if S_IND <> 0
+         V11 = V11 + V16
+         set S_IND = 0
       end
-      velocityloop 0.0
-      move FPOS + 0.01
-      delay 1000 
 
-      V1 = FPOS
+      V17 = V17 - 1
+   end
+
+   if V11*V16 < 3
+      move V18
+      delay 1000
+      move V18 - V16*0.01
+      delay 100
+      move V18
+      delay 100
+      
+      if S_IND <> 0
+         V11 = V11 + V16
+         set S_IND = 0
+      end
+
    end
    disable
-
-   V11 = V11 - 1
-   
 end
 
 
-if V10 > FPOS
-   enable
-   while S_IND = 0
-      while abs(V1 - FPOS) < 0.25
-         velocityloop 2.0
-      end
-      velocityloop 0.0
-      move FPOS - 0.01
-      delay 1000 
-
-      V1 = FPOS
-   end
-   disable
-
-   V11 = V11 + 1
-   set S_IND = 0
-end
 
 
-end
+
+
+

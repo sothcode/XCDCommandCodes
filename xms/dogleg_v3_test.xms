@@ -6,41 +6,90 @@ DZMAX = 4*ENR
 KP = 10
 VEL = 1
 
+// need to invert feedback from dogleg
+// chose to invert feedback rather than drive output in
+// order to not influence the drive characteristics of the
+// motor and also since encoder position abt wheel was
+// flipped in dogleg v3
+config 900, 0x00051001
+// 0x00051001 = 0000 0000 0000 0101 0001 0000 0000 0001
+// bit 18 corresponds to inverse feedback
+
+
 // time for system start up sequence
 delay 2000
 
 // V10 valueBYTE, V11 numREVS, V19 statusBYTE
-V10 = 0
-V11 = 1
+V0 = 0
+V1 = FPOS
+V11 = 0
 V19 = 0
 
 // set encoder latch POS flag to 0
 set S_IND = 0
 
-// store current position as V8, also store in V9 for eval
-V8 = FPOS
-V9 = FPOS
+// Start infinite loop
+while 1  
 
-// check number of revolutions before any movement
-// if within +/-3 revs, perform homing operation
-if abs(V11) < 3
-       
-   // find next instance of encoder latch pos by rotating CCW
-   // every quarter turn, move back
-   enable
-   while S_IND = 0
-      velocityloop 2.0
-      if abs(V9 - FPOS) > 0.25
-         velocityloop 0.0
-         move FPOS - 0.01
+   // dogleg goto procedure
+   if V0 = 6
+
+      // set statusBYTE BUSY
+      V19 = 9
+
+      if V10 < FPOS
+         while V11 > -3 & abs(V10 - FPOS) > 20*ENR
+            enable
+               while abs(V1 - FPOS) < 0.25
+                  velocityloop -abs(V10 - FPOS)
+               end
+               velocityloop 0.0
+               move FPOS + 0.01
+               delay 500 
+
+               V1 = FPOS
+            end
+            disable
+         if S_IND <> 0
+            V11 = V11 - 1
+            set S_IND = 0
+            delay 500
+         end
+
       end
-   end
-   disable
 
-   // increment number of revs V11, record encoder mfr offset V8
-   // reset encoder latch flag
-   V11 = V11 + 1
-   V8 = FPOS - V8
-   set S_IND = 0
+      if V10 > FPOS
+         while V11 < 3 & abs(V10 - FPOS) > 20*ENR
+            enable
+            while S_IND = 0
+               while abs(V1 - FPOS) < 0.25
+                  if abs(V10 - FPOS) > 0.1
+                     velocityloop abs(V10 - FPOS)
+                  end
+               end
+               velocityloop 0.0
+               move FPOS - 0.01
+               delay 500 
+
+               V1 = FPOS
+            end
+            disable
+      
+            V11 = V11 + 1
+            set S_IND = 0
+            delay 500
+         end
+      end
+
+      // set statusBYTE SUCCESS
+      V19 = 0
+
+      // reset to IDLE state
+      V0 = 0
+
+      end
+
+   // retry loop every half second
+   delay 100
 
 end
