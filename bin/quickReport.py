@@ -67,7 +67,8 @@ def reportXCD2( argv ):
             return False, 0
 
         var_names = argv
-        print(var_names)
+        if debug:
+            print(var_names)
 
         command = [228, 165, 0, 213, 0, 0, 6, 4]
         count = 0
