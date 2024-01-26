@@ -56,6 +56,11 @@ def readFromFile( filename ):
 
 def changeAxis( targetIDstr ):
 
+    #check if controller is busy.  If so, exit with explanation
+    if debug:
+        print("changeAxis:  Check status:")
+    status=readback(ADDR['STATUS'])
+
     if status!=0:
         print("NOT EXECUTED. Controller status is not 0.")
         sys.exit()
@@ -97,9 +102,4 @@ if __name__ == "__main__":
         print("NOT EXECUTED. Inserted argument when not needed.")
         sys.exit()
 
-    #check if controller is busy.  If so, exit with explanation
-    if debug:
-        print("changeAxis:  Check status:")
-    status=readback(ADDR['STATUS'])
-    
     changeAxis(sys.argv[1])
