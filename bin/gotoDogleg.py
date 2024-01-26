@@ -18,11 +18,11 @@ debug=False
 #check args
 if len(sys.argv)==2:
     #keep current leg, assume arg is destination.
-    destination=sys.argv[1]
+    inputval=sys.argv[1]
 elif len(sys.argv)==3:
     #assume first arg is leg, assume second arg is destination.
     changeAxis(sys.argv[1])
-    destination=sys.argv[2]
+    inputval=sys.argv[2]
 else:
     print("NOT EXECUTED. Wrong number of arguments.  Correct usage is:")
     print("     ./gotoDogleg.py [position]")
@@ -45,12 +45,12 @@ if status!=0:
     print("NOT EXECUTED. Controller status is not 0.")
     sys.exit()
 try:
-    input = float(sys.argv[1])
+    destination = float(inputval)
 except ValueError:
     print("Error: Not a valid number")
     sys.exit()
 
-sendcommand(COMM['GOTO'],input) # this sleeps until it sees the status change from new_command
+sendcommand(COMM['GOTO'],destination) # this sleeps until it sees the status change from new_command
 
 #monitor the controller position and report at intervals of sleeptime
 if debug:
