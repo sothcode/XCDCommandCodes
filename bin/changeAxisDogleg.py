@@ -61,7 +61,7 @@ def readFromFile( filename ):
         for line in file:
             (varName, varVal) = line.split()
 
-            writeXCD2([varName, varVal])
+            writeXCD2([varName, varVal[0]])
         
     return
 
