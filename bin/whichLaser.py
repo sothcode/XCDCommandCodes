@@ -7,7 +7,7 @@ from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
 from variableDictionaryXCD2 import varUniqueID as AXID
 
 
-def whichLaser()
+def whichLaser():
     currentID = readback(ADDR['ID'])
     IDlookup = {v:k for k, v in AXID.items()}
     print(IDlookup[currentID])
