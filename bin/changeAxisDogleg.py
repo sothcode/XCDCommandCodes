@@ -16,18 +16,6 @@ sleeptime=0.5 #in seconds
 debug=False
 
 
-# check args
-# if wrong arguments, exit with explanation
-if len(sys.argv) != 2: # sys.argv has arg 1 as the command itself
-    print("NOT EXECUTED. Inserted argument when not needed.")
-    sys.exit()
-
-#check if controller is busy.  If so, exit with explanation
-if debug:
-    print("changeAxis:  Check status:")
-status=readback(ADDR['STATUS'])
-
-
 def writeToFile( filename ):
 
     with open(filename, "w") as file:
@@ -102,4 +90,16 @@ def changeAxis( targetIDstr ):
 
 if __name__ == "__main__":
     debug=True
+
+    # check args
+    # if wrong arguments, exit with explanation
+    if len(sys.argv) != 2: # sys.argv has arg 1 as the command itself
+        print("NOT EXECUTED. Inserted argument when not needed.")
+        sys.exit()
+
+    #check if controller is busy.  If so, exit with explanation
+    if debug:
+        print("changeAxis:  Check status:")
+    status=readback(ADDR['STATUS'])
+    
     changeAxis(sys.argv[1])
