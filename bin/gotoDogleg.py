@@ -66,7 +66,7 @@ while status==status_busy_value:
 if debug:
      print ("goto: finishing up.  check status and readback:")
 if status==status_ready_value:
-    print("SUCCESS. gotoDogleg complete.  status:",readback(ADDR['STATUS'])," position:",readback(ADDR['FPOS']), "nTurns:",readback(ADDR['TURNS']);
+    print("SUCCESS. gotoDogleg complete.  status:",readback(ADDR['STATUS'])," position:",readback(ADDR['FPOS']), "nTurns:",readback(ADDR['TURNS']));
 else:
-    print("FAIL. gotoDogleg failed.  status:",readback(ADDR['STATUS'])," position:",readback(ADDR['FPOS']), "nTurns:",readback(ADDR['TURNS']);
+    print("FAIL. gotoDogleg failed.  status:",readback(ADDR['STATUS'])," position:",readback(ADDR['FPOS']), "nTurns:",readback(ADDR['TURNS']));
 

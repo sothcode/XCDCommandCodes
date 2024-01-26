@@ -33,6 +33,7 @@ def decodeRead( resp ):
     return decode
 
 def readback(arg):
+    #readback the value at one address.
     check,ret = reportXCD2([arg])
     if check==False:
         print("CRITICAL FAILURE. Communication error.")
