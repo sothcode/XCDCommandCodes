@@ -18,10 +18,9 @@ debug=False
 
 # check args
 # if wrong arguments, exit with explanation
-if len(sys.argv) != 1: # sys.argv has arg 1 as the command itself
+if len(sys.argv) != 2: # sys.argv has arg 1 as the command itself
     print("NOT EXECUTED. Inserted argument when not needed.")
     sys.exit()
-
 
 #check if controller is busy.  If so, exit with explanation
 if debug:
@@ -101,4 +100,4 @@ def changeAxis( targetIDstr ):
 
 if __name__ == "__main__":
     debug=True
-    changeAxis(sys.argv[1:])
+    changeAxis(sys.argv[1])
