@@ -61,8 +61,9 @@ if debug:
 status=STAT['BUSY']
 while status==STAT['BUSY']:
     status=readback(ADDR['STATUS'])
-    turns=readback(ADDR['TURNS'])
-    print("position:",readback(ADDR['FPOS'])," status:",status, "turns:",turns)
+    hardstop1=readback(ADDR['HARD_STOP1'])
+    hardstop2=readback(ADDR['HARD_STOP2'])
+    print("position:",readback(ADDR['FPOS'])," status:",status, "lb:",hardstop1, "hb:",hardstop2)
     if debug:
         print ("goto: loop: check status:")
     status=readback(ADDR['STATUS'])
@@ -74,7 +75,9 @@ while status==STAT['BUSY']:
 if debug:
      print ("goto: finishing up.  check status and readback:")
 if status==STAT['READY']:
-    print("SUCCESS. gotoPhi complete.  status:",readback(ADDR['STATUS'])," position:{:.4g}".format(readback(ADDR['FPOS'])), "nTurns:",readback(ADDR['TURNS']));
+    print("SUCCESS. gotoPhi complete.  status:",readback(ADDR['STATUS'])," position:{:.4g}".format(readback(ADDR['FPOS'])), \
+          " lb:",readback(ADDR['HARD_STOP1']), " hb:",readback(ADDR['HARD_STOP2']));
 else:
-    print("FAIL. gotoPhi failed.  status:",readback(ADDR['STATUS'])," position:{:.4g}".format(readback(ADDR['FPOS'])), "nTurns:",readback(ADDR['TURNS']));
+    print("FAIL. gotoPhi failed.  status:",readback(ADDR['STATUS'])," position:{:.4g}".format(readback(ADDR['FPOS'])), \
+          " lb:",readback(ADDR['HARD_STOP1']), " hb:",readback(ADDR['HARD_STOP2']));
 

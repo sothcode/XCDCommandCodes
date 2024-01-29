@@ -29,6 +29,8 @@ varDoglegCommands = {
 varInterfaceAddresses= {
 'COMMAND':'V0',
 'ID':'V1',
+'HARD_STOP1':'V2',
+'HARD_STOP2':'V3',
 'ARG':'V10',
 'TURNS':'V11',
 'STATUS':'V19',
