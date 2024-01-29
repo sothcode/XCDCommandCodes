@@ -53,46 +53,41 @@ while 1
       V3 = 0
       V4 = 0
 
-      // first test back and forth
+      // first move back and forth ()
       enable
       velocityloop 2.0
       delay 500
-      disable
 
-      // initializes encoder iterator
       V18 = FPOS
-      delay 1000
 
-      enable
       velocityloop -2.0
       delay 500
       disable
 
-      // next find first hard stop 
-      while abs(V18 - FPOS) > 20*ENR
+      // drive one way until stop
+      enable
+      velocityloop 2.0
+      delay 1000
+      while abs(V18 - FPOS) > 10*ENR
          V18 = FPOS
-         enable
-         velocityloop 2.0
-         delay 1000
-         disable
+         delay 100
       end
+      velocityloop 0.0
+      disable
 
-      // sets first hard stop
+      // record first hard stop
       V2 = FPOS
 
+      // drive other way until stop
       enable
       velocityloop -2.0
-      delay 500
-      disable
-
-      // then find other hard stop
-      while abs(V18 - FPOS) > 20*ENR
+      delay 1000
+      while abs(V18 - FPOS) > 10*ENR
          V18 = FPOS
-         enable
-         velocityloop -2.0
-         delay 1000
-         disable
+         delay 100
       end
+      velocityloop 0.0
+      disable
 
       // sets second hard stop
       V3 = FPOS
@@ -103,17 +98,19 @@ while 1
       velocityloop 2.0
       while S_IND = 0
       end
+      velocityloop 0.0
       disable
 
       // sets encoder latch pos, reset encoder latch flag
       V4 = FPOS
       set S_IND = 0
 
+
       // check V2, V3, V4 flags and set statusBYTE accordingly
-      if V2 <> 0 & V3 <> 0 & V4 <> 0
+      if (V2 - V4) <> 0 & (V3 - V4) <> 0
          V19 = 0
       else
-         V19 = 1
+         V19 = 2
       end
 
       // then reset to IDLE
@@ -126,25 +123,23 @@ while 1
 
    // phi goto procedure
    if V0 = 2
-      
-      // check if V10 a valid input
-      // if so, move until value V10
-      // if not, throw error code
+
+      // set statusBYTE BUSY
       V19 = 9
-      enable
-      if V2 <> 0 & V3 <> 0
-         if V2 >= V10 & V3 <= V10
-            delay 2000
-            move V10
-            delay 2000
 
-            V19 = 0
+      
+      // check if V10 a valid input and if so move
+      // if not, throw error code V19 = 3
+      if V10 > V3 & V10 < V2
+         enable
+         move V10
+         delay 1000
+         disable
 
-         else
-            V19 = 1
-         end
+         V19 = 0
+      else
+         V19 = 3
       end
-      disable
       
       // reset to IDLE state
       V0 = 0

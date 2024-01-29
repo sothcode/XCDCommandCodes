@@ -38,6 +38,8 @@ varInterfaceAddresses= {
 varStatusValues={
 'READY':0,
 'FAIL_OUT_OF_BOUNDS':1,
+'FAIL_PHI_HOME':2,
+'FAIL_PHI_GOTO':3,
 'NEWCOMMAND':8,
 'BUSY':9
 }
