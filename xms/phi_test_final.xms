@@ -16,7 +16,7 @@
 //     - V19 = 8 WAITING - command issued by RPi but waiting for xms
 //     - V19 = 9 BUSY
 
-XAXIS = 1
+XAXIS = 0
 ENR = 6.103515625e-5
 MTL = 4000000
 DZMIN = ENR
@@ -34,7 +34,7 @@ delay 2000
 // initialize commandBYTE, statusBYTE to IDLE
 V0 = 0
 V18 = 0
-V19 = 0
+V19 = 98
 
 // set encoder latch POS flag to 0
 set S_IND = 0
@@ -154,7 +154,7 @@ while 1
 
 
    // retry loop every half second
-   delay 500
+   delay 100
 
 end
    
