@@ -22,7 +22,7 @@ MTL = 4000000
 DZMIN = ENR
 DZMAX = 4*ENR
 KP = 10
-VEL = 1
+VEL = 2
 
 // configure phi motor settings (non-inverted drive and feedback)
 config 900, 0x00011001
@@ -134,7 +134,7 @@ while 1
       if V10 > V3 & V10 < V2
          enable
          move V10
-         delay 1000
+         delay 2000
          disable
 
          V19 = 0
