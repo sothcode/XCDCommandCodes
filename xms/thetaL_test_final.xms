@@ -41,41 +41,76 @@ set S_IND = 0
 while 1  
 
 
-   // theta homing procedure
+   // theta long mirror homing procedure
    if V0 = 3
 
       // set statusBYTE BUSY
       V19 = 9
 
+
+// gently move in one direction until arm contacts lightpipe
+// record position
+// gently move in other direction
+// 
+
+
+
       // first move back and forth
       enable
-      velocityloop 1.5
-      delay 500
-      disable
-
-      // initializes encoder iterator
-      V1 = FPOS
+      velocityloop -1.0
       delay 1000
 
-      enable
-      velocityloop -1.5
-      delay 500
+      V18 = FPOS
+
+      velocityloop 1.2
+      delay 1000
       disable
 
+      // drive one way until stop
+      enable
+      velocityloop -1.0
+      delay 1000
+      while abs(V18 - FPOS) > 10*ENR
+         V18 = FPOS
+         delay 100
+      end
+      velocityloop 0.0
+      disable
+
+      // record first hard stop
+      V2 = FPOS
       
 
+   // end theta long mirror home procedure
    end
 
 
 
-   // theta goto procedure
+   // theta long mirror goto procedure
    if V0 = 4
 
       // set statusBYTE BUSY
       V19 = 9
 
-      
+      // check if V10 a valid input and if so move
+      // if not, throw error code V19 = 3
+      if V10 > V2 & V10 < V3 & (V3 - V2) < 0.75
+         enable
+         move V10
+         delay 2000
+         disable
 
+         V19 = 0
+
+      else
+         V19 = 3
+
+      end
+
+      // reset to IDLE state
+      V0 = 0
+
+   // end theta long mirror goto procedure
    end
 
 
