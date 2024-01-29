@@ -26,6 +26,6 @@ if debug:
     print("clear:  Check status:")
 status=readback(ADDR['STATUS'])
 writeXCD2([ADDR['STATUS'], 0])
-writeXCD2([ADDR['COMM'], 0])
+writeXCD2([ADDR['COMMAND'], 0])
 new_status=readback(ADDR['STATUS'])
 print("DONE.  Dogleg status was",status, ",is now",new_status)
