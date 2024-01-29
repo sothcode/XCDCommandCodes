@@ -36,7 +36,7 @@ delay 2000
 
 // initialize commandBYTE, statusBYTE to IDLE
 V0 = 0
-V19 = 99
+V19 = 98
 
 // set encoder latch POS flag to 0
 set S_IND = 0
