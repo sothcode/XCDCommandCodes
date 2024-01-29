@@ -4,9 +4,10 @@
 //    -- V0 = 5 is dogleg homing procedure
 //    -- V0 = 6 is dogleg goto procedure
 //    -- V0 = -1 is set FPOS to value
-// V1 -- encoder storage variable
+// V1 -- motorID
+//    -- (see variableDictionaryXCD2.py for full list of motorIDs)
 // V9 -- dogleg offset
-// V10 - valueByte, used to store values to be assigned
+// V10 - valueByte, used to encode goto values
 // V11 - numRevs, used to keep dogleg within +/-3 rots
 // V16 - dirMove, used to determine CCW or CW rotation
 // V17 - numSteps = abs(4*relPos) numver of quarter-turn steps

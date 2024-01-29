@@ -1,0 +1,81 @@
+// set flags and parameters
+// V0 -- commandByte (see variableDictionaryXCD2.py for full list)
+//    -- V0 = 0 is IDLE
+//    -- V0 = 3 is theta long homing procedure
+//    -- V0 = 4 is theta long goto procedure
+// V1 -- motorID
+//    -- (see variableDictionaryXCD2.py for full list of motorIDs)
+// V2 -- 
+// V3 -- 
+// V4 -- 
+// V10 - valueByte, used to encode goto values
+// V19 - statusByte
+//     - V19 = 0 SUCCESS/IDLE
+//     - V19 = 1 FAILURE
+//     - V19 = 9 BUSY
+
+XAXIS = 1
+ENR = 6.103515625e-5
+MTL = 4000000
+DZMIN = ENR
+DZMAX = 4*ENR
+KP = 10
+VEL = 1
+
+// configure phi motor settings (non-inverted drive and feedback)
+config 900, 0x00011001
+
+
+// time for system start up sequence
+delay 2000
+
+// initialize commandBYTE, statusBYTE to IDLE
+V0 = 0
+V18 = 0
+V19 = 0
+
+// set encoder latch POS flag to 0
+set S_IND = 0
+
+// Start infinite loop
+while 1  
+
+
+   // theta homing procedure
+   if V0 = 3
+
+      // set statusBYTE BUSY
+      V19 = 9
+
+      // first move back and forth
+      enable
+      velocityloop 1.5
+      delay 500
+      disable
+
+      // initializes encoder iterator
+      V1 = FPOS
+      delay 1000
+
+      enable
+      velocityloop -1.5
+      delay 500
+      disable
+
+      
+
+   end
+
+
+
+   // theta goto procedure
+   if V0 = 4
+
+      // set statusBYTE BUSY
+      V19 = 9
+
+      
+
+   end
+
+

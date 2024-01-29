@@ -2,8 +2,26 @@
 
 import sys
 
+varPhiMotorCommands = {
+# Variables listed below are definitions in phi_test_final.xms
+'GOTO': 2,
+'HOME': 1
+}
+
+varThetaLCommands = {
+# Variables listed below are definitions in thetaL_test_final.xms
+'GOTO': 4,
+'HOME': 3
+}
+
+varThetaSCommands = {
+# Variables listed below are definitions in thetaS_test_final.xms
+'GOTO': 8,
+'HOME': 7
+}
+
 varDoglegCommands = {
-# Variables listed below are definitions used
+# Variables listed below are definitions in dogleg_v3_test_final.xms
 'GOTO': 6,
 'HOME': 5
 }

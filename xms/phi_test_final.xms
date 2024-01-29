@@ -1,0 +1,160 @@
+// set flags and parameters
+// V0 -- commandByte (see variableDictionaryXCD2.py for full list)
+//    -- V0 = 0 is IDLE
+//    -- V0 = 1 is phi homing procedure
+//    -- V0 = 2 is phi goto procedure
+// V1 -- motorID
+//    -- (see variableDictionaryXCD2.py for full list of motorIDs)
+// V2 -- phi motor right stop (CW hard stop)
+// V3 -- phi motor left stop (CCW hard stop)
+// V4 -- phi motor encoder latch pos (home tick)
+// V10 - valueByte, used to encode goto values
+// V18 - relPos, calculated distance to desired position
+// V19 - statusByte
+//     - V19 = 0 SUCCESS/IDLE
+//     - V19 = 1 FAIL by out of bounds
+//     - V19 = 8 WAITING - command issued by RPi but waiting for xms
+//     - V19 = 9 BUSY
+
+XAXIS = 1
+ENR = 6.103515625e-5
+MTL = 4000000
+DZMIN = ENR
+DZMAX = 4*ENR
+KP = 10
+VEL = 1
+
+// configure phi motor settings (non-inverted drive and feedback)
+config 900, 0x00011001
+
+
+// time for system start up sequence
+delay 2000
+
+// initialize commandBYTE, statusBYTE to IDLE
+V0 = 0
+V18 = 0
+V19 = 0
+
+// set encoder latch POS flag to 0
+set S_IND = 0
+
+// Start infinite loop
+while 1  
+
+   // phi homing procedure - find hard stops
+   if V0 = 1
+
+      // set statusBYTE BUSY
+      V19 = 9
+
+      // initialize storage variables
+      V2 = 0
+      V3 = 0
+      V4 = 0
+
+      // first test back and forth
+      enable
+      velocityloop 2.0
+      delay 500
+      disable
+
+      // initializes encoder iterator
+      V18 = FPOS
+      delay 1000
+
+      enable
+      velocityloop -2.0
+      delay 500
+      disable
+
+      // next find first hard stop 
+      while abs(V18 - FPOS) > 20*ENR
+         V18 = FPOS
+         enable
+         velocityloop 2.0
+         delay 1000
+         disable
+      end
+
+      // sets first hard stop
+      V2 = FPOS
+
+      enable
+      velocityloop -2.0
+      delay 500
+      disable
+
+      // then find other hard stop
+      while abs(V18 - FPOS) > 20*ENR
+         V18 = FPOS
+         enable
+         velocityloop -2.0
+         delay 1000
+         disable
+      end
+
+      // sets second hard stop
+      V3 = FPOS
+
+      // then find encoder latch pos if visible
+      set S_IND = 0
+      enable
+      velocityloop 2.0
+      while S_IND = 0
+      end
+      disable
+
+      // sets encoder latch pos, reset encoder latch flag
+      V4 = FPOS
+      set S_IND = 0
+
+      // check V2, V3, V4 flags and set statusBYTE accordingly
+      if V2 <> 0 & V3 <> 0 & V4 <> 0
+         V19 = 0
+      else
+         V19 = 1
+      end
+
+      // then reset to IDLE
+      V0 = 0
+
+   // end phi homing procedure
+   end
+
+
+
+   // phi goto procedure
+   if V0 = 2
+      
+      // check if V10 a valid input
+      // if so, move until value V10
+      // if not, throw error code
+      V19 = 9
+      enable
+      if V2 <> 0 & V3 <> 0
+         if V2 >= V10 & V3 <= V10
+            delay 2000
+            move V10
+            delay 2000
+
+            V19 = 0
+
+         else
+            V19 = 1
+         end
+      end
+      disable
+      
+      // reset to IDLE state
+      V0 = 0
+
+   // end phi goto procedure
+   end
+
+
+   // retry loop every half second
+   delay 500
+
+end
+   
