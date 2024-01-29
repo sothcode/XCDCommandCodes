@@ -9,7 +9,7 @@
 // V3 -- phi motor left stop (CCW hard stop)
 // V4 -- phi motor encoder latch pos (home tick)
 // V10 - valueByte, used to encode goto values
-// V18 - relPos, calculated distance to desired position
+// V18 - encoder iterator variable
 // V19 - statusByte
 //     - V19 = 0 SUCCESS/IDLE
 //     - V19 = 1 FAIL by out of bounds
@@ -53,7 +53,8 @@ while 1
       V3 = 0
       V4 = 0
 
-      // first move back and forth ()
+      // first move back and forth to set V18
+      // (in case already at hard stop)
       enable
       velocityloop 2.0
       delay 500
