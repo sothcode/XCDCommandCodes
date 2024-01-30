@@ -90,7 +90,7 @@ def reportXCD2( argv ):
 
         ax_int = getAxis()
         #int(getAxis)
-        print("reportXCD2 axis=",ax_int)
+        #print("reportXCD2 axis=",ax_int)
         ax_byte = ax_int.to_bytes(1,byteorder='little',signed=True)
         ax_comm = [int(ax_byte[0])]
         
