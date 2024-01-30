@@ -60,9 +60,10 @@ if debug:
     print("goto:  Check status:");
 status=STAT['BUSY']
 while status==STAT['BUSY']:
+    axis=readback(ADDR['XAXIS'])
     status=readback(ADDR['STATUS'])
     turns=readback(ADDR['TURNS'])
-    print("position:",readback(ADDR['FPOS'])," status:",status, "turns:",turns)
+    print("position:",readback(ADDR['FPOS'])," (axis",axis,") status:",status, "turns:",turns)
     if debug:
         print ("goto: loop: check status:")
     status=readback(ADDR['STATUS'])
@@ -74,7 +75,6 @@ while status==STAT['BUSY']:
 if debug:
      print ("goto: finishing up.  check status and readback:")
 if status==STAT['READY']:
-    print("SUCCESS. gotoDogleg complete.  status:",readback(ADDR['STATUS'])," position:{:.4g}".format(readback(ADDR['FPOS'])), "nTurns:",readback(ADDR['TURNS']));
+    print("SUCCESS. gotoDogleg complete.  status:",readback(ADDR['STATUS'])," position:{:.4g}({:.1g}".format(readback(ADDR['FPOS']),readback(ADDR['XAXIS'])), "nTurns:",readback(ADDR['TURNS']));
 else:
-    print("FAIL. gotoDogleg failed.  status:",readback(ADDR['STATUS'])," position:{:.4g}".format(readback(ADDR['FPOS'])), "nTurns:",readback(ADDR['TURNS']));
-
+    print("FAIL. gotoDogleg failed.  status:",readback(ADDR['STATUS'])," position:{:.4g}({:.1g}".format(readback(ADDR['FPOS']),readback(ADDR['XAXIS'])), "nTurns:",readback(ADDR['TURNS']));

@@ -34,7 +34,8 @@ varInterfaceAddresses= {
 'ARG':'V10',
 'TURNS':'V11',
 'STATUS':'V19',
-'FPOS':'FPOS'
+'FPOS':'FPOS',
+'XAXIS':'XAXIS'
 }
 
 varStatusValues={
