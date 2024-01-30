@@ -27,6 +27,7 @@ VEL = 1
 
 // invert dogleg encoder feedback (bit 18)
 config 900, 0x00051001
+delay 1000
 
 XAXIS = 0
 ENR = 6.103515625e-5
