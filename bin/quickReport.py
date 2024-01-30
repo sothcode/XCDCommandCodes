@@ -101,7 +101,7 @@ def reportXCD2( argv ):
                 command += var_command
                 count += 2
             else:
-                print("Variable name - " + var + " -  not recognized. Variable list given as:")
+                print("Variable name - ", var , " -  not recognized. Variable list given as:")
                 print(varDict.keys())
                 return False, 0
             
@@ -175,7 +175,7 @@ def reportXCD2noAxis( argv ):
                 command += var_command
                 count += 2
             else:
-                print("Variable name - " + var + " -  not recognized. Variable list given as:")
+                print("Variable name - " , var , " -  not recognized. Variable list given as:")
                 print(varDict.keys())
                 return False, 0
 
