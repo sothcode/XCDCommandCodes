@@ -4,7 +4,7 @@ import serial
 from variableDictionaryXCD2 import varDict
 from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
 from variableDictionaryXCD2 import varStatusValues as STAT
-from quickReport import readback
+from quickReport import readback, reportXCD2noAxis
 import sys
 import struct
 
@@ -84,7 +84,14 @@ def writeXCD2( argv ):
         #    print("Formatting error: likely missing/extra variable or value to be assigned. Please check input.")
         #    return
 
-        command = [228, 165, 0, 213, 0, 0, 6, 6]
+        getAxis = reportXCD2noAxis(varDict['XAXIS'])
+
+        ax_int = int(getAxis)
+        ax_byte = ax_int.to_bytes(1,byteorder='little',signed=True)
+        ax_comm = [int(ax_byte[0])]
+
+
+        command = [228, 165, 0, 213, 0, 0, 6, 134]
         count = 0
         for i in range(0, len(var_names)):
             var = var_names[i]
@@ -112,6 +119,12 @@ def writeXCD2( argv ):
                 val_command = [int(r4[0]), int(r4[1]), int(r4[2]), int(r4[3])]
                 command += val_command
                 count += 4
+
+            command += ax_comm
+            count += 1
+            
+
+            
 
     else:
         print("No arguments given. writeXCD2 parameters are: \n \
