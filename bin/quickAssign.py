@@ -84,9 +84,11 @@ def writeXCD2( argv ):
         #    print("Formatting error: likely missing/extra variable or value to be assigned. Please check input.")
         #    return
 
-        getAxis = reportXCD2noAxis(['XAXIS'])[0]
+        #getAxis = reportXCD2noAxis(['XAXIS'])[0]
 
-        ax_int = int(getAxis)
+        ax_int = getAxis()#int(getAxis)
+        print("writeXCD2 axis=",ax_int)
+
         ax_byte = ax_int.to_bytes(1,byteorder='little',signed=True)
         ax_comm = [int(ax_byte[0])]
 

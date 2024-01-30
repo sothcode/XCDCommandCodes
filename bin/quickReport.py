@@ -72,6 +72,9 @@ def _readline(ser):
     return vals
 
 
+def getAxis():
+    return int(reportXCD2noAxis(['XAXIS'])[0])
+
 def reportXCD2( argv ):
     if argv:
         if len(argv) > 10:
@@ -82,10 +85,10 @@ def reportXCD2( argv ):
         if debug:
             print(var_names)
         
-        getAxis = reportXCD2noAxis(['XAXIS'])[0]
-        print("axis=",getAxis)
+        #getAxis = reportXCD2noAxis(['XAXIS'])[0]
 
-        ax_int = int(getAxis)
+         ax_int = getAxis()#int(getAxis)
+        print("reportXCD2 axis=",ax_int)
         ax_byte = ax_int.to_bytes(1,byteorder='little',signed=True)
         ax_comm = [int(ax_byte[0])]
         
