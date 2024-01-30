@@ -38,7 +38,12 @@ def setAxis( axisStr ):
     readBool = readFromFile( axisStr + '.txt' )
 
     if readBool:
-        print("Axis set successfully.")
+        print("Axis set successfully.")        
+        writeXCD2([ADDR['COMMAND'], 0])
+        writeXCD2([ADDR['STATUS'], 0])
+        new_status=readback(ADDR['STATUS'])
+        print("DONE.  Status was",status, ",is now",new_status)
+
 
     return
 
