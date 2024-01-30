@@ -4,7 +4,7 @@ import serial
 from variableDictionaryXCD2 import varDict
 from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
 from variableDictionaryXCD2 import varStatusValues as STAT
-from quickReport import readback, reportXCD2noAxis
+from quickReport import getAxis, readback, reportXCD2noAxis
 import sys
 import struct
 
