@@ -73,7 +73,8 @@ def _readline(ser):
 
 
 def getAxis():
-    return int(reportXCD2noAxis(['XAXIS'])[0])
+    stat,ret =reportXCD2noAxis(['XAXIS'])
+    return int(ret[0])
 
 def reportXCD2( argv ):
     if argv:
