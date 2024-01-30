@@ -83,7 +83,7 @@ def reportXCD2( argv ):
             print(var_names)
         
         getAxis = reportXCD2noAxis(['XAXIS'])[0]
-        printf("axis=",getAxis)
+        print("axis=",getAxis)
 
         ax_int = int(getAxis)
         ax_byte = ax_int.to_bytes(1,byteorder='little',signed=True)
