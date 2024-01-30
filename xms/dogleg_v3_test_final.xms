@@ -45,8 +45,9 @@ config 900, 0x00051001
 // time for system start up sequence
 delay 2000
 
-// initialize commandBYTE, statusBYTE to IDLE
+// initialize commandBYTE, motorID, and statusBYTE to IDLE
 V0 = 0
+V1 = 0
 V19 = 98
 
 // set encoder latch POS flag to 0
@@ -63,7 +64,7 @@ while 1
       V19 = 9
 
       // store current position
-      V1 = FPOS
+      V18 = FPOS
 
       // check if out of bounds
       if abs(V11) >= 3
@@ -104,7 +105,7 @@ while 1
          V11 = V11 - V16
 
          // calculate distance between start and home
-         V9 = V1 - FPOS
+         V9 = V18 - FPOS
 
          // set statusBYTE SUCCESS
          V19 = 0
