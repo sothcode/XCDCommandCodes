@@ -43,7 +43,7 @@ def readFromFile( filename ):
 
     if not os.path.isfile(filename):
         print("Couldn't read from file. Variables not updated.")
-        return
+        return False
 
     with open(filename, "r") as file:
         for line in file:
@@ -51,7 +51,7 @@ def readFromFile( filename ):
 
             writeXCD2([varName, varVal])
         
-    return
+    return True
 
 
 def changeAxis( targetIDstr ):
@@ -62,11 +62,15 @@ def changeAxis( targetIDstr ):
     status=readback(ADDR['STATUS'])
 
     if status!=0:
-        print("NOT EXECUTED. Controller status is not 0.")
-        sys.exit()
+        if status == 98.0:
+            print("Axis must be set by calling setAxis.py")
+
+        else:
+            print("NOT EXECUTED. Controller status is not 0.")
+            sys.exit()
 
     if targetIDstr not in AXID.keys():
-        print("Variable name - " + targetIDstr + " -  not recognized. Variable list given as:")
+        print("Axis ID - " + targetIDstr + " -  not recognized. Axis ID list given as:")
         print(AXID.keys())
         sys.exit()
     
@@ -86,9 +90,10 @@ def changeAxis( targetIDstr ):
     writeToFile( currentIDstr + '.txt' )
 
     # find file corresponding to target ID and load from it
-    readFromFile( targetIDstr + '.txt' )
+    readBool = readFromFile( targetIDstr + '.txt' )
 
-    print("Axis change success!!")
+    if readBool:
+        print("Axis change success!!")
 
     return
 
@@ -99,7 +104,8 @@ if __name__ == "__main__":
     # check args
     # if wrong arguments, exit with explanation
     if len(sys.argv) != 2: # sys.argv has arg 1 as the command itself
-        print("NOT EXECUTED. Inserted argument when not needed.")
+        print("NOT EXECUTED. Wrong number of arguments.  Correct usage is:")
+        print("   ./changeAxisDogleg.py L#_DL#_A#")
         sys.exit()
 
     changeAxis(sys.argv[1])

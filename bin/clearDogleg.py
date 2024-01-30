@@ -25,6 +25,11 @@ if len(sys.argv) != 1: #note that sys.argv has arg 1 as the command itself
 if debug:
     print("clear:  Check status:")
 status=readback(ADDR['STATUS'])
+
+if status == 98:
+    print("NOT EXECUTED.  Controller has boot status 98.  setAxis.py must be run.")
+    sys.exit()
+
 writeXCD2([ADDR['STATUS'], 0])
 writeXCD2([ADDR['COMMAND'], 0])
 new_status=readback(ADDR['STATUS'])
