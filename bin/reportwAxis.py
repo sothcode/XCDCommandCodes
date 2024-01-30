@@ -112,7 +112,7 @@ def reportXCD2( argv ):
             else:
                 number = int(val)
                 b1 = number.to_bytes(1,byteorder='little',signed=True)
-                val_command = [str(b1[0])]
+                val_command = [int(b1[0])]
                 command += val_command
                 count += 1
 
