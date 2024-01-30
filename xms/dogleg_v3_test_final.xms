@@ -17,6 +17,13 @@
 //     - V19 = 1 FAIL by out of bounds
 //     - V19 = 8 WAITING - command issued by RPi but waiting for xms
 //     - V19 = 9 BUSY
+XAXIS = 0
+ENR = 6.103515625e-5
+MTL = 4000000
+DZMIN = ENR
+DZMAX = 4*ENR
+KP = 10
+VEL = 1
 
 XAXIS = 1
 ENR = 6.103515625e-5
