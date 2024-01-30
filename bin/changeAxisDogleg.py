@@ -99,13 +99,15 @@ def changeAxis( targetIDstr ):
 
 
 if __name__ == "__main__":
-    debug=True
-
     # check args
     # if wrong arguments, exit with explanation
-    if len(sys.argv) != 2: # sys.argv has arg 1 as the command itself
+    if len(sys.argv) == 2: # sys.argv has arg 1 as the command itself
+        changeAxis(sys.argv[1])
+    elif len(sys.argv)==3 and sys.argv[2]==1:
+        debug=True
+        changeAxis(sys.argv[1])
+    else:
         print("NOT EXECUTED. Wrong number of arguments.  Correct usage is:")
         print("   ./changeAxisDogleg.py L#_DL#_A#")
+        print("or turn on debug with   ./changeAxisDogleg.py L#_DL#_A# 1")
         sys.exit()
-
-    changeAxis(sys.argv[1])
