@@ -8,9 +8,8 @@ from variableDictionaryXCD2 import varUniqueID as AXID
 
 
 def whereLaser():
-    currentID = readback(ADDR['FPOS'])
-    IDlookup = {v:k for k, v in AXID.items()}
-    print(IDlookup[currentID])
+    currentFPOS = readback(ADDR['FPOS'])
+    print(currentFPOS)
 
 
 if __name__ == "__main__":
