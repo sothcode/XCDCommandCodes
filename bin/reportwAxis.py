@@ -162,4 +162,4 @@ def reportXCDwAxis( argv ):
 
 if __name__ == "__main__":
     debug=True
-    reportXCD2(sys.argv[1:])
+    reportXCDwAxis(sys.argv[1:])
