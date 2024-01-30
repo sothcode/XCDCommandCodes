@@ -5,7 +5,6 @@ import os
 from quickReport import readback
 from quickAssign import writeXCD2
 from changeAxisDogleg import readFromFile, writeToFile
-import clearDogleg as clearDogleg
 from variableDictionaryXCD2 import varDict
 from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
 from variableDictionaryXCD2 import varStatusValues as STAT
