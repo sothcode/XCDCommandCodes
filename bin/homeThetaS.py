@@ -42,8 +42,7 @@ if debug:
 status=STAT['BUSY']
 while status==STAT['BUSY']:
     status=readback(ADDR['STATUS'])
-    turns=readback(ADDR['TURNS'])
-    print("position:",readback(ADDR['FPOS'])," status:",status, "turns:",turns)
+    print("position:",readback(ADDR['FPOS'])," status:",status)
     if debug:
         print ("goto: loop: check status:")
     status=readback(ADDR['STATUS'])
@@ -55,7 +54,7 @@ while status==STAT['BUSY']:
 if debug:
      print ("goto: finishing up.  check status and readback:")
 if status==STAT['READY']:
-    print("SUCCESS. homeDogleg complete.  status:",readback(ADDR['STATUS'])," position:",readback(ADDR['FPOS']), "nTurns:",readback(ADDR['TURNS']));
+    print("SUCCESS. homeDogleg complete.  status:",readback(ADDR['STATUS'])," position:",readback(ADDR['FPOS']));
 else:
-    print("FAIL. homeDogleg failed.  status:",readback(ADDR['STATUS'])," position:",readback(ADDR['FPOS']), "nTurns:",readback(ADDR['TURNS']));
+    print("FAIL. homeDogleg failed.  status:",readback(ADDR['STATUS'])," position:",readback(ADDR['FPOS']));
 

@@ -26,7 +26,7 @@ elif len(sys.argv)==3:
 else:
     print("NOT EXECUTED. Wrong number of arguments.  Correct usage is:")
     print("     ./gotoThetaL.py [position]")
-    print("  or ./gotoThetaL.py L#_DL#_A# [position]")
+    print("  or ./gotoThetaL.py L#_TH_L [position]")
     sys.exit()
 #if wrong arguments, exit with explanation
 
@@ -61,8 +61,7 @@ if debug:
 status=STAT['BUSY']
 while status==STAT['BUSY']:
     status=readback(ADDR['STATUS'])
-    turns=readback(ADDR['TURNS'])
-    print("position:",readback(ADDR['FPOS'])," status:",status, "turns:",turns)
+    print("position:",readback(ADDR['FPOS'])," status:",status)
     if debug:
         print ("goto: loop: check status:")
     status=readback(ADDR['STATUS'])

@@ -26,7 +26,7 @@ elif len(sys.argv)==3:
 else:
     print("NOT EXECUTED. Wrong number of arguments.  Correct usage is:")
     print("     ./gotoThetaS.py [position]")
-    print("  or ./gotoThetaS.py L#_DL#_A# [position]")
+    print("  or ./gotoThetaS.py L#_TH_S [position]")
     sys.exit()
 #if wrong arguments, exit with explanation
 
@@ -61,8 +61,7 @@ if debug:
 status=STAT['BUSY']
 while status==STAT['BUSY']:
     status=readback(ADDR['STATUS'])
-    turns=readback(ADDR['TURNS'])
-    print("position:",readback(ADDR['FPOS'])," status:",status, "turns:",turns)
+    print("position:",readback(ADDR['FPOS'])," status:",status)
     if debug:
         print ("goto: loop: check status:")
     status=readback(ADDR['STATUS'])
@@ -74,7 +73,7 @@ while status==STAT['BUSY']:
 if debug:
      print ("goto: finishing up.  check status and readback:")
 if status==STAT['READY']:
-    print("SUCCESS. gotoThetaS complete.  status:",readback(ADDR['STATUS'])," position:{:.4g}".format(readback(ADDR['FPOS'])), "nTurns:",readback(ADDR['TURNS']));
+    print("SUCCESS. gotoThetaS complete.  status:",readback(ADDR['STATUS'])," position:{:.4g}".format(readback(ADDR['FPOS'])));
 else:
-    print("FAIL. gotoThetaS failed.  status:",readback(ADDR['STATUS'])," position:{:.4g}".format(readback(ADDR['FPOS'])), "nTurns:",readback(ADDR['TURNS']));
+    print("FAIL. gotoThetaS failed.  status:",readback(ADDR['STATUS'])," position:{:.4g}".format(readback(ADDR['FPOS'])));
 
