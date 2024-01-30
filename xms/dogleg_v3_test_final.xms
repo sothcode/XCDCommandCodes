@@ -25,6 +25,9 @@ DZMAX = 4*ENR
 KP = 10
 VEL = 1
 
+// invert dogleg encoder feedback (bit 18)
+config 900, 0x00051001
+
 XAXIS = 0
 ENR = 6.103515625e-5
 MTL = 4000000
