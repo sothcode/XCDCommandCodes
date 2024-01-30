@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 import time
 import serial
-from reportwAxis import 
 from variableDictionaryXCD2 import varDict
 from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
 from variableDictionaryXCD2 import varStatusValues as STAT
@@ -79,19 +78,20 @@ def reportXCD2( argv ):
             print("Too many variables trying to be assigned.  Max 10 variables can be assigned at once.")
             return False, 0
 
-        var_names = argv[::2]
-        real_vals = argv[1::2]
+        var_names = argv
         if debug:
-            print(var_names, real_vals)
-        # if len(var_names) != len(real_vals):
-        #    print("Formatting error: likely missing/extra variable or value to be assigned. Please check input.")
-        #    return
+            print(var_names)
+        
+        getAxis = reportXCD2noAxis(varDict['XAXIS'])
+
+        ax_int = int(getAxis)
+        ax_byte = ax_int.to_bytes(1,byteorder='little',signed=True)
+        ax_comm = [int(ax_byte[0])]
         
         command = [228, 165, 0, 213, 0, 0, 6, 132]
         count = 0
         for i in range(0, len(var_names)):
             var = var_names[i]
-            val = real_vals[i]
 
 
             if var in varDict.keys():
@@ -105,17 +105,8 @@ def reportXCD2( argv ):
                 print(varDict.keys())
                 return False, 0
             
-            try:
-                float(val)
-            except ValueError:
-                print("Value to assign - " + val + " - must be a real number.")
-                return
-            else:
-                number = int(val)
-                b1 = number.to_bytes(1,byteorder='little',signed=True)
-                val_command = [int(b1[0])]
-                command += val_command
-                count += 1
+            command += ax_comm
+            count += 1
 
     else:
         print("No arguments given. reportXCD2 parameters are: \n \

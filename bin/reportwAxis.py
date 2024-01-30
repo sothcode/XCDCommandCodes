@@ -72,7 +72,7 @@ def _readline(ser):
     return vals
 
 
-def reportXCD2( argv ):
+def reportXCDwAxis( argv ):
     if argv:
         if len(argv) > 10:
             print("Too many variables trying to be assigned.  Max 10 variables can be assigned at once.")
