@@ -121,6 +121,9 @@ while 1
       // set statusBYTE BUSY
       V19 = 9
 
+      // debug FPOS
+      V12 = FPOS
+
       // calculate if destination is out of bounds
       V18 = V10 - FPOS
 
@@ -152,6 +155,9 @@ while 1
             V17 = V17 - 1
          end
 
+         // more debug of FPOS
+         V13 = FPOS
+
          if V11*V16 < 3
             move V10
             delay 1000
@@ -164,6 +170,9 @@ while 1
          end
          disable
       
+         // even more debug FPOS
+         V14 = FPOS
+
          // set statusBYTE SUCCESS
          V19 = 0
 
