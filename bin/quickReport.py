@@ -128,8 +128,10 @@ def reportXCD2noAxis( argv ):
 
     # the next portion of code is what establishes communication with the controller
     # and sends the bytestring command by serial comm
-    return sendline(port,command)
-
+    success,ret=sendline(port,command)
+    if success and debug:
+        print(ret)
+    return success, ret
 
 
 if __name__ == "__main__":
