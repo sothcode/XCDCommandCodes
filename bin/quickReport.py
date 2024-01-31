@@ -124,7 +124,7 @@ def reportXCD2noAxis( argv ):
     # add stop byte
     command += [218]
     if debug:
-        print(command)
+        print(command) 
 
     # the next portion of code is what establishes communication with the controller
     # and sends the bytestring command by serial comm
