@@ -15,8 +15,7 @@ import getpass
 def is_number(s):
     try:
         float(s)
-        # Check if the string has any non-digit characters (for cases like "A113.4")
-        return s.isdigit() or any(c.isalpha() for c in s)
+        return True
     except ValueError:
         return False
 
@@ -25,7 +24,22 @@ def is_iterable(obj):
         iter(obj)
         return True
     except TypeError:
-        return False
+        return False    
+
+def convert_to_numbers(arr):
+    #converts an array of strings to an array of mixed strings and floats
+    result = []
+
+    for s in arr:
+        # Try to convert the string to a number
+        try:
+            number = float(s)
+            result.append(number)
+        except ValueError:
+            # If conversion fails, keep the original string
+            result.append(s)
+
+    return result
 
 def loadDict(fileName='junk_db.kfdb'):
     #loads and returns the dictionary
@@ -34,7 +48,7 @@ def loadDict(fileName='junk_db.kfdb'):
         for line in f:
             lineContents=line.split()
             (k, v) = lineContents[0],lineContents[1:]
-            varDict[(k)] = v
+            varDict[(k)] = convert_to_numbers(v) #element by element, convert the values in v to numbers if possible.  leave them as strings otherwise
     return varDict
     
 def writeVar(fileName='junk_db.kfdb', varName = None, varValue = None, writeNew = '0'):
@@ -133,8 +147,9 @@ def readVar(fileName='junk_db.kfdb', varName = None):
     if varName in varDict.keys():
         print(varDict.get(varName))
         value=varDict.get(varName)
-        if value.lenis_iterable(value)
-        return True, varDict.get(varName)         # Returns varValue, which may be an array
+        if len(value)==1:
+            return True, value[0] #Returns the first element of the array directly, if there is only one element
+        return True,value        # Returns varValue, which is an array
         
     else:
         print("Variable name not found")
