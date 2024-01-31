@@ -7,17 +7,17 @@ for ser in /dev/ttyUSB*; do
         # Run the command
 	echo "$ser" > XCD_current_port
 	echo "AXIS 0:"
-        ./quickAssign FPOS 0
-	./quickAssign XAXIS 0
-	./gotoDogleg 2.9
-	./gotoDogleg -2.9
-	./gotoDogleg 0
+        ./quickAssign.py FPOS 0
+	./quickAssign.py XAXIS 0
+	./gotoDogleg.py 2.9
+	./gotoDogleg.py -2.9
+	./gotoDogleg.py 0
 	echo "AXIS 1:"
-       ./quickAssign FPOS 0
-	./quickAssign XAXIS 1
-	./gotoDogleg 2.9
-	./gotoDogleg -2.9
-	./gotoDogleg 0
+        ./quickAssign.py FPOS 0
+       ./quickAssign.py XAXIS 1
+       ./gotoDogleg.py 2.9
+       ./gotoDogleg.py -2.9
+       ./gotoDogleg.py 0
     else
         echo "port not found by shell.  Huh?"
     fi
