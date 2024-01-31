@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 import time
-from xcdSerial import sendline
+from xcdSerial import sendline, getCurrentPort
 from variableDictionaryXCD2 import varDict
 from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
 from variableDictionaryXCD2 import varStatusValues as STAT
@@ -82,7 +82,7 @@ def reportXCD2( argv ):
     # the next portion of code is what establishes communication with the controller
     # and sends the bytestring command by serial comm
     # and returns a pair of [succeeded,readbackline]
-    success,ret=sendline(port,command)
+    success,ret=sendline(getCurrentPort(),command)
     if success and debug:
         print(ret)
     return success, ret
@@ -90,7 +90,7 @@ def reportXCD2( argv ):
 
 
 def reportXCD2noAxis( argv ):
-    return reportXCD2noAxisPort(port,argv)
+    return reportXCD2noAxisPort(getCurrentPort(),argv)
 
 def reportXCD2noAxisPort(target_port, argv ):
     if argv:

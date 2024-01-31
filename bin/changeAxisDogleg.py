@@ -14,6 +14,9 @@ from variableDictionaryXCD2 import varUniqueID as AXID
 #tuning settings
 sleeptime=0.5 #in seconds
 debug=False
+portsDb="xcd2_ports.kfdb"
+PORTFILE="XCD_current_port"
+
 
 
 def writeToFile( filename ):
@@ -73,13 +76,34 @@ def changeAxis( targetIDstr ):
         print("Axis ID - " + targetIDstr + " -  not recognized. Axis ID list given as:")
         print(AXID.keys())
         sys.exit()
-    
-    currentID = readback(ADDR['ID'])
 
+
+    ret=kfDatabase.readVar(portsDb,targetIDstr)
+    #exit if we don't have a port.
+    if ret[0]==False:
+        print("Axis ID '%s' not found in database '%s'.  Run updatePorts.py." % (targetIDstr, portsDb))
+        sys.exit()
+    targetPort=ret[1]
+
+    #check which serial port we need to use:    
+    currentPort=None
+    if not (sys.path.exists(PORTFILE)):
+        print("PORTFILE %s does not exist.  PANIC" % portfile)
+        sys.exit()
+        
+    with open(PORTFILE, 'r') as file:
+       currentPort = file.readline()
+    with open(PORTFILE, 'w') as file:            # Sets the active port
+        file.write(targetPort)
+
+
+
+        
+    currentID = readback(ADDR['ID'])
     targetID = AXID[targetIDstr]
 
-    if currentID == targetID:
-        print("Target axis is same as current axis.")
+    if (currentID == targetID) and (currentPort==targetPort):
+        print("changeAxis: Port and Laser ID are already correct.")
         return
 
     # create lookup table of axis variables
@@ -93,7 +117,9 @@ def changeAxis( targetIDstr ):
     readBool = readFromFile( targetIDstr + '.txt' )
 
     if readBool:
-        print("Axis change success!!")
+        print("changeAxis: Axis changed to '%s' on port '%s'"% (targetIdstr, targetPort))
+    else:
+        print("FAILURE: changeAxis: Axis could not be changed to '%s' on port '%s'"% (targetIdstr, targetPort))
 
     return
 

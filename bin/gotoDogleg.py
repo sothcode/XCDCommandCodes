@@ -8,10 +8,16 @@ from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
 from variableDictionaryXCD2 import varStatusValues as STAT
 from variableDictionaryXCD2 import varDoglegCommands as COMM
 from changeAxisDogleg import changeAxis
-#import random #for testing
+
+#to load tty data from the db so we know which tty we want:
+sys.path.append('kfDatabase')
+from kfDatabase import *
+
+
+
 
 #tuning settings
-sleeptime=0.5 #in seconds
+sleeptime=0.6 #in seconds
 debug=False
 
 
@@ -19,8 +25,11 @@ debug=False
 if len(sys.argv)==2:
     #keep current leg, assume arg is destination.
     inputval=sys.argv[1]
+    #printf("NOT EXECUTED. Must specify an axis and a destination, now.")
+    #sys.exit()
 elif len(sys.argv)==3:
     #assume first arg is leg, assume second arg is destination.
+    #get its port from the db
     changeAxis(sys.argv[1])
     inputval=sys.argv[2]
 else:
@@ -30,6 +39,8 @@ else:
     sys.exit()
 #if wrong arguments, exit with explanation
 
+
+    
 #{later:
 #get current rotations
 #calculate destination nRotations

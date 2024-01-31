@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 import time
-from xcdSerial import sendline
+from xcdSerial import sendline, getCurrentPort
 from variableDictionaryXCD2 import varDict
 from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
 from variableDictionaryXCD2 import varStatusValues as STAT
@@ -10,7 +10,6 @@ import struct
 
 debug=False
 sleeptime=0.1
-port='/dev/ttyUSB0'
 
 
 def sendcommand(com,arg):
@@ -125,7 +124,7 @@ def writeXCD2( argv ):
     # the next portion of code is what establishes communication with the controller
     # and sends the bytestring command by serial comm
     
-    success,ret=sendline(port,command)
+    success,ret=sendline(getCurrentPort(),command)
     if success and debug:
         print(ret)
     return success, ret

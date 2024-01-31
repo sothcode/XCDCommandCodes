@@ -5,6 +5,13 @@ import sys
 import struct
 
 debug=False
+PORTFILE="XCD_current_port"
+
+def getCurrentPort():
+    currentPort="NO_PORT"
+    with open(PORTFILE, 'r') as file:
+        currentPort = file.readline()
+    return currentPort
 
 def sendline(port, command):
     # the next portion of code is what establishes communication with the controller
