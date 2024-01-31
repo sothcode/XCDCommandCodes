@@ -5,3 +5,27 @@ one 3
 one 3
 one 4
 three 9.99
+one 8
+ones 9
+logTest 69 <built-in method now of type object at 0x00007FFA016CB530>
+logTest2 70 2024-01-31 10:44:18.428161
+logTest 79
+logTest 78
+logTest 70
+logTest 71 2024-01-31 10:52:47.732792 
+logTest 72 2024-01-31 10:53:52.500398 kfinnelli 
+logTest3 99.9473 2024-01-31 10:55:08.764375 kfinnelli 
+logTest3 9.9473 2024-01-31 10:56:26.812311 kfinnelli 
+existing variable 555 2024-01-31 11:15:09.534227 kfinnelli 
+one 12
+newVariable 77
+existingVariable 66
+99 99 2024-01-31 11:21:37.718962 kfinnelli 
+99 98 2024-01-31 11:21:53.196866 kfinnelli 
+one 98 2024-01-31 11:34:10.286233 kfinnelli 
+one 97 2024-01-31 11:34:17.542017 kfinnelli 
+one 96 2024-01-31 11:34:50.807181 kfinnelli 
+two -99 2024-01-31 11:40:16.635231 kfinnelli 
+one 12 2024-01-31 11:44:32.232356 kfinnelli 
+newVariable 77 2024-01-31 11:44:32.235445 kfinnelli 
+existingVariable 66 2024-01-31 11:44:32.237445 kfinnelli 
