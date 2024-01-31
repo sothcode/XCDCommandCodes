@@ -5,7 +5,7 @@ import glob
 from variableDictionaryXCD2 import varUniqueID as AXID
 from quickReport import reportXCD2noAxisPort
 
-filename = './xcd2_reports.kfdb'
+filename = './xcd2_ports.kfdb'
 
 
 def updatePorts():
@@ -23,6 +23,8 @@ def updatePorts():
 
             # now get
             UART0, UART1 = getUART01_Address(port)
+
+            
         
             # Logs the change to the log for a change
             file.write('%s %s\n' % ('UART0', UART0))
