@@ -117,9 +117,9 @@ def changeAxis( targetIDstr ):
     readBool = readFromFile( targetIDstr + '.txt' )
 
     if readBool:
-        print("changeAxis: Axis changed to '%s' on port '%s'"% (targetIdstr, targetPort))
+        print("changeAxis: Axis changed to '%s' on port '%s'"% (targetIDstr, targetPort))
     else:
-        print("FAILURE: changeAxis: Axis could not be changed to '%s' on port '%s'"% (targetIdstr, targetPort))
+        print("FAILURE: changeAxis: Axis could not be changed to '%s' on port '%s'"% (targetIDstr, targetPort))
 
     return
 
