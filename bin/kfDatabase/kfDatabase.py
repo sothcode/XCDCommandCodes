@@ -12,6 +12,14 @@ import getpass
 
 ########################
 
+def is_number(s):
+    try:
+        float(s)
+        # Check if the string has any non-digit characters (for cases like "A113.4")
+        return s.isdigit() or any(c.isalpha() for c in s)
+    except ValueError:
+        return False
+
 def is_iterable(obj):
     try:
         iter(obj)
@@ -124,6 +132,8 @@ def readVar(fileName='junk_db.kfdb', varName = None):
     #Checks if varName is a key
     if varName in varDict.keys():
         print(varDict.get(varName))
+        value=varDict.get(varName)
+        if value.lenis_iterable(value)
         return True, varDict.get(varName)         # Returns varValue, which may be an array
         
     else:
