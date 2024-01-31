@@ -27,41 +27,55 @@ from kfDatabase import writeVar , readVar , listVar
 #-------------------
 
 print("\n####To get a list of the current VariableDictionary: listVar(\"dbName\")")
-listVar("VariableDictionary.txt")
+ret=listVar("VariableDictionary.txt")
+print("returns",ret)
 #Prints a list of the values and returns True
 
 #-------------------
 
 print("\n####To read a value from VariableDictionary: readVar(\"dbName\",\"variableName\")")
-readVar("VariableDictionary.txt","one")
+ret=readVar("VariableDictionary.txt","one")
+print("returns",ret)
+
 #Prints the value of the variable given, and returns True and the value 
 
 print("\n####If the variable name is not in the list, gives an error message and returns False")
-readVar("VariableDictionary.txt","wrongName")
+ret=readVar("VariableDictionary.txt","wrongName")
+print("returns",ret)
 
 print("\n####If no arguments are given, argument info is printed and returns False")
-readVar("VariableDictionary.txt")
+ret=readVar("VariableDictionary.txt")
+print("returns",ret)
 
 #--------------------
 
 print("\n####To write a value to a variable: writeVar(\"dbName\",\"variableName\", variable value)")
-writeVar("VariableDictionary.txt","one", 12)
+ret=writeVar("VariableDictionary.txt","one", 12)
+print("returns",ret)
+
 #Changes the value of variable "one" to 12. Reports the change, changes the value in VariableDictionary, logs the change in log.txt, and returns True
 
 print("\n####If only a variable name is given and not a value, error message is printed and returns False")
-writeVar("VariableDictionary.txt","one")
+ret=writeVar("VariableDictionary.txt","one")
+print("returns",ret)
 
 print("\n####If the variable given is not recognized, error message is printed and returns False")
-writeVar("VariableDictionary.txt","wrongName", 99)
+ret=writeVar("VariableDictionary.txt","wrongName", 99)
+print("returns",ret)
 
 print("\n####If you give an array as the value name, that works fine too.")
-writeVar("VariableDictionary.txt","array", [99,45])
+ret=writeVar("VariableDictionary.txt","array", [99,45])
+print("returns",ret)
 
 
 print("\n####To add a new variable name and value to the dictionary, add \"new\" as a 3rd argument and returns True")
-writeVar("VariableDictionary.txt","newVariable", 77, "new")
+ret=writeVar("VariableDictionary.txt","newVariable", 77, "new")
+print("returns",ret)
+
 print("\n####If \"new\" is added but the variable name is already in the list, a new variable will NOT be added; the existing one will be updated")
-writeVar("VariableDictionary.txt","existingVariable", 66, "new")
+ret=writeVar("VariableDictionary.txt","existingVariable", 66, "new")
+print("returns",ret)
 
 print("\n####If no arguments given, argument info is printed and returns False")
-writeVar()
+ret=writeVar()
+print("returns",ret)

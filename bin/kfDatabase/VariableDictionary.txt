@@ -1,4 +1,4 @@
-one 12
-newVariable 77
-existingVariable 66
-array 99 45
+one 12.0
+newVariable 77.0
+existingVariable 66.0
+array 99.0 45.0
