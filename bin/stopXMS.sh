@@ -1,3 +1,6 @@
 #! /bin/bash
 #stty -F /dev/ttyUSB0 115200
-echo -e '\xE4\xA5\x00\xD5\x06\x03\x01\x0F\0xDA' > /dev/ttyUSB0
+for controller in `ls /dev/ttyUSB*`; do
+    echo starting $controller
+    echo -e '\xE4\xA5\x00\xD5\x06\x03\x01\x0F\0xDA' > $controller
+done
