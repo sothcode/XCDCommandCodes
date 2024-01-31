@@ -32,7 +32,8 @@ def writeVar(fileName='junk_db.kfdb', varName = None, varValue = None, writeNew 
     varDict = {}
     with open(fileName) as fOld:
         for line in fOld:
-            (k, v) = line.split()
+            lineContents=line.split()
+            (k, v) = lineContents[0],lineContents[1:]
             varDict[(k)] = v
 
     datetimeNow = str(datetime.datetime.now())
@@ -70,7 +71,10 @@ def writeVar(fileName='junk_db.kfdb', varName = None, varValue = None, writeNew 
     #overwrite the original db with the new list
     with open(fileName, 'w') as fileNew:            # Writes over the original with the new values
         for key, value in varDict.items():  
-            fileNew.write('%s %s\n' % (key, value))
+            fileNew.write("%s" % (key))
+            for item in value:
+                fileNew.write(" %s" % (value))
+            fileNew.write("\n")
                 
     return True
             

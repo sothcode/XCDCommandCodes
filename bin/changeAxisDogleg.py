@@ -11,6 +11,12 @@ from variableDictionaryXCD2 import varDoglegCommands as COMM
 from variableDictionaryXCD2 import varUniqueID as AXID
 #import random #for testing
 
+
+#to load tty data from the db so we know which tty we want:
+sys.path.append('kfDatabase')
+from kfDatabase import *
+
+
 #tuning settings
 sleeptime=0.5 #in seconds
 debug=False
