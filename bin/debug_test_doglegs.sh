@@ -4,7 +4,7 @@
 for ser in /dev/ttyUSB0; do
     # Check if the file exists
     if [ -e "$ser" ]; then
-        # Run the command
+	echo "testing controller on $ser ..."
 	echo "$ser" > XCD_current_port
 	echo "AXIS 0:"
 	./quickAssign.py XAXIS 0
