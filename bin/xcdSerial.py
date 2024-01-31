@@ -3,6 +3,7 @@ import serial
 import sys
 import struct
 
+debug=False
 
 def sendline(port, command):
     # the next portion of code is what establishes communication with the controller
