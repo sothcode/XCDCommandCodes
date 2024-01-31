@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Iterate over all serial controllers we find matching /dev/ttyUSB*
-for ser in /dev/ttyUSB*; do
+for ser in /dev/ttyUSB0; do
     # Check if the file exists
     if [ -e "$ser" ]; then
         # Run the command
