@@ -75,7 +75,7 @@ def writeVar(fileName='junk_db.kfdb', varName = None, varValue = None, writeNew 
     return True
             
 
-def readVar(varName = None):
+def readVar(fileName='junk_db.kfdb', varName = None):
     if varName is None:
         print(" \
      No arguments given. readVar will find the value for a given variable. readVar parameters are: \n \
@@ -111,7 +111,7 @@ def readVar(varName = None):
         return False 
         
         
-def listVar():
+def listVar(fileName='junk_db.kfdb'):
         
     #print("Current Working Directory " , os.getcwd())               # Checks current working directory and moves to the correct one
         

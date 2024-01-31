@@ -1,9 +1,0 @@
-one 12
-two -99
-three 9.99
-ones 9
-logTest 72
-logTest2 70
-logTest3 9.9473
-existingVariable 66
-99 98
