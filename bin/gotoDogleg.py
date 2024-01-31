@@ -9,6 +9,7 @@ from variableDictionaryXCD2 import varStatusValues as STAT
 from variableDictionaryXCD2 import varDoglegCommands as COMM
 from changeAxisDogleg import changeAxis
 
+
 #to load tty data from the db so we know which tty we want:
 sys.path.append('kfDatabase')
 from kfDatabase import *
