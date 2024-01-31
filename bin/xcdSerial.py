@@ -39,7 +39,7 @@ def sendline(port, command):
 
     except serial.serialutil.SerialException:
         print("Serial Exception- check to see that usb is properly connected, or motor is powered.")
-        print("Port = %s" % port)
+        print("Port = '%s'" % port)
         return False, 0
 
     return False
