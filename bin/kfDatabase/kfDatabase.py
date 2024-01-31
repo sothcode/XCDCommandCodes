@@ -54,7 +54,8 @@ def loadDict(fileName='junk_db.kfdb'):
     return varDict
     
 def writeVar(fileName='junk_db.kfdb', varName = None, varValue = None, writeNew = '0'):
-    
+
+    #stop if the varName of varValue are not filled in.
     if (varName is None) or (varValue is None):                 # Checks if any arguments were given. If not, gives argument info
         print("No arguments given. writeVar will assign the given variable and values to the VariableDictionary. writeVar parameters are: \n \
                 1) varName - Mandatory, specifies the variable name. String in quotes. \n \
@@ -77,16 +78,18 @@ def writeVar(fileName='junk_db.kfdb', varName = None, varValue = None, writeNew 
 
     datetimeNow = str(datetime.datetime.now())
     userName = str(getpass.getuser())
-    
-    # if varName in "list":             # Checks if list arg was given
-    #     print("Variable List:")
-    #     #print('%s %s\n' % (varDict, varDict[]))
-    #     print(varDict)                          # Prints the list of variables with the list argument. Could be nicer.
+
+    #massage the input variable (internally, our key value pairs are key,array_of_vals):
+    #make it an array if it isn't:
+    if not is_iterable(varValue):
+        varValue=[varValue]
+    #make the values in the array numbers if we can:
+    convert_to_numbers(varValue)
 
     #search for the variable in the db.  Try to create it if 'new', try to update it if not 'new'.  Fail otherwise.
-    if is_number(varValue):
-        varValue=float(varValue)
+
     if varName in varDict.keys():             # Checks if varName is a key
+        print("testcomparison:",varValue, varDict[varName])
         if writeNew=='new':
             print("Variable %s was declared as 'new', but it already exists.  Aborting. Existing value will not be changed." % varName)
             return False
