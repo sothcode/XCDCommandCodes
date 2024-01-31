@@ -7,14 +7,16 @@ for ser in /dev/ttyUSB*; do
         # Run the command
 	echo "$ser" > XCD_current_port
 	echo "AXIS 0:"
-        ./quickAssign.py FPOS 0
 	./quickAssign.py XAXIS 0
+        ./quickAssign.py FPOS 0
+	./quickAssign.py V11 0
 	./gotoDogleg.py 2.9
 	./gotoDogleg.py -2.9
 	./gotoDogleg.py 0
 	echo "AXIS 1:"
-        ./quickAssign.py FPOS 0
        ./quickAssign.py XAXIS 1
+        ./quickAssign.py FPOS 0
+	./quickAssign.py V11 0
        ./gotoDogleg.py 2.9
        ./gotoDogleg.py -2.9
        ./gotoDogleg.py 0
