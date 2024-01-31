@@ -103,4 +103,5 @@ def _decode( resp ):
 
 if __name__ == "__main__":
     debug=True
-    sendline(sys.argv[1],sys.argv[2:])
+    int_array = [int(x) for x in sys.argv[2:]]
+    sendline(sys.argv[1],int_array)
