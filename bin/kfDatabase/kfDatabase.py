@@ -11,6 +11,24 @@ import datetime
 import getpass
 
 ########################
+
+def is_iterable(obj):
+    try:
+        iter(obj)
+        return True
+    except TypeError:
+        return False
+
+def loadDict(fileName='junk_db.kfdb'):
+    #loads and returns the dictionary
+    varDict = {}
+    with open(fileName) as f:
+        for line in f:
+            lineContents=line.split()
+            (k, v) = lineContents[0],lineContents[1:]
+            varDict[(k)] = v
+    return varDict
+    
 def writeVar(fileName='junk_db.kfdb', varName = None, varValue = None, writeNew = '0'):
     
     if varName is None:                 # Checks if any arguments were given. If not, gives argument info
@@ -30,11 +48,8 @@ def writeVar(fileName='junk_db.kfdb', varName = None, varValue = None, writeNew 
         
     #Reads in the file as a dictionary
     varDict = {}
-    with open(fileName) as fOld:
-        for line in fOld:
-            lineContents=line.split()
-            (k, v) = lineContents[0],lineContents[1:]
-            varDict[(k)] = v
+    varDict=loadDict(fileName)
+ 
 
     datetimeNow = str(datetime.datetime.now())
     userName = str(getpass.getuser())
@@ -72,7 +87,10 @@ def writeVar(fileName='junk_db.kfdb', varName = None, varValue = None, writeNew 
     with open(fileName, 'w') as fileNew:            # Writes over the original with the new values
         for key, value in varDict.items():  
             fileNew.write("%s" % (key))
-            for item in value:
+            if is_iterable(value):
+                for item in value:
+                    fileNew.write(" %s" % (item))
+            else:
                 fileNew.write(" %s" % (value))
             fileNew.write("\n")
                 
@@ -100,15 +118,13 @@ def readVar(fileName='junk_db.kfdb', varName = None):
     
     #Reads in the file as a dictionary
     varDict = {}
-    with open(fileName) as fOld:
-        for line in fOld:
-            (k, v) = line.split()
-            varDict[(k)] = v
+    varDict=loadDict(fileName)
+
     #print(varDict)
     #Checks if varName is a key
     if varName in varDict.keys():
         print(varDict.get(varName))
-        return True, float(varDict.get(varName))         # Returns varValue as a float
+        return True, varDict.get(varName)         # Returns varValue, which may be an array
         
     else:
         print("Variable name not found")
@@ -129,11 +145,8 @@ def listVar(fileName='junk_db.kfdb'):
             
     #Reads in the file as a dictionary
     varDict = {}
-    with open(fileName) as fOld:
-        for line in fOld:
-            (k, v) = line.split()
-            varDict[(k)] = v
+    varDict=loadDict(fileName)
 
-        print("Variable List:")
-        print(varDict)  
+    print("Variable List:")
+    print(varDict)  
     return True
