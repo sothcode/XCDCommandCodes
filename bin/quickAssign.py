@@ -10,26 +10,7 @@ import struct
 
 debug=False
 sleeptime=0.1
-
-def _readline(ser):
-    # read and interpret the reply's "header" and name it in bytes (5 bytes)
-    e4 = ser.read(1) # Prefix - UART sync byte 1 (constant x\E4)
-    a5 = ser.read(1) # Prefix - UART sync byte 2 (constant x\A5)
-    a4 = ser.read(1) # Prefix - Destination Address (\x00 for XCD2 UART protocol)
-    d5 = ser.read(1) # Prefix - Start index
-    NN = ser.read(1) # Prefix - Packet length in bytes (includes start index, not sync bytes or address)
-    NN = int.from_bytes(NN, "big")
-
-    # read the requested number of bytes as stipulated in the header to read commands and arguments
-    line = bytearray([NN])
-    for i in range(0,NN-2):
-        c = ser.read(1)
-        if c:
-            line += c
-        else:
-            break
-        resp = e4 + a5 + a4 + d5 + bytes(line)
-    return resp
+port='/dev/ttyUSB0'
 
 
 def sendcommand(com,arg):
@@ -141,32 +122,13 @@ def writeXCD2( argv ):
     command += [218]
     if debug:
         print(command)
-
     # the next portion of code is what establishes communication with the controller
     # and sends the bytestring command by serial comm
-    ser = serial
-    try:
-        ser = serial.Serial(
-            port='/dev/ttyUSB0', # Set serial port
-            baudrate=115200,     # Set baud rate
-            parity=serial.PARITY_NONE,
-            bytesize=serial.EIGHTBITS
-        )
-        if (ser.isOpen()):
-            phrase = bytes(command)
-            ser.write(phrase)
-            #response = '{}'.format(_readline(ser))
-            response=_readline(ser)
-            ser.close()
-            if debug:
-                print(response)
-            return response
-        return "9999999"
-
-    except serial.serialutil.SerialException:
-        return "Serial Exception- check to see that usb is properly connected, or motor is powered."
-
-    return
+    
+    success,ret=sendline(port,command)
+    if success and debug:
+        print(ret)
+    return success, ret
 
 
 if __name__ == "__main__":

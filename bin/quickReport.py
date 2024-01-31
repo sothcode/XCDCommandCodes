@@ -82,7 +82,10 @@ def reportXCD2( argv ):
     # the next portion of code is what establishes communication with the controller
     # and sends the bytestring command by serial comm
     # and returns a pair of [succeeded,readbackline]
-    return sendline(port,command)
+    success,ret=sendline(port,command)
+    if success and debug:
+        print(ret)
+    return success, ret
 
 
 def reportXCD2noAxis( argv ):
