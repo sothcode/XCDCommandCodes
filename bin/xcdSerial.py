@@ -10,7 +10,7 @@ def sendline(port, command)
     ser = serial
     try:
         ser = serial.Serial(
-            #now drawn from input:  port='/dev/ttyUSB0', # Set serial port
+            port, #now drawn from input:  port='/dev/ttyUSB0', # Set serial port
             baudrate=115200,     # Set baud rate
             parity=serial.PARITY_NONE,
             bytesize=serial.EIGHTBITS
