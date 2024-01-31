@@ -4,6 +4,7 @@ import sys
 import os
 from quickAssign import writeXCD2
 from quickReport import readback, reportXCD2
+import kfDatabase
 from variableDictionaryXCD2 import varDict
 from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
 from variableDictionaryXCD2 import varStatusValues as STAT
@@ -12,9 +13,7 @@ from variableDictionaryXCD2 import varUniqueID as AXID
 #import random #for testing
 
 
-#to load tty data from the db so we know which tty we want:
-sys.path.append('kfDatabase')
-from kfDatabase import *
+#to load tty data from the db so we know which tty we want: 
 
 
 #tuning settings
@@ -78,37 +77,45 @@ def changeAxis( targetIDstr ):
             print("NOT EXECUTED. Controller status is not 0.")
             sys.exit()
 
+    # check if axis we want to change to is a valid axis, and if not exit
     if targetIDstr not in AXID.keys():
         print("Axis ID - " + targetIDstr + " -  not recognized. Axis ID list given as:")
         print(AXID.keys())
         sys.exit()
 
 
-    ret=kfDatabase.readVar(portsDb,targetIDstr)
-    #exit if we don't have a port.
-    if ret[0]==False:
+    
+    # now find port corresponding to new axis 
+    # first open port database file
+    ret = kfDatabase.readVar(portsDb, targetIDstr)
+
+    # exit if we don't have a port
+    if ret[0] == False:
         print("Axis ID '%s' not found in database '%s'.  Run updatePorts.py." % (targetIDstr, portsDb))
         sys.exit()
-    targetPort=ret[1]
 
-    #check which serial port we need to use:    
-    currentPort=None
+    # otherwise, assign new port to targetPort
+    targetPort = ret[1][0]
+
+    # check which serial port we were using - can be found in PORTFILE
+    # (this will change to object in class when we refactor)
+    oldPort = None
     if not (sys.path.exists(PORTFILE)):
-        print("PORTFILE %s does not exist.  PANIC" % portfile)
+        print("PORTFILE %s does not exist.  PANIC" % PORTFILE)
         sys.exit()
-        
+    
+    # if PORTFILE exists, load in old port and set active port
     with open(PORTFILE, 'r') as file:
-       currentPort = file.readline()
-    with open(PORTFILE, 'w') as file:            # Sets the active port
+        oldPort = file.readline()
+    with open(PORTFILE, 'w') as file:
         file.write(targetPort)
 
-
-
-        
+    
     currentID = readback(ADDR['ID'])
     targetID = AXID[targetIDstr]
 
-    if (currentID == targetID) and (currentPort==targetPort):
+
+    if (currentID == targetID) and (oldPort==targetPort):
         print("changeAxis: Port and Laser ID are already correct.")
         return
 
