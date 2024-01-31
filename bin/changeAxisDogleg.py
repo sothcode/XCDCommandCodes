@@ -4,19 +4,17 @@ import sys
 import os
 from quickAssign import writeXCD2
 from quickReport import readback, reportXCD2
-import kfDatabase
 from variableDictionaryXCD2 import varDict
 from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
 from variableDictionaryXCD2 import varStatusValues as STAT
 from variableDictionaryXCD2 import varDoglegCommands as COMM
 from variableDictionaryXCD2 import varUniqueID as AXID
-#import random #for testing
+
+# to load tty data from the db so we know which tty we want: 
+import kfDatabase
 
 
-#to load tty data from the db so we know which tty we want: 
-
-
-#tuning settings
+# tuning settings
 sleeptime=0.5 #in seconds
 debug=False
 portsDb="xcd2_ports.kfdb"
@@ -110,11 +108,11 @@ def changeAxis( targetIDstr ):
     with open(PORTFILE, 'w') as file:
         file.write(targetPort)
 
-    
+    # readback current axis and find target axis IDs
     currentID = readback(ADDR['ID'])
     targetID = AXID[targetIDstr]
 
-
+    # check if current axis and target axis are the same
     if (currentID == targetID) and (oldPort==targetPort):
         print("changeAxis: Port and Laser ID are already correct.")
         return

@@ -81,8 +81,10 @@ while 1
          // get pretty close (within quarter turn)
          enable
          while S_IND = 0 & abs(V11) < 3
-            move FPOS + V16*0.25
-            delay 500
+            V12 = FPOS + V16*0.25
+            move V12
+            while V16*(V12-FPOS) > 10*ENR
+            end
             move FPOS - V16*0.01
             delay 100
          end
