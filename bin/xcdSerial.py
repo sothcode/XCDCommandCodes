@@ -96,3 +96,10 @@ def _decode( resp ):
     for i in range(0,nFloats):
         decode[i]=struct.unpack_from('<f', resp, i*4+3)[0]
     return decode
+
+
+
+
+if __name__ == "__main__":
+    debug=True
+    sendline(sys.argv[1],sys.argv[2:])
