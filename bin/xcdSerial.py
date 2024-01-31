@@ -79,6 +79,10 @@ def _decode( resp ):
     nBytesExpected=packlen-3
     nBytes=len(resp)-3
 
+    if (nBytes==1):
+        #this means we are a single byte, so not a series of floats.
+        return resp[3]
+
     if (nBytesExpected!=nBytes):
         print("expected payload of ", nBytesExpected, " bytes but resp contains ", nBytes, " bytes.  Failing.")
         return 0
