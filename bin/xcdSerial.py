@@ -4,9 +4,10 @@ import sys
 import struct
 
 
-def sendline(port, command)
+def sendline(port, command):
     # the next portion of code is what establishes communication with the controller
     # and sends the bytestring command by serial comm
+    #print("opening",port," with command string ", command)
     ser = serial
     try:
         ser = serial.Serial(
