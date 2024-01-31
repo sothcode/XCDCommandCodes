@@ -24,6 +24,8 @@ def readback(arg):
 
 def getAxis():
     stat,ret =reportXCD2noAxis(['XAXIS'])
+    if not stat:
+        sys.exit()
     return int(ret[0])
 
 def reportXCD2( argv ):
