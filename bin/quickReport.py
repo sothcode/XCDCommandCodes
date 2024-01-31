@@ -8,8 +8,6 @@ import sys
 import struct
 
 debug=False
-port='/dev/ttyUSB0'
-
 
 def readback(arg):
     #returns the value using the controller variable naming scheme
