@@ -29,13 +29,13 @@ def writeVar(fileName="junk_db.kfdb", varName = None, varValue = None, new = '0'
         print("Current Working Directory " , os.getcwd())               # Checks current working directory and moves to the correct one
         
         #Checks current working directory
-        if os.path.exists(filePath):
-            os.chdir(filePath)
-        else:
-            print("Can't change the Current Working Directory")    
+        if not os.path.exists(fileName):
+            print("Can't load kfdb '",fileName,"'.  File does not exist.")
+            return False;
             
         #Reads in the file as a dictionary
         varDict = {}
+        
         with open(fileName) as fOld:
             for line in fOld:
                 (k, v) = line.split()
@@ -51,7 +51,7 @@ def writeVar(fileName="junk_db.kfdb", varName = None, varValue = None, new = '0'
             if varValue is None:                    # Checks that a variable value was given
                 print("No variable value given")
             else:
-                with open("log.txt", "a") as f:     # Logs the change to the log for a change
+                with open(f"{fileName}.log", "a") as f:     # Logs the change to the log for a change
                     f.write('%s %s\n' % (varName, varValue))
                 varDict[varName] = varValue         # Assigns the given varValue to the key varName
         else:                                       # If varName not in deictionary, checks for "new" command"
@@ -72,34 +72,32 @@ def writeVar(fileName="junk_db.kfdb", varName = None, varValue = None, new = '0'
                 fileNew.write('%s %s\n' % (key, value))
             
 
-def readVar(varName = None):
+def readVar(fileName, varName = None):
     if varName is None:
         print(" \
      No arguments given. readVar will find the value for a given variable. readVar parameters are: \n \
      1) varName - Mandatory, specifies the variable name. String. \n \
      ")
-    else:
-        print("Current Working Directory " , os.getcwd())               # Checks current working directory and moves to the correct one
-        
-        #Checks current working directory
-        if os.path.exists(filePath):
-            os.chdir(filePath)
-        else:
-            print("Can't change the Current Working Directory")    
+        return False
+
+    #Checks that file exists
+    if not os.path.exists(fileName):
+        print("Can't load kfdb '",fileName,"'.  File does not exist.")
+        return False;
             
-        #Reads in the file as a dictionary
-        varDict = {}
-        with open(fileName) as fOld:
-            for line in fOld:
-                (k, v) = line.split()
-                varDict[(k)] = v
-        print(varDict)
+    #Reads in the file as a dictionary
+    varDict = {}
+    with open(fileName) as fOld:
+    for line in fOld:
+        (k, v) = line.split()
+        varDict[(k)] = v
+    print(varDict)
         #Checks if varName is a key
-        if varName in varDict.keys():
-            print(varDict.get(varName))
-            return int(varDict.get(varName))            # Returns varValue as an integer
-        else:
-            print("Variable name not found")
+    if varName in varDict.keys():
+        print(varDict.get(varName))
+        return True, (varDict.get(varName)
+    else:
+        print("Variable name not found")
         
         
         
