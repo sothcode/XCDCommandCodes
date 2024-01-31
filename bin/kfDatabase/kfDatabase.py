@@ -13,6 +13,8 @@ import getpass
 ########################
 
 def is_number(s):
+    if is_iterable(s):
+        return False
     try:
         float(s)
         return True
@@ -52,8 +54,9 @@ def loadDict(fileName='junk_db.kfdb'):
     return varDict
     
 def writeVar(fileName='junk_db.kfdb', varName = None, varValue = None, writeNew = '0'):
-    
-    if varName is None:                 # Checks if any arguments were given. If not, gives argument info
+
+    #stop if the varName of varValue are not filled in.
+    if (varName is None) or (varValue is None):                 # Checks if any arguments were given. If not, gives argument info
         print("No arguments given. writeVar will assign the given variable and values to the VariableDictionary. writeVar parameters are: \n \
                 1) varName - Mandatory, specifies the variable name. String in quotes. \n \
                 2) varValue - Mandatory, specifies the variable value. \n \
@@ -75,25 +78,28 @@ def writeVar(fileName='junk_db.kfdb', varName = None, varValue = None, writeNew 
 
     datetimeNow = str(datetime.datetime.now())
     userName = str(getpass.getuser())
-    
-    # if varName in "list":             # Checks if list arg was given
-    #     print("Variable List:")
-    #     #print('%s %s\n' % (varDict, varDict[]))
-    #     print(varDict)                          # Prints the list of variables with the list argument. Could be nicer.
 
-    #search for the variable in the db.  Try to create it if 'new', try to update it if not 'new'.  Fail otherwise.  
+    #massage the input variable (internally, our key value pairs are key,array_of_vals):
+    #make it an array if it isn't:
+    if not is_iterable(varValue):
+        varValue=[varValue]
+    #make the values in the array numbers if we can:
+    convert_to_numbers(varValue)
+
+    #search for the variable in the db.  Try to create it if 'new', try to update it if not 'new'.  Fail otherwise.
+
     if varName in varDict.keys():             # Checks if varName is a key
-        if varValue is None:                    # Checks that a variable value was given
-            print("No variable value given. To see a current list of variables and their values, use listVar()")
+        print("testcomparison:",varValue, varDict[varName])
+        if writeNew=='new':
+            print("Variable %s was declared as 'new', but it already exists.  Aborting. Existing value will not be changed." % varName)
             return False
-        else:
-            if writeNew=='new':
-                print("Variable %s was declared as 'new', but it already exists.  Aborting. Existing value will not be changed." % varName)
-                return False
-            with open(logName, "a") as f:     # Logs the change to the log for a change
-                f.write('%s %s %s %s \n' % (varName, varValue, datetimeNow, userName ))
-            varDict[varName] = varValue         # Assigns the given varValue to the key varName
-            print("Variable " +str(varName) + " changed to = " + str(varValue) + " at " + datetimeNow + " by " + userName)            
+        if (varValue==varDict[varName]):
+            print("Variable " +str(varName) + " requested to be changed to = " + str(varValue) + " but is already that value.  Nothing changes.  No log entry will be added.")
+            return True
+        with open(logName, "a") as f:     # Logs the change to the log for a change
+            f.write('%s %s %s %s \n' % (varName, varValue, datetimeNow, userName ))
+        varDict[varName] = varValue         # Assigns the given varValue to the key varName
+        print("Variable " +str(varName) + " changed to = " + str(varValue) + " at " + datetimeNow + " by " + userName)            
     else:                                       # If varName not in dictionary, checks for "new" command"
         if writeNew=='new':                        # If "new" command is there, appends varName and varValue to the dict
             with open(logName, "a") as f:     # Logs the change to the log for an addition
@@ -145,7 +151,7 @@ def readVar(fileName='junk_db.kfdb', varName = None):
     #print(varDict)
     #Checks if varName is a key
     if varName in varDict.keys():
-        print(varDict.get(varName))
+        #print(varDict.get(varName))
         value=varDict.get(varName)
         if len(value)==1:
             return True, value[0] #Returns the first element of the array directly, if there is only one element
