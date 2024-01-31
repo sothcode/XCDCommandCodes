@@ -10,7 +10,7 @@ PORTFILE="XCD_current_port"
 def getCurrentPort():
     currentPort="NO_PORT"
     with open(PORTFILE, 'r') as file:
-        currentPort = file.readline()
+        currentPort = file.readline().rstrip()
     return currentPort
 
 def sendline(port, command):
