@@ -88,7 +88,11 @@ def reportXCD2( argv ):
     return success, ret
 
 
+
 def reportXCD2noAxis( argv ):
+    return reportXCD2noAxisPort(port,argv)
+
+def reportXCD2noAxisPort(target_port, argv ):
     if argv:
         if len(argv) > 10:
             print("Too many variables trying to be assigned.  Max 10 variables can be assigned at once.")
@@ -131,7 +135,7 @@ def reportXCD2noAxis( argv ):
 
     # the next portion of code is what establishes communication with the controller
     # and sends the bytestring command by serial comm
-    success,ret=sendline(port,command)
+    success,ret=sendline(target_port,command)
     if success and debug:
         print(ret)
     return success, ret

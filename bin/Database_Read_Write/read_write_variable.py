@@ -9,11 +9,11 @@ Created on Thu Jan 25 12:51:09 2024
 import os, os.path
 
 
-filePath ='C:/Users/KMFin/OneDrive/Documents/Python/XCD2_Read_Write'
-fileName = "Test.txt"
+#filePath ='C:/Users/KMFin/OneDrive/Documents/Python/XCD2_Read_Write'
+#fileName = "Test.txt"
 
 ########################
-def writeVar(varName = None, varValue = None, new = '0'):
+def writeVar(fileName="junk_db.kfdb", varName = None, varValue = None, new = '0'):
     
     if varName is None:                 # Checks if any arguments were given. If not, gives argument info
         print(" \
