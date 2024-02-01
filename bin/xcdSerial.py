@@ -4,7 +4,7 @@ import serial
 import sys
 import struct
 
-debug=True
+debug=False
 PORTFILE="XCD_current_port"
 
 #xcdSerial
@@ -95,7 +95,7 @@ def _decode( resp ):
 
     if (nBytes==1):
         #this means we are a single byte, so not a series of floats.
-        return resp[3]
+        return [resp[3]]
 
     if (nBytesExpected!=nBytes):
         print("expected payload of ", nBytesExpected, " bytes but resp contains ", nBytes, " bytes.  Failing.")

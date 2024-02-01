@@ -126,7 +126,10 @@ def writeXCD2( argv ):
     
     success,ret=sendline(getCurrentPort(),command)
     if success and debug:
-        print(ret)
+        print("quickAssign successful:",success,", return value:",ret)
+    elif not success and debug:
+        print("quickAssign failed:",success,", return value:",ret)
+
     return success, ret
 
 
