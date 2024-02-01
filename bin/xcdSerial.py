@@ -7,6 +7,11 @@ import struct
 debug=False
 PORTFILE="XCD_current_port"
 
+#xcdSerial
+# does all the handling of talking to and parsing readback bytes from the controllers
+# reads the port (currently) from a file on disk.  That file controls which chip we are
+# talking to and is updated by a separate .py .
+
 def getCurrentPort():
     currentPort="NO_PORT"
     with open(PORTFILE, 'r') as file:

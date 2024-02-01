@@ -69,7 +69,7 @@ def writeXCD2( argv ):
         ax_int = getAxis()#int(getAxis)
         #print("writeXCD2 axis=",ax_int)
 
-        ax_byte = ax_int.to_bytes(1,byteorder='little',signed=True)
+        ax_byte = ax_int.to_bytes(1,byteorder='little',signed=False)
         ax_comm = [int(ax_byte[0])]
 
 
