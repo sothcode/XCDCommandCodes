@@ -10,7 +10,7 @@ for ser in /dev/ttyUSB0; do
 
     ./stopXMS.sh   
     ./startXMS.sh
-
+sleep 1
     ./quickAssign.py V19 0
     ./quickAssign.py XAXIS 0
     ./quickAssign.py VEL 20
