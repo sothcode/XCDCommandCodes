@@ -14,8 +14,11 @@ for ser in /dev/ttyUSB0; do
     ./quickAssign.py V19 0
     ./quickAssign.py XAXIS 0
     ./quickAssign.py VEL 20
+    ./quickReport.py V19 VEL
     ./quickAssign.py XAXIS 1
     ./quickAssign.py VEL 20
+    ./quickReport.py V19 VEL
+    ./quickAssign.py XAXIS 0
 
     else
         echo "port not found by shell.  Huh?"
