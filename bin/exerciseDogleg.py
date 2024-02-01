@@ -1,6 +1,6 @@
 #! /usr/bin/python3
 
-import sys
+import os
 import time
 from updatePorts import find_ttyUSB_ports
 from quickAssign import writeXCD2
@@ -18,10 +18,10 @@ filename = "XCD_current_port"
 
 # Iterate over all serial controllers we find matching /dev/ttyUSB*
 ttyUSB_ports = find_ttyUSB_ports()
-ttyUSB_ports = ['/dev/ttyUSB0']
+ttyUSB_ports = '/dev/ttyUSB0'
 for ser in ttyUSB_ports:
     # check if the file exists
-    if sys.path.exists():
+    if os.path.exists(ser):
         print(">>>>>>>testing controller on", ser, "...")
         with open(filename, "w") as file:
             file.write(ser)
@@ -77,4 +77,3 @@ for ser in ttyUSB_ports:
               "\n\t lb{:.4g}-->home{:.4g}: ".format(posi[4], posi[5]), t_arr[9]-t_arr[8])
     else:
        print("port not found by shell.  Huh?")
-
