@@ -59,7 +59,7 @@ def gotoDogleg( whereToGo ):
         status=readback(ADDR['STATUS'])
         turns=readback(ADDR['TURNS'])
         print("position:",readback(ADDR['FPOS'])," (axis",axis,") status:",status," (",reverse_lookup(STAT,status),") turns:",turns)
-        if debug:,
+        if debug:
             print ("goto: loop: check status:")
         status=readback(ADDR['STATUS'])
         time.sleep(sleeptime)
