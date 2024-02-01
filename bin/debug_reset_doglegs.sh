@@ -9,7 +9,7 @@ for ser in /dev/ttyUSB0; do
 	echo ">>>>>>>AXIS 0:"
 
     ./killXCD2.sh
-    sleep 2
+    sleep 3
     ./startXMS.sh
     ./quickAssign.py V19 0
     ./quickAssign.py XAXIS 0
