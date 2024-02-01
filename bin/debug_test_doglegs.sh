@@ -7,9 +7,11 @@ for ser in /dev/ttyUSB0; do
 	echo ">>>>>>>testing controller on $ser ..."
 	echo "$ser" > XCD_current_port
 	echo ">>>>>>>AXIS 0:"
+    ./quickReport.py V19 XAXIS
 	./quickAssign.py XAXIS 0
         ./quickAssign.py FPOS 0
 	./quickAssign.py V11 0
+    ./quickReport.py V19 XAXIS
 	./gotoDogleg.py 2.9
 	./gotoDogleg.py -2.9
 	./gotoDogleg.py 0

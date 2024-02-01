@@ -23,7 +23,7 @@ MTL = 4000000
 DZMIN = ENR
 DZMAX = 4*ENR
 KP = 10
-VEL = 1
+VEL = 20
 
 // invert dogleg encoder feedback (bit 18)
 config 900, 0x00051001
@@ -35,7 +35,7 @@ MTL = 4000000
 DZMIN = ENR
 DZMAX = 4*ENR
 KP = 10
-VEL = 1
+VEL = 20
 
 // invert dogleg encoder feedback (bit 18)
 config 900, 0x00051001
