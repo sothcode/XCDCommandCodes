@@ -87,3 +87,4 @@ if status==STAT['READY']:
 else:
     print("FAIL. gotoDogleg failed.  status:",readback(ADDR['STATUS'])," position:{:.4g} (ax{:.1g})".format(readback(ADDR['FPOS']),readback(ADDR['XAXIS'])), "nTurns:",readback(ADDR['TURNS']));
 #return lastpos
+time.sleep(sleeptime)
