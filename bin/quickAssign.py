@@ -40,7 +40,7 @@ def sendcommand(com,arg):
     if debug:
         print ("command: priming status check before wait")
     status=readback(ADDR['STATUS'])
-    print("command says status is ",status)
+    print("command says status is ",status," (",reverse_lookup(STAT,status),").")
     while status==STAT['NEWCOMMAND']:
         if debug:
             print ("command: waiting for device to ack command:")
@@ -48,7 +48,17 @@ def sendcommand(com,arg):
         time.sleep(sleeptime)
 
     return
-    
+
+
+def _reverseLookup(dict,val):
+    #set up the reverse dictionary
+    reverse_mapping={v: k for k, v in dict.items()}
+    try:
+        key=reverse_mapping[val]
+    except KeyError as e:
+        print(f"errorCode lookup failed.  KeyError: {e}")
+        sys.exit()
+    return key  
 
 def writeXCD2( argv ):
     if argv:
