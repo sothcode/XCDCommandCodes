@@ -23,6 +23,7 @@ def readback(arg):
 def getAxis():
     stat,ret =reportXCD2noAxis(['XAXIS'])
     if not stat:
+        print("Could not getAxis()")
         sys.exit()
     return int(ret[0])
 
