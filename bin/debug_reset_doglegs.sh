@@ -8,12 +8,10 @@ for ser in /dev/ttyUSB0; do
 	echo "$ser" > XCD_current_port
 	echo ">>>>>>>AXIS 0:"
 
-    ./stopXMS.sh   
-    sleep 2
+    ./stopXMS.sh
+    sleep 5
     ./startXMS.sh
-sleep 2
     ./quickAssign.py V19 0
-    sleep 2
     ./quickAssign.py XAXIS 0
     ./quickAssign.py VEL 20
     ./quickReport.py V19 VEL
