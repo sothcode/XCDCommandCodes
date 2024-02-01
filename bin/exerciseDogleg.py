@@ -13,7 +13,8 @@ import gotoDogleg
 lb = -2.9
 home = 0
 hb = 2.9
-filename = "XCD_current_port"
+PORTFILE = "XCD_current_port"
+REPORTFILE = "exerciseDoglegReport.txt"
 
 
 # Iterate over all serial controllers we find matching /dev/ttyUSB*
@@ -23,7 +24,7 @@ for ser in ttyUSB_ports:
     # check if the file exists
     if os.path.exists(ser):
         print(">>>>>>>testing controller on", ser, "...")
-        with open(filename, "w") as file:
+        with open(PORTFILE, "w") as file:
             file.write(ser)
         print(">>>>>>>AXIS 0:")
 

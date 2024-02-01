@@ -28,8 +28,8 @@ def updatePorts():
             motorID2str = IDlookup[UART1]
         
             # Logs the change to the log for a change
-            file.write('%s %s %s\n' % ('UART0', port, UART0))
-            file.write('%s %s %s\n' % ('UART1', port, UART1))
+            file.write('%s %s %s\n' % (motorID1str, port, '0'))
+            file.write('%s %s %s\n' % (motorID2str, port, '1'))
 
     return
 
