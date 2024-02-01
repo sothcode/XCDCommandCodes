@@ -40,7 +40,7 @@ def sendcommand(com,arg):
     if debug:
         print ("command: priming status check before wait")
     status=readback(ADDR['STATUS'])
-    print("command says status is ",status," (",reverse_lookup(STAT,status),").")
+    print("command says status is ",status," (",_reverseLookup(STAT,status),").")
     while status==STAT['NEWCOMMAND']:
         if debug:
             print ("command: waiting for device to ack command:")

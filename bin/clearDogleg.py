@@ -38,7 +38,7 @@ if __name__ == "__main__":
     status=readback(ADDR['STATUS'])
 
     if status == 98:
-        print("NOT EXECUTED.  Controller has boot status",status," (",reverse_lookup(STAT,status),").  setAxis.py must be run.")
+        print("NOT EXECUTED.  Controller has boot status",status," (",_reverseLookup(STAT,status),").  setAxis.py must be run.")
         sys.exit()
 
     writeXCD2([ADDR['STATUS'], 0])
