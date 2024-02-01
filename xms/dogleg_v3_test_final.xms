@@ -40,11 +40,6 @@ VEL = 20
 // invert dogleg encoder feedback (bit 18)
 config 900, 0x00051001
 
-
-
-// time for system start up sequence
-delay 2000
-
 // initialize commandBYTE, motorID, and statusBYTE to IDLE
 V0 = 0
 V1 = 0
@@ -52,6 +47,8 @@ V19 = 98
 
 // set encoder latch POS flag to 0
 set S_IND = 0
+
+
 
 // Start infinite loop
 while 1  
@@ -128,9 +125,6 @@ while 1
       // set statusBYTE BUSY
       V19 = 9
 
-      // debug FPOS
-      V12 = FPOS
-
       // calculate if destination is out of bounds
       V18 = V10 - FPOS
 
@@ -164,9 +158,6 @@ while 1
             V17 = V17 - 1
          end
 
-         // more debug of FPOS
-         V13 = FPOS
-
          if V11*V16 < 3
             move V10
             delay 1000
@@ -178,9 +169,6 @@ while 1
 
          end
          disable
-      
-         // even more debug FPOS
-         V14 = FPOS
 
          // set statusBYTE SUCCESS
          V19 = 0
@@ -194,18 +182,6 @@ while 1
    end
 
 
-
-   // sets FPOS to certain value for debugging
-   if V0 = -1
-
-      // set statusBYTE BUSY
-      V19 = 9
-
-      // set 
-      set FPOS = V10
-
-   // end set FPOS
-   end
 
    // retry loop every half second
    delay 100
