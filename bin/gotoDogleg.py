@@ -58,7 +58,7 @@ def gotoDogleg( whereToGo ):
         axis=readback(ADDR['XAXIS'])
         status=readback(ADDR['STATUS'])
         turns=readback(ADDR['TURNS'])
-        print("position:",readback(ADDR['FPOS'])," (axis",axis,") status:",status," (",reverse_lookup(STAT,status),") turns:",turns)
+        print("position:",readback(ADDR['FPOS'])," (axis",axis,") status:",status," (",_reverseLookup(STAT,status),") turns:",turns)
         if debug:
             print ("goto: loop: check status:")
         status=readback(ADDR['STATUS'])
@@ -73,9 +73,9 @@ def gotoDogleg( whereToGo ):
     #status=readback(ADDR['STATUS'])  this is already read in the way we left the while loop above.
     lastpos=readback(ADDR['FPOS'])
     if status==STAT['READY']:
-        print("SUCCESS. gotoDogleg complete.  status:",status," (",reverse_lookup(STAT,status),") position:{:.4g} (ax{:.1g})".format(readback(ADDR['FPOS']),readback(ADDR['XAXIS'])), "nTurns:",readback(ADDR['TURNS']));
+        print("SUCCESS. gotoDogleg complete.  status:",status," (",_reverseLookup(STAT,status),") position:{:.4g} (ax{:.1g})".format(readback(ADDR['FPOS']),readback(ADDR['XAXIS'])), "nTurns:",readback(ADDR['TURNS']));
     else:
-        print("FAIL. gotoDogleg failed.  status:",status," (",reverse_lookup(STAT,status),") position:{:.4g} (ax{:.1g})".format(readback(ADDR['FPOS']),readback(ADDR['XAXIS'])), "nTurns:",readback(ADDR['TURNS']));
+        print("FAIL. gotoDogleg failed.  status:",status," (",_reverseLookup(STAT,status),") position:{:.4g} (ax{:.1g})".format(readback(ADDR['FPOS']),readback(ADDR['XAXIS'])), "nTurns:",readback(ADDR['TURNS']));
     
     time.sleep(sleeptime)
 
