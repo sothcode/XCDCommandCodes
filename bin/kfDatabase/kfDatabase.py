@@ -126,6 +126,8 @@ def writeVar(fileName='junk_db.kfdb', varName = None, varValue = None, writeNew 
             
 
 def readVar(fileName='junk_db.kfdb', varName = None):
+    #return the contents of that element if it exists.
+    #return pattern is (bool Success),(if successful, value.  this is an array if the value has multiple entries, a single variable otherwise)
     if varName is None:
         print(" \
      No arguments given. readVar will find the value for a given variable. readVar parameters are: \n \
