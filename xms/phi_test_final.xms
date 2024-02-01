@@ -5,9 +5,9 @@
 //    -- V0 = 2 is phi goto procedure
 // V1 -- motorID
 //    -- (see variableDictionaryXCD2.py for full list of motorIDs)
-// V2 -- phi motor right stop (CW hard stop)
-// V3 -- phi motor left stop (CCW hard stop)
-// V4 -- phi motor encoder latch pos (home tick)
+// V2 -- negative hard stop
+// V3 -- postitive hard stop
+// V4 -- encoder latch pos (home tick)
 // V10 - valueByte, used to encode goto values
 // V18 - encoder iterator variable
 // V19 - statusByte
@@ -17,6 +17,17 @@
 //     - V19 = 3 FAIL by goto not in bounds
 //     - V19 = 8 WAITING - command issued by RPi but waiting for xms
 //     - V19 = 9 BUSY
+XAXIS = 1
+ENR = 6.103515625e-5
+MTL = 4000000
+DZMIN = ENR
+DZMAX = 4*ENR
+KP = 10
+VEL = 2
+
+// configure phi motor settings (non-inverted drive and feedback)
+config 900, 0x00011001
+delay 1000
 
 XAXIS = 0
 ENR = 6.103515625e-5
@@ -29,10 +40,6 @@ VEL = 2
 // configure phi motor settings (non-inverted drive and feedback)
 config 900, 0x00011001
 
-
-// time for system start up sequence
-delay 2000
-
 // initialize commandBYTE, statusBYTE to IDLE
 V0 = 0
 V18 = 0
@@ -40,6 +47,8 @@ V19 = 98
 
 // set encoder latch POS flag to 0
 set S_IND = 0
+
+
 
 // Start infinite loop
 while 1  
@@ -150,7 +159,7 @@ while 1
    end
 
 
-   // retry loop every half second
+   // retry loop every 100 milliseconds
    delay 100
 
 end

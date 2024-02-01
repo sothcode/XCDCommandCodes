@@ -5,15 +5,15 @@
 //    -- V0 = 4 is theta long goto procedure
 // V1 -- motorID
 //    -- (see variableDictionaryXCD2.py for full list of motorIDs)
-// V2 -- 
-// V3 -- 
-// V4 -- 
+// V2 -- negative hard stop
+// V3 -- positive hard stop
+// V4 -- encoder latch pos (if visible)
 // V10 - valueByte, used to encode goto values
+// V18 - encoder iterator variable
 // V19 - statusByte
 //     - V19 = 0 SUCCESS/IDLE
 //     - V19 = 1 FAILURE
 //     - V19 = 9 BUSY
-
 XAXIS = 1
 ENR = 6.103515625e-5
 MTL = 4000000
@@ -22,12 +22,20 @@ DZMAX = 4*ENR
 KP = 10
 VEL = 1
 
-// configure phi motor settings (non-inverted drive and feedback)
+// configure theta motor settings (non-inverted drive and feedback)
 config 900, 0x00011001
+delay 1000
 
+XAXIS = 0
+ENR = 6.103515625e-5
+MTL = 4000000
+DZMIN = ENR
+DZMAX = 4*ENR
+KP = 10
+VEL = 2
 
-// time for system start up sequence
-delay 2000
+// configure theta motor settings (non-inverted drive and feedback)
+config 900, 0x00011001
 
 // initialize commandBYTE, statusBYTE to IDLE
 V0 = 0
@@ -36,6 +44,8 @@ V19 = 0
 
 // set encoder latch POS flag to 0
 set S_IND = 0
+
+
 
 // Start infinite loop
 while 1  
