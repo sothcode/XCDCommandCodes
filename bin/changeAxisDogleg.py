@@ -10,7 +10,8 @@ from variableDictionaryXCD2 import varStatusValues as STAT
 from variableDictionaryXCD2 import varDoglegCommands as COMM
 from variableDictionaryXCD2 import varUniqueID as AXID
 
-# to load tty data from the db so we know which tty we want: 
+# to load tty data from the db so we know which tty we want:
+sys.path.append("kfDatabase")
 import kfDatabase
 
 
