@@ -67,7 +67,7 @@ while 1
       V18 = FPOS
 
       // check if out of bounds
-      if abs(V11) >= 3
+      if abs(V11) > 4
          V19 = 1
          V0 = 0
       else
@@ -134,7 +134,7 @@ while 1
       // calculate if destination is out of bounds
       V18 = V10 - FPOS
 
-      if abs(V18 + V11) > 3
+      if abs(V18 + V11) > 4
          V19 = 1
          V0 = 0
       else
