@@ -18,7 +18,7 @@ filename = "XCD_current_port"
 
 # Iterate over all serial controllers we find matching /dev/ttyUSB*
 ttyUSB_ports = find_ttyUSB_ports()
-ttyUSB_ports = ['/dev/ttyUSB0']
+ttyUSB_ports = '/dev/ttyUSB0'
 for ser in ttyUSB_ports:
     # check if the file exists
     if sys.path.exists():
