@@ -10,6 +10,15 @@ from variableDictionaryXCD2 import varDoglegCommands as COMM
 #import random #for testing
 
 
+def _reverseLookup(dict,val):
+    #set up the reverse dictionary
+    reverse_mapping={v: k for k, v in dict.items()}
+    try:
+        key=reverse_mapping[val]
+    except KeyError as e:
+        print(f"errorCode lookup failed.  KeyError: {e}")
+        sys.exit()
+    return key  
 
 if __name__ == "__main__":
     #tuning settings
@@ -29,10 +38,10 @@ if __name__ == "__main__":
     status=readback(ADDR['STATUS'])
 
     if status == 98:
-        print("NOT EXECUTED.  Controller has boot status 98.  setAxis.py must be run.")
+        print("NOT EXECUTED.  Controller has boot status",status," (",reverse_lookup(STAT,status),").  setAxis.py must be run.")
         sys.exit()
 
     writeXCD2([ADDR['STATUS'], 0])
     writeXCD2([ADDR['COMMAND'], 0])
     new_status=readback(ADDR['STATUS'])
-    print("DONE.  Dogleg status was",status, ",is now",new_status)
+    print("DONE.  Dogleg status was ",status," (",reverse_lookup(STAT,status),"), is nowstatus:",new_status," (",reverse_lookup(STAT,new_status),").")
