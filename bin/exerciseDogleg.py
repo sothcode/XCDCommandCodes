@@ -5,7 +5,6 @@ import time
 from updatePorts import find_ttyUSB_ports
 from quickAssign import writeXCD2
 from quickReport import reportXCD2
-from variableDictionaryXCD2 import varDict
 from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
 from variableDictionaryXCD2 import varStatusValues as STAT
 import gotoDogleg
@@ -38,11 +37,11 @@ while True:
 
             t_arr[0] = time.time()
 
-            suc01, ret01 = reportXCD2(['V19', 'XAXIS'])
+            suc01, ret01 = reportXCD2([ADDR['STATUS'], 'XAXIS'])
             writeXCD2([ADDR['XAXIS'], 0])
             writeXCD2([ADDR['FPOS'], 0])
-            writeXCD2([ADDR['V11'], 0])
-            suc02, ret02 = reportXCD2(['V19', 'XAXIS'])
+            writeXCD2([ADDR['TURNS'], 0])
+            suc02, ret02 = reportXCD2([ADDR['STATUS'], 'XAXIS'])
         
             t_arr[1] = time.time()
             succ[0], posi[0] =  gotoDogleg(hb)
@@ -57,11 +56,11 @@ while True:
 
             t_arr[5] = time.time()
 
-            suc11, ret11 = reportXCD2(['V19', 'XAXIS'])
+            suc11, ret11 = reportXCD2([ADDR['STATUS'], 'XAXIS'])
             writeXCD2([ADDR['XAXIS'], 1])
             writeXCD2([ADDR['FPOS'], 0])
-            writeXCD2([ADDR['V11'], 0])
-            suc12, ret12 = reportXCD2(['V19', 'XAXIS'])
+            writeXCD2([ADDR['TURNS'], 0])
+            suc12, ret12 = reportXCD2([ADDR['STATUS'], 'XAXIS'])
         
             t_arr[6] = time.time()
             succ[3], posi[3] =  gotoDogleg(hb)
