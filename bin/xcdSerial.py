@@ -4,7 +4,7 @@ import serial
 import sys
 import struct
 
-debug=False
+debug=True
 PORTFILE="XCD_current_port"
 
 #xcdSerial
