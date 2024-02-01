@@ -19,12 +19,12 @@ filename = "XCD_current_port"
 # Iterate over all serial controllers we find matching /dev/ttyUSB*
 ttyUSB_ports = find_ttyUSB_ports()
 ttyUSB_ports = '/dev/ttyUSB0'
-for path in ttyUSB_ports:
+for ser in ttyUSB_ports:
     # check if the file exists
-    if os.path.exists():
-        print(">>>>>>>testing controller on", path, "...")
+    if os.path.exists(ser):
+        print(">>>>>>>testing controller on", ser, "...")
         with open(filename, "w") as file:
-            file.write(path)
+            file.write(ser)
         print(">>>>>>>AXIS 0:")
 
         t_arr = [0.0]*10
