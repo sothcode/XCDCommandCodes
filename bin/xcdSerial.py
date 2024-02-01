@@ -37,7 +37,7 @@ def sendline(port, command):
             response=_readline(ser)
             ser.close()
             if debug:
-                print(response)
+                print("sendline: response:",response)
             return True, response
         print("Serial port not open - check to see that usb is properly connected, or motor is powered.")
         return False, 0
