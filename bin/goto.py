@@ -99,7 +99,8 @@ def goto( axisName=None, destination=None):
     else:
         #  get the value from the dict.
         keyName=axisName+"/"+str(destination)
-        print("looking for value %s"%keyName)
+        if debug:
+            print("goto: looking for value %s"%keyName)
         success,value=kfDatabase.readVar(mainDb, keyName)
         if not success:
             print("goto: kfDatabase failed.  destination '%s' not found for %s. (kfdb=%s, key=%s)" % (destination,axisName,mainDb,keyName))
