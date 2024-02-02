@@ -13,10 +13,10 @@ for ser in /dev/ttyUSB0; do
     ./startXMS.sh
     ./quickAssign.py V19 0
     ./quickAssign.py XAXIS 0
-    ./quickAssign.py VEL 20
+    ./quickAssign.py VEL 100
     ./quickReport.py V19 VEL
     ./quickAssign.py XAXIS 1
-    ./quickAssign.py VEL 20
+    ./quickAssign.py VEL 100
     ./quickReport.py V19 VEL
     ./quickAssign.py XAXIS 0
 

@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from quickAssign import sendcommand
+from quickAssign import sendcommand, writeXCD2
 from quickReport import readback
 import sys
 import time
@@ -10,8 +10,9 @@ from variableDictionaryXCD2 import varDoglegCommands as COMM
 from changeAxisDogleg import changeAxis
 
 #tuning settings
-sleeptime=0.6 #in seconds
-debug=False
+sleeptime = 0.6 # in seconds
+timeout = 20    # in seconds
+debug = False
 
 #{later:
 #get current rotations
@@ -54,15 +55,36 @@ def gotoDogleg( whereToGo ):
     if debug:
         print("goto:  Check status:");
     status=STAT['BUSY']
+
+    # while status is busy, print to screen position, axis, status and nTurns
     while status==STAT['BUSY']:
         axis=readback(ADDR['XAXIS'])
         status=readback(ADDR['STATUS'])
         turns=readback(ADDR['TURNS'])
-        print("position:",readback(ADDR['FPOS'])," (axis",axis,") status:",status," (",_reverseLookup(STAT,status),") turns:",turns)
+        position=readback(ADDR['FPOS'])
+        print("position:", position," (axis",axis,") status:",status," (",_reverseLookup(STAT,status),") turns:",turns)
         if debug:
             print ("goto: loop: check status:")
-        status=readback(ADDR['STATUS'])
+        
+        # sleep a little, and if same position, enter timeout loop
         time.sleep(sleeptime)
+
+        if readback(ADDR['FPOS']) == position:
+            t1 = time.time()
+            # while time < timeout, continue to print every sleeptime
+            # once time > timeout, write status 80
+            while status==STAT['BUSY'] and (time.time()-t1) < timeout:
+                axis=readback(ADDR['XAXIS'])
+                status=readback(ADDR['STATUS'])
+                turns=readback(ADDR['TURNS'])
+                position=readback(ADDR['FPOS'])
+                print("position:", position," (axis",axis,") status:",status," (",_reverseLookup(STAT,status),") turns:",turns)
+                time.sleep(sleeptime)
+            if status==STAT['BUSY']
+                writeXCD2(ADDR['STATUS'], 80)
+
+        # otherwise update status and continue
+        status=readback(ADDR['STATUS'])
 
     #loop until controller busy flag is cleared
 
@@ -74,12 +96,10 @@ def gotoDogleg( whereToGo ):
     lastpos=readback(ADDR['FPOS'])
     if status==STAT['READY']:
         print("SUCCESS. gotoDogleg complete.  status:",status," (", _reverseLookup(STAT,status),") position:{:.4g} (ax{:.1g})".format(readback(ADDR['FPOS']),readback(ADDR['XAXIS'])), "nTurns:",readback(ADDR['TURNS']));
-    else:
-        print("FAIL. gotoDogleg failed.  status:",status," (", _reverseLookup(STAT,status),") position:{:.4g} (ax{:.1g})".format(readback(ADDR['FPOS']),readback(ADDR['XAXIS'])), "nTurns:",readback(ADDR['TURNS']));
+        return True, lastpos
     
-    time.sleep(sleeptime)
-
-    return True, lastpos
+    print("FAIL. gotoDogleg failed.  status:",status," (", _reverseLookup(STAT,status),") position:{:.4g} (ax{:.1g})".format(readback(ADDR['FPOS']),readback(ADDR['XAXIS'])), "nTurns:",readback(ADDR['TURNS']));
+    return False, lastpos
 
 
 
