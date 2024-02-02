@@ -81,58 +81,61 @@ def exerciseDogleg( loop=True ):
 
             tRunStart = time.time()
 
+            # start on XAXIS 0
             print(">>>>>>>AXIS 0:")
             writeXCD2(['XAXIS', 0])
-
             time.sleep(t_hang)
         
+            # move first to high bound and if timeout then reset
             t_arr[0] = time.time()
             succ, posi[0] = gotoDogleg(hb)
             t_arr[1] = time.time()
-
             if not succ and readback(ADDR['STATUS'])==80:
                 resetDogleg()
             time.sleep(t_hang)
 
+            # then move to low bound and if timeout then reset
             t_arr[2] = time.time()
             succ, posi[1] = gotoDogleg(lb)
             t_arr[3] = time.time()
-
             if not succ and readback(ADDR['STATUS'])==80:
                 resetDogleg()
             time.sleep(t_hang)
 
+            # last move home and if timeout then reset
             t_arr[4] = time.time()
             succ, posi[2] = gotoDogleg(home)
             t_arr[5] = time.time()
             time.sleep(t_hang)
-
-        
-            print(">>>>>>>AXIS 1:")
-            writeXCD2(['XAXIS', 1])
-        
-            time.sleep(t_hang)
-
-            t_arr[6] = time.time()
-            succ, posi[3] = gotoDogleg(hb)
-            t_arr[7] = time.time()
-
             if not succ and readback(ADDR['STATUS'])==80:
                 resetDogleg()
             time.sleep(t_hang)
+
+            # switch to XAXIS 1
+            print(">>>>>>>AXIS 1:")
+            writeXCD2(['XAXIS', 1])
+            time.sleep(t_hang)
+
+            # and repeat moving to hb, lb then home with XAXIS 1 (with resets)
+            t_arr[6] = time.time()
+            succ, posi[3] = gotoDogleg(hb)
+            t_arr[7] = time.time()
+            if not succ and readback(ADDR['STATUS'])==80:
+                resetDogleg()
+            time.sleep(t_hang)
+
 
             t_arr[8] = time.time()
             succ, posi[4] = gotoDogleg(lb)
             t_arr[9] = time.time()
-
             if not succ and readback(ADDR['STATUS'])==80:
                 resetDogleg()
             time.sleep(t_hang)
 
+
             t_arr[10] = time.time()
             succ, posi[5] = gotoDogleg(home)
             t_arr[11] = time.time()
-
             if not succ and readback(ADDR['STATUS'])==80:
                 resetDogleg()
 
