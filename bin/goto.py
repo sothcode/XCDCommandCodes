@@ -129,7 +129,7 @@ def goto( axisName=None, destination=None):
     status=readback(ADDR['STATUS'])
 
     if status!=0:
-        print("NOT EXECUTED. Controller status is not 0. status: %s (%s)"%(status,_reverseLookup(STAT,status))
+        print("NOT EXECUTED. Controller status is not 0. status: %s (%s)"%(status,_reverseLookup(STAT,status)))
         return False, 0
     
 
