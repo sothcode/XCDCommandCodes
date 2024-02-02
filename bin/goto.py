@@ -62,7 +62,7 @@ def find_comm(axisName):
     COMM={}
     if bool(re.match(r'^.+_DL\d_A\d$',axisName)):
         COMM=ALL_COMM['Dogleg']
-        isDogleg=true
+        isDogleg=True
     elif bool(re.match(r'^.+_TH_S\d$',axisName)):
         COMM=ALL_COMM['ThetaS']
     elif bool(re.match(r'^.+_TH_L\d$',axisName)):

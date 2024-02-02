@@ -5,7 +5,7 @@ sys.path.append("kfDatabase")
 import kfDatabase as kf
 
 
-testports="test_only_xcd_ports.kfdb"
+testports="test_only_xcd2_ports.kfdb"
 if not(os.path.exists(testports)): #if it doesn't exist, touch it so it does.
     with open(testports, 'w'):
         pass
