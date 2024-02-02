@@ -81,7 +81,7 @@ while True:
                 "\n\t lb{:.4g}-->home{:.4g}: ".format(posi[4], posi[5]), t_arr[9]-t_arr[8])
             
             with open(REPORTFILE, "w") as file:
-                file.write("Iteration ", iter, ": \n")
+                file.write('%s %s %s\n' % ("Iteration ", iter, ": \n"))
                 file.write('%s %s %s %s %s %s\n' % (t_arr[2]-t_arr[1], t_arr[3]-t_arr[2],
                                                     t_arr[4]-t_arr[3], t_arr[6]-t_arr[5], 
                                                     t_arr[7]-t_arr[6], t_arr[8]-t_arr[7]))
