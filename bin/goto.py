@@ -62,16 +62,16 @@ def find_comm(axisName):
     if bool(re.match(r'^.+_DL\d_A\d$',axisName)):
         COMM=ALL_COMM['Dogleg']
         isDogleg=True
-    elif bool(re.match(r'^.+_TH_S\d$',axisName)):
+    elif bool(re.match(r'^.+_TH_S$',axisName)):
         COMM=ALL_COMM['ThetaS']
-    elif bool(re.match(r'^.+_TH_L\d$',axisName)):
+    elif bool(re.match(r'^.+_TH_L$',axisName)):
         COMM=ALL_COMM['ThetaL']
     elif bool(re.match(r'^.+_PH$',axisName)):
         COMM=ALL_COMM['Attenuator']        
     elif bool(re.match(r'^.+_PH$',axisName)):
         COMM=ALL_COMM['Attenuator']
     else:
-        print("no match to axis types.  Critical failure!")
+        print("no match of '%s' to axis types.  Critical failure!"%(axisName))
         sys.exit()
     return isDogleg, COMM
     
