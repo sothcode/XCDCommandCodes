@@ -83,8 +83,8 @@ while True:
             with open(REPORTFILE, "a") as file:
                 file.write('%s %s %s\n' % ("Iteration ", iter, ": \n"))
                 file.write('%s %s %s %s %s %s\n' % (t_arr[2]-t_arr[1], t_arr[3]-t_arr[2],
-                                                    t_arr[4]-t_arr[3], t_arr[6]-t_arr[5], 
-                                                    t_arr[7]-t_arr[6], t_arr[8]-t_arr[7]))
+                                                    t_arr[4]-t_arr[3], t_arr[7]-t_arr[6], 
+                                                    t_arr[8]-t_arr[7], t_arr[9]-t_arr[8]))
 
         else:
             print("port not found by shell.  Huh?")
