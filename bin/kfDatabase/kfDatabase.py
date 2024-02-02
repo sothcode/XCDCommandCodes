@@ -163,7 +163,7 @@ def readVar(fileName='junk_db.kfdb', varName = None):
         return True,value        # Returns varValue, which is an array
         
     else:
-        print("Variable name not found")
+        print("kfdb: variable name '%s' not found in '%s'"%varName,fileName)
         return False,0
         
         
