@@ -26,7 +26,10 @@ def is_iterable(obj):
         iter(obj)
         return True
     except TypeError:
-        return False    
+        return False
+
+def is_string(obj):
+    return isinstance(obj, str)
 
 def convert_to_numbers(arr):
     #converts an array of strings to an array of mixed strings and floats
@@ -115,10 +118,10 @@ def writeVar(fileName='junk_db.kfdb', varName = None, varValue = None, writeNew 
     with open(fileName, 'w') as fileNew:            # Writes over the original with the new values
         for key, value in varDict.items():  
             fileNew.write("%s" % (key))
-            if is_iterable(value):
+            if  is_iterable(value) and (not is_string(value)): #if iterable, but not a string, write out each element (strings are also iterable)
                 for item in value:
                     fileNew.write(" %s" % (item))
-            else:
+            else: #if a string, or otherwise not iterable, write it out as a single block
                 fileNew.write(" %s" % (value))
             fileNew.write("\n")
                 
