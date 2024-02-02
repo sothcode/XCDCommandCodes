@@ -77,7 +77,7 @@ def find_comm(axisName):
     return isDogleg, COMM
     
 def goto( axisName=None, destination=None):
-    if axisName==None or detination==None:
+    if axisName==None or destination==None:
         print("wrong args for goto.  requires two arguments.")
         return False
     
