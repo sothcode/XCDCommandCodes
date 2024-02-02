@@ -2,7 +2,9 @@
 
 import sys
 
-varPhiMotorCommands = {
+
+
+varPhiCommands = {
 # Variables listed below are definitions in phi_test_final.xms
 'GOTO': 2,
 'HOME': 1
@@ -24,6 +26,20 @@ varDoglegCommands = {
 # Variables listed below are definitions in dogleg_v3_test_final.xms
 'GOTO': 6,
 'HOME': 5
+}
+
+varAttenuatorCommands = {
+# Variables listed below are definitions in dogleg_v3_test_final.xms
+'GOTO': 9,
+'HOME': 10
+}
+
+varAllCommands = {
+'Phi':varPhiMotorCommands,
+'ThetaL':varThetaLCommands,
+'ThetaS':varThetaSCommands,
+'Dogleg':varDoglegCommands,
+'Attenuator':varAttenuatorCommands
 }
 
 varInterfaceAddresses= {
