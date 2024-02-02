@@ -94,22 +94,10 @@ def exerciseDogleg( loop=True ):
 
         
             print(">>>>>>>AXIS 1:")
-<<<<<<< Updated upstream
-
-            t_arr[5] = time.time()
-
-            suc11, ret11 = reportXCD2([ADDR['STATUS'], 'XAXIS'])
-            writeXCD2([ADDR['XAXIS'], 1])
-            writeXCD2([ADDR['FPOS'], 0])
-            writeXCD2([ADDR['TURNS'], 0])
-            suc12, ret12 = reportXCD2([ADDR['STATUS'], 'XAXIS'])
-            time.sleep(2)
-=======
             writeXCD2(['XAXIS', 1])
         
             time.sleep(t_hang)
 
->>>>>>> Stashed changes
             t_arr[6] = time.time()
             succ, posi[3] =  gotoDogleg(hb)
             if not succ:
