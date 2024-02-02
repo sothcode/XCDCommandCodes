@@ -75,7 +75,7 @@ def gotoDogleg( whereToGo ):
             t1 = time.time()
 
         # otherwise update status and continue
-        status=readback(ADDR['STATUS'])
+        status=readback(ADDR['STATUS']) 
         
     if status==STAT['BUSY']:
         writeXCD2([ADDR['STATUS'], 80])
