@@ -35,21 +35,21 @@ while True:
             succ = [None]*6
             posi = [0.0]*6
 
-            t_arr[0] = time.time()
+            # t_arr[0] = time.time()
 
-            suc01, ret01 = reportXCD2([ADDR['STATUS'], 'XAXIS'])
-            writeXCD2([ADDR['XAXIS'], 0])
-            writeXCD2([ADDR['FPOS'], 0])
-            writeXCD2([ADDR['TURNS'], 0])
-            suc02, ret02 = reportXCD2([ADDR['STATUS'], 'XAXIS'])
+            # suc01, ret01 = reportXCD2([ADDR['STATUS'], 'XAXIS'])
+            # writeXCD2([ADDR['XAXIS'], 0])
+            # writeXCD2([ADDR['FPOS'], 0])
+            # writeXCD2([ADDR['TURNS'], 0])
+            # suc02, ret02 = reportXCD2([ADDR['STATUS'], 'XAXIS'])
         
-            t_arr[1] = time.time()
-            succ[0], posi[0] = gotoDogleg(hb)
-            t_arr[2] = time.time()
-            succ[1], posi[1] = gotoDogleg(lb)
-            t_arr[3] = time.time()
-            succ[2], posi[2] = gotoDogleg(home)
-            t_arr[4] = time.time()
+            # t_arr[1] = time.time()
+            # succ[0], posi[0] = gotoDogleg(hb)
+            # t_arr[2] = time.time()
+            # succ[1], posi[1] = gotoDogleg(lb)
+            # t_arr[3] = time.time()
+            # succ[2], posi[2] = gotoDogleg(home)
+            # t_arr[4] = time.time()
 
         
             print(">>>>>>>AXIS 1:")
