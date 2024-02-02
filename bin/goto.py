@@ -48,8 +48,6 @@ def _reverseLookup(dict,val):
     return key  
 
 def is_number(s):
-    if is_iterable(s):
-        return False
     try:
         float(s)
         return True
