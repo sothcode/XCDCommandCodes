@@ -6,7 +6,6 @@ for ser in /dev/ttyUSB0; do
     if [ -e "$ser" ]; then
 	echo "resetting controller on $ser ..."
 	echo "$ser" > XCD_current_port
-	echo ">>>>>>>AXIS 0:"
 
     ./killXCD2.sh
     sleep 3

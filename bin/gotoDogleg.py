@@ -76,12 +76,10 @@ def gotoDogleg( whereToGo ):
 
         # otherwise update status and continue
         status=readback(ADDR['STATUS']) 
-        
-    print(status)
 
     if status==STAT['BUSY']:
-        print("TIMEOUT")
         writeXCD2([ADDR['STATUS'], 80])
+        time.sleep(sleeptime)
 
     #loop until controller busy flag is cleared
 
