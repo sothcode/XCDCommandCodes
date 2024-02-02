@@ -66,12 +66,14 @@ def gotoDogleg( whereToGo ):
         print("position:", position," (axis",axis,") status:",status," (",_reverseLookup(STAT,status),") turns:",turns)
         if debug:
             print ("goto: loop: check status:")
-        
+
         # sleep a little, and if same position, enter timeout loop
         time.sleep(sleeptime)
 
+        # check 
         if abs(readback(ADDR['FPOS'])-position)<readback('ENR')*3:
             t1 = time.time()
+
         # otherwise update status and continue
         status=readback(ADDR['STATUS'])
         
