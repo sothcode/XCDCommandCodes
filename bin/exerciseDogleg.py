@@ -156,9 +156,10 @@ def exerciseDogleg( loop=True ):
                 "\n\t (lb{:.5g}) --> home ({:.5g}): ".format(posi[4], posi[5]), t_arr[11]-t_arr[10])
             
             with open(REPORTFILE, "a") as file:
-                file.write('%s %s %s %s %s %s %s\n' % (tRunStart, t_arr[1]-t_arr[0], stat[0], t_arr[3]-t_arr[2], stat[1],
-                                                    t_arr[5]-t_arr[4], stat[2], t_arr[7]-t_arr[6], stat[3],
-                                                    t_arr[9]-t_arr[8], stat[4], t_arr[11]-t_arr[10], stat[5]))
+                file.write('%s %s %s %s %s %s %s %s %s %s %s %s %s\n' 
+                           % (tRunStart, t_arr[1]-t_arr[0], stat[0], t_arr[3]-t_arr[2], stat[1],
+                            t_arr[5]-t_arr[4], stat[2], t_arr[7]-t_arr[6], stat[3],
+                            t_arr[9]-t_arr[8], stat[4], t_arr[11]-t_arr[10], stat[5]))
                 
             init_run = loop
 
