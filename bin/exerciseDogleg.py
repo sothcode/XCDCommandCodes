@@ -61,7 +61,7 @@ while True:
             writeXCD2([ADDR['FPOS'], 0])
             writeXCD2([ADDR['TURNS'], 0])
             suc12, ret12 = reportXCD2([ADDR['STATUS'], 'XAXIS'])
-        
+            time.sleep(2)
             t_arr[6] = time.time()
             succ[3], posi[3] =  gotoDogleg(hb)
             t_arr[7] = time.time()
