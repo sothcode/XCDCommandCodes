@@ -77,6 +77,7 @@ def exerciseDogleg( loop=True ):
         while init_run:
 
             t_arr = [0.0]*12
+            stat = [0.0]*6
             posi = [0.0]*6
 
             tRunStart = time.time()
@@ -90,7 +91,8 @@ def exerciseDogleg( loop=True ):
             t_arr[0] = time.time()
             succ, posi[0] = gotoDogleg(hb)
             t_arr[1] = time.time()
-            if not succ and readback(ADDR['STATUS'])==80:
+            if not succ:
+                stat[0] = readback(ADDR['STATUS'])
                 resetDogleg()
             time.sleep(t_hang)
 
@@ -98,7 +100,8 @@ def exerciseDogleg( loop=True ):
             t_arr[2] = time.time()
             succ, posi[1] = gotoDogleg(lb)
             t_arr[3] = time.time()
-            if not succ and readback(ADDR['STATUS'])==80:
+            if not succ:
+                stat[1] = readback(ADDR['STATUS'])
                 resetDogleg()
             time.sleep(t_hang)
 
@@ -107,7 +110,8 @@ def exerciseDogleg( loop=True ):
             succ, posi[2] = gotoDogleg(home)
             t_arr[5] = time.time()
             time.sleep(t_hang)
-            if not succ and readback(ADDR['STATUS'])==80:
+            if not succ:
+                stat[2] = readback(ADDR['STATUS'])
                 resetDogleg()
             time.sleep(t_hang)
 
@@ -120,7 +124,8 @@ def exerciseDogleg( loop=True ):
             t_arr[6] = time.time()
             succ, posi[3] = gotoDogleg(hb)
             t_arr[7] = time.time()
-            if not succ and readback(ADDR['STATUS'])==80:
+            if not succ:
+                stat[3] = readback(ADDR['STATUS'])
                 resetDogleg()
             time.sleep(t_hang)
 
@@ -128,7 +133,8 @@ def exerciseDogleg( loop=True ):
             t_arr[8] = time.time()
             succ, posi[4] = gotoDogleg(lb)
             t_arr[9] = time.time()
-            if not succ and readback(ADDR['STATUS'])==80:
+            if not succ:
+                stat[4] = readback(ADDR['STATUS'])
                 resetDogleg()
             time.sleep(t_hang)
 
@@ -136,7 +142,8 @@ def exerciseDogleg( loop=True ):
             t_arr[10] = time.time()
             succ, posi[5] = gotoDogleg(home)
             t_arr[11] = time.time()
-            if not succ and readback(ADDR['STATUS'])==80:
+            if not succ:
+                stat[5] = readback(ADDR['STATUS'])
                 resetDogleg()
 
 
@@ -149,9 +156,9 @@ def exerciseDogleg( loop=True ):
                 "\n\t (lb{:.5g}) --> home ({:.5g}): ".format(posi[4], posi[5]), t_arr[11]-t_arr[10])
             
             with open(REPORTFILE, "a") as file:
-                file.write('%s %s %s %s %s %s %s\n' % (tRunStart, t_arr[1]-t_arr[0], t_arr[3]-t_arr[2],
-                                                    t_arr[5]-t_arr[4], t_arr[7]-t_arr[6], 
-                                                    t_arr[9]-t_arr[8], t_arr[11]-t_arr[10]))
+                file.write('%s %s %s %s %s %s %s\n' % (tRunStart, t_arr[1]-t_arr[0], stat[0], t_arr[3]-t_arr[2], stat[1],
+                                                    t_arr[5]-t_arr[4], stat[2], t_arr[7]-t_arr[6], stat[3],
+                                                    t_arr[9]-t_arr[8], stat[4], t_arr[11]-t_arr[10], stat[5]))
                 
             init_run = loop
 
