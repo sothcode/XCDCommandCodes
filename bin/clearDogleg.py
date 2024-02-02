@@ -44,4 +44,4 @@ if __name__ == "__main__":
     writeXCD2([ADDR['STATUS'], 0])
     writeXCD2([ADDR['COMMAND'], 0])
     new_status=readback(ADDR['STATUS'])
-    print("DONE.  Dogleg status was ",status," (",reverse_lookup(STAT,status),"), is nowstatus:",new_status," (",reverse_lookup(STAT,new_status),").")
+    print("DONE.  Dogleg status was ",status," (",_reverseLookup(STAT,status),"), is nowstatus:",new_status," (",_reverseLookup(STAT,new_status),").")
