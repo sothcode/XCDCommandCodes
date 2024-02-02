@@ -18,7 +18,7 @@ REPORTFILE = "exerciseDoglegReport.txt"
 
 # Iterate over all serial controllers we find matching /dev/ttyUSB*
 ttyUSB_ports = find_ttyUSB_ports()
-ttyUSB_ports = '/dev/ttyUSB0'
+ttyUSB_ports = ['/dev/ttyUSB0']
 
 iter = 1
 
