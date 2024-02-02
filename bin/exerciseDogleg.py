@@ -7,7 +7,7 @@ from quickAssign import writeXCD2
 from quickReport import reportXCD2
 from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
 from variableDictionaryXCD2 import varStatusValues as STAT
-import gotoDogleg
+from gotoDogleg import gotoDogleg
 
 lb = -2.9
 home = 0
@@ -44,7 +44,7 @@ while True:
             suc02, ret02 = reportXCD2([ADDR['STATUS'], 'XAXIS'])
         
             t_arr[1] = time.time()
-            succ[0], posi[0] =  gotoDogleg(hb)
+            succ[0], posi[0] = gotoDogleg(hb)
             t_arr[2] = time.time()
             succ[1], posi[1] = gotoDogleg(lb)
             t_arr[3] = time.time()
