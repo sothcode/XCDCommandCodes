@@ -105,8 +105,8 @@ def goto( axisName=None, destination=None):
             return False        
         #  check to see if the dict value is a number.
         #  if number: make it a float.
-        if (is_number(destination)):
-            targetPos=float(destination)
+        if (is_number(value)):
+            targetPos=float(value)
         else:
             print("goto: kfDatabase key '%s' has non-numeric value %s" % (keyName,str(value)))
             return False
