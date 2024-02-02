@@ -58,7 +58,7 @@ def is_number(s):
 def find_comm(axisName):
     #return a command lookup table matching the axis.
     #also let us know if the axis is a dogleg, so we know how to behave.
-    isDogleg=false
+    isDogleg=False
     COMM={}
     if bool(re.match(r'^.+_DL\d_A\d$',axisName)):
         COMM=ALL_COMM['Dogleg']
