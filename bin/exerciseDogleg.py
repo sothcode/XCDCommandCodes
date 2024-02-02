@@ -141,7 +141,7 @@ def exerciseDogleg( loop=True ):
 
 
             print("exerciseDogleg.py REPORT: startTime = ", tRunStart,
-                "\n AXIS 0:", "\n\t home ({:.5g}) --> hb ({:.5g}): ".format(home, posi[0]), t_arr[2]-t_arr[1], 
+                "\n AXIS 0:", "\n\t home ({:.5g}) --> hb ({:.5g}): ".format(home, posi[0]), t_arr[1]-t_arr[0], 
                 "\n\t hb ({:.5g}) --> (lb{:.5g}): ".format(posi[0], posi[1]), t_arr[3]-t_arr[2], 
                 "\n\t lb ({:.5g}) --> (home{:.5g}): ".format(posi[1], posi[2]), t_arr[4]-t_arr[3],
                 "\n AXIS 1:", "\n\t (home{:.5g}) --> hb ({:.4g}): ".format(home, posi[3]), t_arr[7]-t_arr[6], 
@@ -149,9 +149,9 @@ def exerciseDogleg( loop=True ):
                 "\n\t (lb{:.5g}) --> home ({:.5g}): ".format(posi[4], posi[5]), t_arr[9]-t_arr[8])
             
             with open(REPORTFILE, "a") as file:
-                file.write('%s %s %s %s %s %s %s\n' % (tRunStart, t_arr[2]-t_arr[1], t_arr[3]-t_arr[2],
-                                                    t_arr[4]-t_arr[3], t_arr[7]-t_arr[6], 
-                                                    t_arr[8]-t_arr[7], t_arr[9]-t_arr[8]))
+                file.write('%s %s %s %s %s %s %s\n' % (tRunStart, t_arr[1]-t_arr[0], t_arr[3]-t_arr[2],
+                                                    t_arr[5]-t_arr[4], t_arr[7]-t_arr[6], 
+                                                    t_arr[9]-t_arr[8], t_arr[11]-t_arr[10]))
                 
             init_run = loop
 
