@@ -6,9 +6,8 @@ import time
 from xcdSerial import getCurrentPort
 from updatePorts import find_ttyUSB_ports
 from quickAssign import writeXCD2
-from quickReport import readback, reportXCD2
+from quickReport import readback
 from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
-from variableDictionaryXCD2 import varStatusValues as STAT
 from gotoDogleg import gotoDogleg
 
 # SET GLOBAL VARIABLES
@@ -18,6 +17,8 @@ hb = 2.9        # high bound to travel to
 t_hang = 1.5    # wait time between successive gotoDogleg calls
 
 # set reset command - just run shell script
+stopXMS = './killXCD2.sh'
+startXMS = './startXMS.sh'
 reset = './debug_reset_doglegs.sh'
 
 # Initialize file to store movement report
@@ -27,6 +28,19 @@ REPORTFILE = ''
 # ttyUSB_ports = find_ttyUSB_ports()
 # ttyUSB_ports = ['/dev/ttyUSB0']
 
+
+def resetDogleg():
+    currentAx = readback(ADDR['XAXIS'])
+    currentPos = readback(ADDR['FPOS'])
+    os.system(stopXMS)
+    os.system(startXMS)
+    writeXCD2([ADDR['STATUS'], 0])
+    writeXCD2(['XAXIS', 0])
+    writeXCD2(['VEL', 100])
+    writeXCD2(['XAXIS', 1])
+    writeXCD2(['VEL', 100])
+    writeXCD2(['XAXIS', currentAx])
+    return
 
 
 def exerciseDogleg( loop=True ):
@@ -46,25 +60,19 @@ def exerciseDogleg( loop=True ):
         # guarantees back and forth will run at least once
         init_run = True
 
-        # initialize proper variables
-        suc01, ret01 = reportXCD2([ADDR['STATUS']])
+        # check status, then initialize proper variables
+        status=readback(ADDR['STATUS'])
+        if status!=0:
+            print("exerciseDogleg.py initilization failed. Please check status.")
+            return
         writeXCD2(['XAXIS', 0])
         writeXCD2(['VEL', 100])
         writeXCD2(['FPOS', 0])
         writeXCD2([ADDR['TURNS'], 0])
-        suc02, ret02 = reportXCD2([ADDR['STATUS']])
-
-        suc11, ret11 = reportXCD2([ADDR['STATUS']])
         writeXCD2(['XAXIS', 1])
         writeXCD2(['VEL', 100])
         writeXCD2(['FPOS', 0])
         writeXCD2([ADDR['TURNS'], 0])
-        suc12, ret12 = reportXCD2([ADDR['STATUS']])
-
-        # if status is not waiting, say initialization failed
-        if (not suc01) or (not suc02) or (not suc11) or (not suc12):
-            print("exerciseDogleg.py initilization failed. Please check status.")
-            return
 
         # for each run, cycle through axes
         while init_run:
@@ -76,6 +84,8 @@ def exerciseDogleg( loop=True ):
 
             print(">>>>>>>AXIS 0:")
             writeXCD2(['XAXIS', 0])
+
+            # time.sleep(t_hang)
         
             # t_arr[0] = time.time()
             # succ, posi[0] = gotoDogleg(hb)
@@ -99,21 +109,27 @@ def exerciseDogleg( loop=True ):
             time.sleep(t_hang)
 
             t_arr[6] = time.time()
-            succ, posi[3] =  gotoDogleg(hb)
-            if not succ:
-                os.system(reset)
-                return
+            succ, posi[3] = gotoDogleg(hb)
             t_arr[7] = time.time()
+
+            if not succ and readback(ADDR['STATUS'])==80:
+                resetDogleg()
             time.sleep(t_hang)
 
             t_arr[8] = time.time()
             succ, posi[4] = gotoDogleg(lb)
             t_arr[9] = time.time()
+
+            if not succ and readback(ADDR['STATUS'])==80:
+                resetDogleg()
             time.sleep(t_hang)
 
             t_arr[10] = time.time()
             succ, posi[5] = gotoDogleg(home)
             t_arr[11] = time.time()
+
+            if not succ and readback(ADDR['STATUS'])==80:
+                resetDogleg()
 
 
             print("exerciseDogleg.py REPORT:",
