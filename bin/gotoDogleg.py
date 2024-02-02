@@ -78,7 +78,7 @@ def gotoDogleg( whereToGo ):
         status=readback(ADDR['STATUS'])
         
     if status==STAT['BUSY']:
-        writeXCD2(ADDR['STATUS'], 80)
+        writeXCD2([ADDR['STATUS'], 80])
 
     #loop until controller busy flag is cleared
 
