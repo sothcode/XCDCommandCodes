@@ -6,7 +6,7 @@ import sys
 import time
 from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
 from variableDictionaryXCD2 import varStatusValues as STAT
-from variableDictionaryXCD2 import varPhiMotorCommands as COMM
+from variableDictionaryXCD2 import varPhiCommands as COMM
 #import random #for testing
 
 #tuning settings
