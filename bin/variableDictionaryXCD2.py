@@ -35,7 +35,7 @@ varAttenuatorCommands = {
 }
 
 varAllCommands = {
-'Phi':varPhiMotorCommands,
+'Phi':varPhiCommands,
 'ThetaL':varThetaLCommands,
 'ThetaS':varThetaSCommands,
 'Dogleg':varDoglegCommands,
