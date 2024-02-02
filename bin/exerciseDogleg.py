@@ -31,7 +31,6 @@ REPORTFILE = ''
 
 def resetDogleg():
     currentAx = readback(ADDR['XAXIS'])
-    currentPos = readback(ADDR['FPOS'])
     os.system(stopXMS)
     os.system(startXMS)
     writeXCD2([ADDR['STATUS'], 0])
@@ -85,22 +84,28 @@ def exerciseDogleg( loop=True ):
             print(">>>>>>>AXIS 0:")
             writeXCD2(['XAXIS', 0])
 
-            # time.sleep(t_hang)
+            time.sleep(t_hang)
         
-            # t_arr[0] = time.time()
-            # succ, posi[0] = gotoDogleg(hb)
-            # t_arr[1] = time.time()
-            # time.sleep(t_hang)
+            t_arr[0] = time.time()
+            succ, posi[0] = gotoDogleg(hb)
+            t_arr[1] = time.time()
 
-            # t_arr[2] = time.time()
-            # succ, posi[1] = gotoDogleg(lb)
-            # t_arr[3] = time.time()
-            # time.sleep(t_hang)
+            if not succ and readback(ADDR['STATUS'])==80:
+                resetDogleg()
+            time.sleep(t_hang)
 
-            # t_arr[4] = time.time()
-            # succ, posi[2] = gotoDogleg(home)
-            # t_arr[5] = time.time()
-            # time.sleep(t_hang)
+            t_arr[2] = time.time()
+            succ, posi[1] = gotoDogleg(lb)
+            t_arr[3] = time.time()
+
+            if not succ and readback(ADDR['STATUS'])==80:
+                resetDogleg()
+            time.sleep(t_hang)
+
+            t_arr[4] = time.time()
+            succ, posi[2] = gotoDogleg(home)
+            t_arr[5] = time.time()
+            time.sleep(t_hang)
 
         
             print(">>>>>>>AXIS 1:")
@@ -132,15 +137,13 @@ def exerciseDogleg( loop=True ):
                 resetDogleg()
 
 
-            print("exerciseDogleg.py REPORT:",
-                "\n AXIS 0: readWrite time = ", t_arr[1]-t_arr[0],
-                "\n\t home{:.4g}-->hb{:.4g}: ".format(home, posi[0]), t_arr[2]-t_arr[1], 
-                "\n\t hb{:.4g}-->lb{:.4g}: ".format(posi[0], posi[1]), t_arr[3]-t_arr[2], 
-                "\n\t lb{:.4g}-->home{:.4g}: ".format(posi[1], posi[2]), t_arr[4]-t_arr[3],
-                "\n AXIS 1: readWrite time = ", t_arr[6]-t_arr[5],
-                "\n\t home{:.4g}-->hb{:.4g}: ".format(home, posi[3]), t_arr[7]-t_arr[6], 
-                "\n\t hb{:.4g}-->lb{:.4g}: ".format(posi[3], posi[4]), t_arr[8]-t_arr[7],
-                "\n\t lb{:.4g}-->home{:.4g}: ".format(posi[4], posi[5]), t_arr[9]-t_arr[8])
+            print("exerciseDogleg.py REPORT: startTime = ", tRunStart,
+                "\n AXIS 0:", "\n\t home ({:.5g}) --> hb ({:.5g}): ".format(home, posi[0]), t_arr[2]-t_arr[1], 
+                "\n\t hb ({:.5g}) --> (lb{:.5g}): ".format(posi[0], posi[1]), t_arr[3]-t_arr[2], 
+                "\n\t lb ({:.5g}) --> (home{:.5g}): ".format(posi[1], posi[2]), t_arr[4]-t_arr[3],
+                "\n AXIS 1:", "\n\t (home{:.5g}) --> hb ({:.4g}): ".format(home, posi[3]), t_arr[7]-t_arr[6], 
+                "\n\t (hb{:.5g}) --> lb ({:.5g}): ".format(posi[3], posi[4]), t_arr[8]-t_arr[7],
+                "\n\t (lb{:.5g}) --> home ({:.5g}): ".format(posi[4], posi[5]), t_arr[9]-t_arr[8])
             
             with open(REPORTFILE, "a") as file:
                 file.write('%s %s %s %s %s %s %s\n' % (tRunStart, t_arr[2]-t_arr[1], t_arr[3]-t_arr[2],
