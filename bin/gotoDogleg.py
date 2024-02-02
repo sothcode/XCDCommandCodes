@@ -71,7 +71,7 @@ def gotoDogleg( whereToGo ):
         time.sleep(sleeptime)
 
         # check 
-        if abs(readback(ADDR['FPOS'])-position)<readback('ENR')*3:
+        if abs(readback(ADDR['FPOS'])-position) > 3*readback('ENR'):
             t1 = time.time()
 
         # otherwise update status and continue
