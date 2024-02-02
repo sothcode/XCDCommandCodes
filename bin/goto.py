@@ -27,6 +27,7 @@ debug=True
 #mainDb="axis_parameters.kfdb"
 portsDb="test_only_xcd2_ports.kfdb"
 mainDb="test_only_axis_parameters.kfdb"
+PORTFILE="XCD_current_port"
 
 
 #{later:
@@ -119,7 +120,9 @@ def goto( axisName=None, destination=None):
     #now we are guaranteed we have a reachable axis, and a target position as a float.
     #we are also guaranteed that we are not moving a dogleg to a numeric position.
 
-
+    #set the current port through the file:
+    with open(PORTFILE) as file:
+        file.write(targetPort)
     
     #check if controller is busy.  If so, exit with explanation
     if debug:
