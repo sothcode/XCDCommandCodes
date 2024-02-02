@@ -69,7 +69,7 @@ def writeVar(fileName='junk_db.kfdb', varName = None, varValue = None, writeNew 
     #check that file exists before opening
     if not os.path.exists(fileName):
         print("Can't load kfdb '",fileName,"'.  File does not exist.")
-        return False;
+        return False
 
     #the log of changes to this file is that + .log
     logName=f"{fileName}.log"
@@ -136,14 +136,14 @@ def readVar(fileName='junk_db.kfdb', varName = None):
      No arguments given. readVar will find the value for a given variable. readVar parameters are: \n \
      1) varName - Mandatory, specifies the variable name. String. \n \
      ")
-        return False
+        return False,0
 
     #print("Current Working Directory " , os.getcwd())               # Checks current working directory and moves to the correct one
     
    #check that file exists before opening
     if not os.path.exists(fileName):
         print("Can't load kfdb '",fileName,"'.  File does not exist.")
-        return False;
+        return False,0
 
     #the log of changes to this file is that + .log
     logName=f"{fileName}.log"
@@ -164,7 +164,7 @@ def readVar(fileName='junk_db.kfdb', varName = None):
         
     else:
         print("Variable name not found")
-        return False 
+        return False,0
         
         
 def listVar(fileName='junk_db.kfdb'):
@@ -174,7 +174,7 @@ def listVar(fileName='junk_db.kfdb'):
     #check that file exists before opening
     if not os.path.exists(fileName):
         print("Can't load kfdb '",fileName,"'.  File does not exist.")
-        return False;
+        return False
 
     #the log of changes to this file is that + .log
     logName=f"{fileName}.log"
