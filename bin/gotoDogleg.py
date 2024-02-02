@@ -11,7 +11,7 @@ from changeAxisDogleg import changeAxis
 
 #tuning settings
 sleeptime = 0.6 # in seconds
-timeout = 20    # in seconds
+timeout = 10    # in seconds
 debug = False
 
 #{later:
