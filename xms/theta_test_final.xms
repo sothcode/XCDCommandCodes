@@ -14,7 +14,7 @@
 //     - V19 = 0 SUCCESS/IDLE
 //     - V19 = 1 FAILURE
 //     - V19 = 9 BUSY
-XAXIS = 1
+XAXIS = 0
 ENR = 6.103515625e-5
 MTL = 4000000
 DZMIN = ENR
@@ -26,7 +26,7 @@ VEL = 1
 config 900, 0x00011001
 delay 1000
 
-XAXIS = 0
+XAXIS = 1
 ENR = 6.103515625e-5
 MTL = 4000000
 DZMIN = ENR
@@ -56,14 +56,6 @@ while 1
 
       // set statusBYTE BUSY
       V19 = 9
-
-
-// gently move in one direction until arm contacts lightpipe
-// record position
-// gently move in other direction
-// 
-
-
 
       // first move back and forth
       enable
@@ -124,3 +116,44 @@ while 1
    end
 
 
+
+   // theta short home procedure
+   if V0 = 5
+
+      // set statusBYTE BUSY
+      V19 = 9
+
+      // rotate in positive dir'n to find home
+      
+      
+
+   // end theta short home procedure
+   end
+
+
+
+   // theta short goto procedure
+   if V0 = 6
+
+      // set statusBYTE BUSY
+      V19 = 9
+
+      // move to argVAL (has 2 secs to complete)
+      move V10
+      delay 2000
+
+      // if not there, throw error code
+      if abs(V10 - FPOS) > 10*ENR
+         V19 = 3
+      else
+         V19 = 0
+      end
+
+   // end theta short goto procedure
+   end
+
+
+   // retry loop every 100 milliseconds
+   delay 100
+
+end

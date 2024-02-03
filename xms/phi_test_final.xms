@@ -25,7 +25,7 @@ DZMAX = 4*ENR
 KP = 10
 VEL = 2
 
-// configure phi motor settings (non-inverted drive and feedback)
+// configure phi motor settings  (non-inverted drive and feedback)
 config 900, 0x00011001
 delay 1000
 
@@ -109,6 +109,7 @@ while 1
       enable
       velocityloop -2.0
       while S_IND = 0
+         if 
       end
       velocityloop 0.0
       disable
@@ -140,7 +141,7 @@ while 1
 
       
       // check if V10 a valid input and if so move
-      // if not, throw error code V19 = 3
+      // if not, throw error code V19 = 1 (out of bounds)
       if V10 > V2 & V10 < V3
          enable
          move V10
@@ -149,7 +150,7 @@ while 1
 
          V19 = 0
       else
-         V19 = 3
+         V19 = 1
       end
       
       // reset to IDLE state
