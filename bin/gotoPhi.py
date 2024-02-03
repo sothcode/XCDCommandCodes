@@ -66,7 +66,7 @@ def gotoPhi( whereToGo ):
     while status==STAT['BUSY']  and (time.time()-t1) < timeout:
         oldposition=position
         position=readback(ADDR['FPOS'])
-        printf("position:%s status:%s (%s) (not live: lb:%1.4f hb:%1.4f)"%(position,status,_reverseLookup(STAT,status),hardstop1,hardstop2))
+        print("position:%s status:%s (%s) (not live: lb:%1.4f hb:%1.4f)"%(position,status,_reverseLookup(STAT,status),hardstop1,hardstop2))
         if debug:
             print ("goto: loop: check status:")
         status=readback(ADDR['STATUS'])
