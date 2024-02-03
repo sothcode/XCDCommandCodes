@@ -123,7 +123,7 @@ def goto( axisName=None, destination=None):
     #we are also guaranteed that we are not moving a dogleg to a numeric position.
 
     #set the current port through the file:
-    with open(PORTFILE) as file:
+    with open(PORTFILE,'w') as file:
         file.write(targetPort)
     #changeAxis:
     writeXCD2(ADDR['XAXIS'],0)
