@@ -68,8 +68,8 @@ def find_comm(axisName):
     elif bool(re.match(r'^.+_TH_L$',axisName)):
         COMM=ALL_COMM['ThetaL']
     elif bool(re.match(r'^.+_PH$',axisName)):
-        COMM=ALL_COMM['Attenuator']        
-    elif bool(re.match(r'^.+_PH$',axisName)):
+        COMM=ALL_COMM['Phi']        
+    elif bool(re.match(r'^.+_AT$',axisName)):
         COMM=ALL_COMM['Attenuator']
     else:
         print("no match of '%s' to axis types.  Critical failure!"%(axisName))
@@ -137,7 +137,7 @@ def goto( axisName=None, destination=None):
         print("NOT EXECUTED. Controller status is not 0. status: %s (%s)"%(status,_reverseLookup(STAT,status)))
         return False, 0
     
-    print("goto: sending command %s",COMM['GOTO'])
+    print("goto: sending command %s (%s)"%(COMM['GOTO'],'GOTO'))
     commandSent=sendcommand(COMM['GOTO'],targetPos) # this sleeps until it sees the status change from new_command
     if not commandSent:
         return False, readback(ADDR['FPOS'])
