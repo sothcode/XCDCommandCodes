@@ -9,14 +9,14 @@ testports="test_only_xcd2_ports.kfdb"
 if not(os.path.exists(testports)): #if it doesn't exist, touch it so it does.
     with open(testports, 'w'):
         pass
-kf.writeVar(testports,"DEBUG_DL0_A0",["dev_test_only",0],"new")
-kf.writeVar(testports,"DEBUG_DL0_A1","dev_test_only","new")
-kf.writeVar(testports,"DEBUG_DL1_A0","dev_test_only1","new")
-kf.writeVar(testports,"DEBUG_DL1_A1","dev_test_only1","new")
-kf.writeVar(testports,"DEBUG_TH_S","dev_test_only2","new")
-kf.writeVar(testports,"DEBUG_TH_L","dev_test_only2","new")
-kf.writeVar(testports,"DEBUG_PH","dev_test_only3","new")
-kf.writeVar(testports,"DEBUG_AT","dev_test_only3","new")
+kf.writeVar(testports,"DEBUG_DL0_A0",["dev_test_only0",0],"new")
+kf.writeVar(testports,"DEBUG_DL0_A1",["dev_test_only0",1],"new")
+kf.writeVar(testports,"DEBUG_DL1_A0",["dev_test_only1",0],"new")
+kf.writeVar(testports,"DEBUG_DL1_A1",["dev_test_only1",1],"new")
+kf.writeVar(testports,"DEBUG_TH_S",["dev_test_only2",0],"new")
+kf.writeVar(testports,"DEBUG_TH_L",["dev_test_only2",1],"new")
+kf.writeVar(testports,"DEBUG_PH",["dev_test_only3",0],"new")
+kf.writeVar(testports,"DEBUG_AT",["dev_test_only3",1],"new")
 kf.listVar(testports)
 
 testparameters="test_only_axis_parameters.kfdb"
