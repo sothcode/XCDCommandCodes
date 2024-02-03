@@ -282,3 +282,25 @@ def listVar(fileName='junk_db.kfdb'):
     print("Variable List:")
     print(varDict)  
     return True
+
+
+
+#to talk to it from the command line
+if __name__ == "__main__":
+    #check args
+    if len(sys.argv)==2:
+        #assume first arg is a filename, and try to open it to list:
+        print("listVar returned",listVar(sys.argv[1]))
+    elif len(sys.argv)==3:
+        #assume first arg is a filename, second is a key name.  report back that key value
+        readVar(sys.argv[1], sys.argv[2])
+        print("readVar returned",readVar(sys.argv[1], sys.argv[2]))
+    elif len(sys.argv)==4:
+        #assume it's filename,key,value.  try to set that value.
+        print("writeVar returned",readVar(sys.argv[1], sys.argv[2],sys.argv[3]))
+    elif len(sys.argv)==5:
+        #assume it's filename,key,value, newFlag.  try to set that value.
+        print("writeVar with extra flag returned",readVar(sys.argv[1], sys.argv[2],sys.argv[3], sys.argv[4]))
+    else:
+        print("kfdb NOT EXECUTED. Wrong number of arguments.  Requires 1,2,3, or 4 args")
+        sys.exit()
