@@ -142,7 +142,7 @@ while 1
       
       // check if V10 a valid input and if so move
       // if not, throw error code V19 = 1 (out of bounds)
-      if V10 > V2 & V10 < V3
+      if V10 >= V2 & V10 <= V3
          enable
          move V10
          delay 2000
