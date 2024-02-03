@@ -47,7 +47,7 @@ def sendcommand(com,arg):
     t1=time.time()
     timedOut=False
     while status==STAT['NEWCOMMAND'] and (not timedOut):
-        if (time.time()-t1) > timeout
+        if (time.time()-t1) > timeout:
             print("sendcommand:  command timed out.  No response from controller")
             writeXCD2([ADDR['COMMAND'],0.0])
             writeXCD2([ADDR['STATUS'],STAT['FAIL_DID_NOT_RESPOND']])
