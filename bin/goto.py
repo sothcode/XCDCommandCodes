@@ -126,7 +126,7 @@ def goto( axisName=None, destination=None):
     with open(PORTFILE,'w') as file:
         file.write(targetPort)
     #changeAxis:
-    writeXCD2(ADDR['XAXIS'],0)
+    writeXCD2([ADDR['XAXIS'],0])
     
     #check if controller is busy.  If so, exit with explanation
     if debug:
