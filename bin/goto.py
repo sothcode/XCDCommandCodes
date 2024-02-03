@@ -138,8 +138,10 @@ def goto( axisName=None, destination=None):
         return False, 0
     
     print("goto: sending command %s",COMM['GOTO'])
-    sendcommand(COMM['GOTO'],targetPos) # this sleeps until it sees the status change from new_command
-
+    commandSent=sendcommand(COMM['GOTO'],targetPos) # this sleeps until it sees the status change from new_command
+    if not commandSent:
+        return False, readback(ADDR['FPOS'])
+    
     #monitor the controller position and report at intervals of sleeptime
     if debug:
         print("goto:  Check position:");

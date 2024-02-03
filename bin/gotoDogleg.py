@@ -46,7 +46,9 @@ def gotoDogleg( whereToGo ):
         print("Error: Not a valid number")
         return False, 0
 
-    sendcommand(COMM['GOTO'],destination) # this sleeps until it sees the status change from new_command
+    commandSent=sendcommand(COMM['GOTO'],destination) # this sleeps until it sees the status change from new_command
+    if not commandSent:
+        return False, readback(ADDR['FPOS'])
 
     #monitor the controller position and report at intervals of sleeptime
     if debug:
