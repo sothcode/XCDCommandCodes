@@ -4,7 +4,7 @@
 # To prevent alignment accidents, it will not send a dogleg to a numeric position.  for that, you need to use gotoDogleg
 # If the axis is not connected, or the requested named position is not in the database, it fails.
 
-from quickAssign import sendcommand
+from quickAssign import sendcommand,writeXCD2
 from quickReport import readback
 #from dummySerial import sendcommand,readback,changeAxis
 import sys
@@ -125,6 +125,8 @@ def goto( axisName=None, destination=None):
     #set the current port through the file:
     with open(PORTFILE) as file:
         file.write(targetPort)
+    #changeAxis:
+    writeXCD2(ADDR['XAXIS'],0)
     
     #check if controller is busy.  If so, exit with explanation
     if debug:

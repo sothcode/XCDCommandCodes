@@ -9,7 +9,7 @@ testports="test_only_xcd2_ports.kfdb"
 if not(os.path.exists(testports)): #if it doesn't exist, touch it so it does.
     with open(testports, 'w'):
         pass
-kf.writeVar(testports,"DEBUG_DL0_A0","dev_test_only","new")
+kf.writeVar(testports,"DEBUG_DL0_A0",["dev_test_only",0],"new")
 kf.writeVar(testports,"DEBUG_DL0_A1","dev_test_only","new")
 kf.writeVar(testports,"DEBUG_DL1_A0","dev_test_only1","new")
 kf.writeVar(testports,"DEBUG_DL1_A1","dev_test_only1","new")
@@ -23,8 +23,8 @@ testparameters="test_only_axis_parameters.kfdb"
 if not(os.path.exists(testparameters)): #if it doesn't exist, touch it so it does.
     with open(testparameters, 'w'):
         pass
-kf.writeVar(testparameters,"DEBUG_DL0_A0/align","0","new")
-kf.writeVar(testparameters,"DEBUG_DL0_A0/home","0.2","new")
+kf.writeVar(testparameters,"DEBUG_DL0_A0/align",0,"new")
+kf.writeVar(testparameters,"DEBUG_DL0_A0/home",0.2,"new")
 kf.writeVar(testparameters,"DEBUG_DL0_A1/align","0","new")
 kf.writeVar(testparameters,"DEBUG_DL0_A1/home","0.3","new")
 
