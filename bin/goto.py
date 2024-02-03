@@ -150,13 +150,18 @@ def goto( axisName=None, destination=None):
         print("goto:  Check status:");
     #status=STAT['BUSY']
     status=readback(ADDR['STATUS'])
+    axis=readback(ADDR['XAXIS'])
 
     t1=time.time()
     while status==STAT['BUSY']  and (time.time()-t1) < timeout:
-        axis=readback(ADDR['XAXIS'])
         turns=readback(ADDR['TURNS'])
         position=readback(ADDR['FPOS'])
-        print("position:", position," (axis",axis,") status:",status," (",_reverseLookup(STAT,status),") turns:",turns)
+        oldposition=position
+        position=readback(ADDR['FPOS'])
+        turns=readback(ADDR['TURNS'])
+        print("position:%s status:%s (%s) turns:%s (not live: ax: %s lb:%1.4f hb:%1.4f)"%(position,status,_reverseLookup(STAT,status),turns,axis,hardstop1,hardstop2))
+
+        #print("position:", position," (axis",axis,") status:",status," (",_reverseLookup(STAT,status),") turns:",turns)
         if debug:
             print ("goto: loop: check status:")
 
@@ -180,14 +185,19 @@ def goto( axisName=None, destination=None):
     if debug:
         print ("goto: finishing up.  check status and readback:")
 
-    #status=readback(ADDR['STATUS'])  this is already read in the way we left the while loop above.
-    lastpos=readback(ADDR['FPOS'])
+    status=readback(ADDR['STATUS'])
+    position=readback(ADDR['FPOS'])
+    axis=readback(ADDR['XAXIS'])
+    turns=readback(ADDR['TURNS'])
+    lb=readback(ADDR['HARD_STOP1'])
+    hb=readback(ADDR['HARD_STOP2'])
+
     if status==STAT['READY']:
-        print("SUCCESS. goto %s %s complete.  status: %s (%s)"%(axisName, destination ,status, _reverseLookup(STAT,status))," position:{:.4g} (ax{:.1g})".format(readback(ADDR['FPOS']),readback(ADDR['XAXIS'])), "nTurns:",readback(ADDR['TURNS']));
-        return True, lastpos
+        print("SUCCESS. goto%s %s complete.  status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName, destination, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
+        return True, position
     
-    print("FAIL. goto %s %s failed.  status: %s (%s)"%(axisName, destination ,status, _reverseLookup(STAT,status))," position:{:.4g} (ax{:.1g})".format(readback(ADDR['FPOS']),readback(ADDR['XAXIS'])), "nTurns:",readback(ADDR['TURNS']));
-    return False, lastpos
+    print("FAIL. goto%s %s failed.  status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName, destination, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
+    return False, position
 
 
 

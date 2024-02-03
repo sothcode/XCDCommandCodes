@@ -73,7 +73,8 @@ while status==STAT['BUSY']:
 if debug:
      print ("goto: finishing up.  check status and readback:")
 if status==STAT['READY']:
-    print("SUCCESS. gotoThetaL complete.  status:",readback(ADDR['STATUS'])," position:{:.4g}".format(readback(ADDR['FPOS'])), "nTurns:",readback(ADDR['TURNS']));
-else:
-    print("FAIL. gotoThetaL failed.  status:",readback(ADDR['STATUS'])," position:{:.4g}".format(readback(ADDR['FPOS'])), "nTurns:",readback(ADDR['TURNS']));
-
+    print("SUCCESS. goto%s %s complete.  status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName, destination, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
+    return True, position
+else:    
+    print("FAIL. goto%s %s failed.  status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName, destination, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
+    return False, position

@@ -42,7 +42,9 @@ if debug:
 status=STAT['BUSY']
 while status==STAT['BUSY']:
     status=readback(ADDR['STATUS'])
-    print("position:",readback(ADDR['FPOS'])," status:",status)
+    hardstop1=readback(ADDR['HARD_STOP1'])
+    hardstop2=readback(ADDR['HARD_STOP2'])
+    print("position:",readback(ADDR['FPOS'])," status:",status, "lb:",hardstop1, "hb:",hardstop2)
     if debug:
         print ("goto: loop: check status:")
     status=readback(ADDR['STATUS'])
@@ -54,7 +56,8 @@ while status==STAT['BUSY']:
 if debug:
      print ("goto: finishing up.  check status and readback:")
 if status==STAT['READY']:
-    print("SUCCESS. homeThetaL complete.  status:",readback(ADDR['STATUS'])," position:",readback(ADDR['FPOS']));
+    print("SUCCESS. homeThetaL complete.  status:",readback(ADDR['STATUS'])," position:",readback(ADDR['FPOS']), \
+          " lb:",readback(ADDR['HARD_STOP1']), " hb:",readback(ADDR['HARD_STOP2']));
 else:
-    print("FAIL. homeThetaL failed.  status:",readback(ADDR['STATUS'])," position:",readback(ADDR['FPOS']));
-
+    print("FAIL. homeThetaL failed.  status:",readback(ADDR['STATUS'])," position:",readback(ADDR['FPOS']), \
+          " lb:",readback(ADDR['HARD_STOP1']), " hb:",readback(ADDR['HARD_STOP2']));
