@@ -61,7 +61,8 @@ def wait_and_writelock(filename):
         time.sleep(sleeptime)
         waittime+=1
         if (waittime % 100 == 0):
-            print("kfdb waiting to write to %s.  (sleeps=%s*%s)"%(filename,waittime,sleeptime))
+            if debug:
+                print("kfdb waiting to write to %s.  (sleeps=%s*%s)"%(filename,waittime,sleeptime))
     add_writelock(filename)
     return True
 
@@ -71,7 +72,8 @@ def wait_and_readlock(filename):
         time.sleep(sleeptime)
         waittime+=1
         if (waittime % 100 == 0):
-            print("kfdb waiting to read from %s.  (sleeps=%s*%s)"%(filename,waittime,sleeptime))
+            if debug:
+                print("kfdb waiting to read from %s.  (sleeps=%s*%s)"%(filename,waittime,sleeptime))
     add_readlock(filename)
     return True
 
@@ -185,10 +187,12 @@ def writeVar(fileName='junk_db.kfdb', varName = None, varValue = None, writeNew 
     #go through cases where nothing needs to be done:
     if varName in varDict.keys():             # Checks if varName is a key
         if writeNew=='new':
-            print("Variable %s was declared as 'new', but it already exists.  Aborting. Existing value will not be changed." % varName)
+            if debug:
+                print("Variable %s was declared as 'new', but it already exists.  Aborting. Existing value will not be changed." % varName)
             return False
         if (varValue==varDict[varName]):
-            print("Variable " +str(varName) + " requested to be changed to = " + str(varValue) + " but is already that value.  Nothing changes.  No log entry will be added.")
+            if debug:
+                print("Variable " +str(varName) + " requested to be changed to = " + str(varValue) + " but is already that value.  Nothing changes.  No log entry will be added.")
             return True
     else: #varName is not in the dict yet
         if writeNew!='new':# If "new" command is absent, returns error message
@@ -204,12 +208,14 @@ def writeVar(fileName='junk_db.kfdb', varName = None, varValue = None, writeNew 
         with open(logName, "a") as f:     # Logs the change to the log for a change
             f.write('%s %s %s %s \n' % (varName, varValue, datetimeNow, userName ))
         varDict[varName] = varValue         # Assigns the given varValue to the key varName
-        print("Variable " +str(varName) + " changed to = " + str(varValue) + " at " + datetimeNow + " by " + userName)            
+        if debug:
+            print("Variable " +str(varName) + " changed to = " + str(varValue) + " at " + datetimeNow + " by " + userName)            
     else:                                       # If varName not in dictionary, checks for "new" command"
         if writeNew=='new':                        # If "new" command is there, appends varName and varValue to the dict
             with open(logName, "a") as f:     # Logs the change to the log for an addition
                 f.write('%s %s %s %s \n' % (varName, varValue, datetimeNow, userName  ))
-            print("Added " + str(varName) + " = " + str(varValue) + " to dictionary at " + datetimeNow + " by " + userName)
+            if debug:
+                print("Added " + str(varName) + " = " + str(varValue) + " to dictionary at " + datetimeNow + " by " + userName)
             varDict[varName] = varValue
 
         
@@ -283,7 +289,8 @@ def listVar(fileName='junk_db.kfdb'):
     varDict = {}
     varDict=loadDict(fileName) #this is locking on its own.
 
-    print("Variable List:")
+    if debug:
+        print("Variable List:")
     print(varDict)  
     return True
 
