@@ -18,7 +18,7 @@ debug=False
 
 
 
-#homePhi() should return success, highbound,lowbound,home, in that order.
+#homePhi() should return success, lowbound, highbound,home, in that order.
 
 if len(sys.argv) != 1: #note that sys.argv has arg 1 as the command itself
     print("NOT EXECUTED. Wrong number of arguments.  Correct usage is ./homePhi.py")
