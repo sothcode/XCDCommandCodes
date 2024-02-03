@@ -137,7 +137,7 @@ def goto( axisName=None, destination=None):
         print("NOT EXECUTED. Controller status is not 0. status: %s (%s)"%(status,_reverseLookup(STAT,status)))
         return False, 0
     
-
+    print("goto: sending command %s",COMM['GOTO'])
     sendcommand(COMM['GOTO'],targetPos) # this sleeps until it sees the status change from new_command
 
     #monitor the controller position and report at intervals of sleeptime
