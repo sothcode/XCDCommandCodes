@@ -10,6 +10,7 @@ import struct
 
 debug=False
 sleeptime=0.1
+timeout=10
 
 
 def sendcommand(com,arg):
@@ -17,37 +18,47 @@ def sendcommand(com,arg):
         print("command:  Check status:")
     status=readback(ADDR['STATUS'])
     if status!=STAT['READY']:
-        print("NOT EXECUTED.  Error: Controller is not in ready state.  Status=",status)
-        sys.exit()
+        print("NOT EXECUTED.  Error: sendcommand: Controller is not in ready state.  Status=",status)
+        return False
+        #instead of sys.exit()
     try:
         input = float(arg)
     except ValueError:
         print("NOT EXECUTED.  Error: Not a valid number, arg=",arg)
-        sys.exit()
+        return False
+        #instead of sys.exit()
 
     if debug:
-        print("command: set argument:")    
+        print("sendcommand: set argument:")    
     writeXCD2([ADDR['ARG'], arg])    
     if debug:
-        print("command: set status to new_command:")    
+        print("sendcommand: set status to new_command:")    
     writeXCD2([ADDR['STATUS'], STAT['NEWCOMMAND']])
     #set the command byte last, so we know we don't have a race condition
     if debug:
-        print("command: set command byte:")    
+        print("sendcommand: set command byte:")    
     writeXCD2([ADDR['COMMAND'],com])
 
     #now wait until the status changes to indicate the command has been acted on:
     if debug:
-        print ("command: priming status check before wait")
+        print ("sendcommand: priming status check before wait")
     status=readback(ADDR['STATUS'])
-    print("command says status is ",status," (",_reverseLookup(STAT,status),").")
-    while status==STAT['NEWCOMMAND']:
+    print("sendcommand says status is ",status," (",_reverseLookup(STAT,status),").")
+    t1=time.time()
+    timedOut=False
+    while status==STAT['NEWCOMMAND'] and (not timedOut):
+        if (time.time()-t1) > timeout
+            print("sendcommand:  command timed out.  No response from controller")
+            writeXCD2([ADDR['COMMAND'],0.0])
+            writeXCD2([ADDR['STATUS'],STAT['FAIL_DID_NOT_RESPOND']])
+            
+            timedOut=True
         if debug:
-            print ("command: waiting for device to ack command:")
+            print ("sendcommand: waiting for device to ack command:")
         status=readback(ADDR['STATUS'])
         time.sleep(sleeptime)
 
-    return
+    return (not timedOut)
 
 
 def _reverseLookup(dict,val):

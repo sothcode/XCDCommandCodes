@@ -61,7 +61,8 @@ varStatusValues={
 'FAIL_PHI_GOTO':3,
 'NEWCOMMAND':8,
 'BUSY':9,
-'TIMEOUT':80
+'TIMEOUT':80,
+'FAIL_DID_NOT_RESPOND':97
 }
 
 varUniqueID={
