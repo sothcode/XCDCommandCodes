@@ -17,7 +17,7 @@ import time
 
 ########################
 sleeptime=0.05
-debug=True
+debug=False
 
 def is_number(s):
     if is_iterable(s):
