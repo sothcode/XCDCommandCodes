@@ -54,7 +54,7 @@ while status==STAT['BUSY']:
 if debug:
      print ("goto: finishing up.  check status and readback:")
 if status==STAT['READY']:
-    print("SUCCESS. homeDogleg complete.  status:",readback(ADDR['STATUS'])," position:",readback(ADDR['FPOS']));
+    print("SUCCESS. homeThetaS complete.  status:",readback(ADDR['STATUS'])," position:",readback(ADDR['FPOS']));
 else:
-    print("FAIL. homeDogleg failed.  status:",readback(ADDR['STATUS'])," position:",readback(ADDR['FPOS']));
+    print("FAIL. homeThetaS failed.  status:",readback(ADDR['STATUS'])," position:",readback(ADDR['FPOS']));
 
