@@ -21,6 +21,17 @@ mainDb="test_only_axis_parameters.kfdb"
 matchTolerance=0.0001
 
 
+def _reverseLookup(dict,val):
+    #set up the reverse dictionary
+    reverse_mapping={v: k for k, v in dict.items()}
+    try:
+        key=reverse_mapping[val]
+    except KeyError as e:
+        print("reverse lookup failed.  KeyError: %s"%(e))
+        sys.exit()
+    return key
+
+
 #homePhi() should return success, lowbound, highbound,home, in that order.
 
 #check args
