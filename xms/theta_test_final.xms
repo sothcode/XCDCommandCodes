@@ -57,18 +57,35 @@ while 1
       V19 = 9
 
       // set initial velocity
+      V13 = 0.0
       V14 = 0.0
 
-      // start at velocity 0 and iterate from there
-      velocityloop V14
+      // set initial encoder iterator
       V18 = FPOS
+
+      // start at velocity 0 and iterate from there
+      enable
+      velocityloop V13
+      delay 100
+      while V18 = FPOS
+         V13 = V13 - 0.1
+         velocityloop V13
+         delay 100
+      end
+      velocityloop 0.0
+      disable
+
+      // start at velocity 0 again and iterate from there
+      enable
+      velocityloop V14
       delay 100
       while V18 = FPOS
          V14 = V14 + 0.1
          velocityloop V14
          delay 100
       end
-
+      velocityloop 0.0
+      disable
 
       // set status as done once found
       V19 = 0
@@ -76,6 +93,7 @@ while 1
       // then reset to IDLE
       V0 = 0
 
+   // end find minimum velocity routine
    end
       
 
