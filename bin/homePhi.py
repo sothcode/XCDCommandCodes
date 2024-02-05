@@ -115,7 +115,7 @@ if referenceEgg!=None:
     span=hardstop2-hardstop1
     lbRelDb=lbDb-homeDb
     hbRelDb=hbDb-homeDb
-    varLb=lbRel-lbReldb
+    varLb=lbRel-lbRelDb
     varHb=hbRel-hbRelDb
     varSpan=span-spanDb
     if (
