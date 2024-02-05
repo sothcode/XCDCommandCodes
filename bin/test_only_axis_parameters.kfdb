@@ -29,6 +29,15 @@ DEBUG_PH/diode2 0.1068
 DEBUG_AT/home 0.0
 DEBUG_AT/lowbound 0.1
 DEBUG_AT/highbound 0.7
+EGG1_PH/home 0.0
+EGG1_PH/lowbound -0.272888
+EGG1_PH/highbound 0.70636
+EGG4_PH/home 0.0
+EGG4_PH/lowbound -0.584717
+EGG4_PH/highbound 0.378967
+EGG6_PH/home 0.0
+EGG6_PH/lowbound -0.761536
+EGG6_PH/highbound 0.208252
 EGG7_PH/home 0.0
 EGG7_PH/lowbound -0.802979
 EGG7_PH/highbound 0.172668
@@ -37,3 +46,9 @@ EGG7_PH/diode1 -0.2269
 EGG7_PH/diode2 0.1068
 EGG7_TH_L/park -0.04998779296875
 EGG7_TH_L/home 0.0
+EGG7_TH_S/home -0.0
+EGG7_TH_S/downstream 0.02996826171875
+EGG7_TH_S/upstream 0.529052734375
+EGG8_PH/home 0.0
+EGG8_PH/lowbound -0.637817
+EGG8_PH/highbound 0.324463
