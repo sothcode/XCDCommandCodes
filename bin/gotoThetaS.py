@@ -84,11 +84,13 @@ def gotoThetaS(whereToGo):
 
 if __name__ == "__main__":
     #check args
+    print("args=%s"%(len(sys.argv)))
     if len(sys.argv)==2:
         #keep current leg, assume arg is destination.
         inputval=sys.argv[1]
     elif len(sys.argv)==3:
-        #assume first arg is leg, assume second arg is destination.
+        print("switching to axis=%s"%(sys.argv[1]))
+       #assume first arg is leg, assume second arg is destination.
         changeAxis(sys.argv[1])
         inputval=sys.argv[2]
     else:
