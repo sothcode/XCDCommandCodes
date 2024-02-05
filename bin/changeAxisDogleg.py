@@ -86,6 +86,7 @@ def changeAxis( targetIDstr ):
     
     # now find port corresponding to new axis 
     # first open port database file
+    print("about to query db")
     ret = kfDatabase.readVar(portsDb, targetIDstr)
     print("kfDatabase returns %s"%ret)
 
