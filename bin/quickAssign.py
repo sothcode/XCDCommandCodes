@@ -43,7 +43,7 @@ def sendcommand(com,arg):
     if debug:
         print ("sendcommand: priming status check before wait")
     status=readback(ADDR['STATUS'])
-    print("sendcommand says status is ",status," (",_reverseLookup(STAT,status),").")
+    print("sendcommand(com=%s) says status is %s (%s) "%(com,status,_reverseLookup(STAT,status)))
     t1=time.time()
     timedOut=False
     while status==STAT['NEWCOMMAND'] and (not timedOut):
