@@ -15,8 +15,11 @@ mainDb="test_only_axis_parameters.kfdb"
 
 def savePosition(keyName,newness):
     position = readback(ADDR['FPOS'])
-    kfDatabase.writeVar(mainDb,keyName,position,newness)
-    print("saving %s to %s as %s"%(position,mainDb,keyName))
+    ret=kfDatabase.writeVar(mainDb,keyName,position,newness)
+    if not ret:
+        print("failed to save %s to %s as %s.  Might need 'new', or might already have that value?"%(position,mainDb,keyName))
+    else:    
+        print("saved %s to %s as %s"%(position,mainDb,keyName))
 
 
 if __name__ == "__main__":
