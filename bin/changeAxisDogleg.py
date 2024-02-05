@@ -95,6 +95,7 @@ def changeAxis( targetIDstr ):
 
     # otherwise, assign new port to targetPort
     targetPort = ret[1][0]
+    print("switching to targetPort=%s"%targetPort)
 
     # check which serial port we were using - can be found in PORTFILE
     # (this will change to object in class when we refactor)
