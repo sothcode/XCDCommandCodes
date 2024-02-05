@@ -105,7 +105,7 @@ def changeAxis( targetIDstr ):
     # check which serial port we were using - can be found in PORTFILE
     # (this will change to object in class when we refactor)
     oldPort = None
-    if not (sys.path.exists(PORTFILE)):
+    if not (os.path.exists(PORTFILE)):
         print("PORTFILE %s does not exist.  PANIC" % PORTFILE)
         sys.exit()
     
