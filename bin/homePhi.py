@@ -95,7 +95,7 @@ if referenceEgg!=None:
     print("Comparing to Db.  Current status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
 
     match=True
-    present[3]=[True]*3
+    present=[True]*3
     success,homeDb=kfDatabase.readVar(mainDb,"%s/home"%referenceEgg)
     if not success:
         print("Can't find home for %s in %s"%(referenceEgg,mainDb))
