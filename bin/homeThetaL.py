@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from quickAssign import sendcommand
+from quickAssign import sendcommand, writeXCD2
 from quickReport import readback
 import sys
 import time
