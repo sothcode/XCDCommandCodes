@@ -62,7 +62,7 @@ def readFromFile( filename ):
 
 
 def changeAxis( targetIDstr ):
-
+    print('changing axis')
     #check if controller is busy.  If so, exit with explanation
     if debug:
         print("changeAxis:  Check status:")
