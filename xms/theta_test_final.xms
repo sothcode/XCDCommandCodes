@@ -89,21 +89,21 @@ while 1
       enable
       // replace 1.0 with minVEL_neg
       velocityloop -1.0
-      delay 500
+      delay 1000
 
       V17 = FPOS
       V18 = FPOS
 
       // replace 1.2 with minVEL_pos
       velocityloop 1.2
-      delay 500
+      delay 1000
       disable
 
       // drive one way until stop
       enable
-      velocityloop -1.0
+      velocityloop -0.8
       delay 500
-      while abs(V18 - FPOS) > 10*ENR & abs(V17-FPOS) < 0.05
+      while abs(V18 - FPOS) > 10*ENR & abs(V17-FPOS) < 0.25
          V18 = FPOS
          delay 100
       end
@@ -130,7 +130,7 @@ while 1
       set S_IND = 0
 
       // check if we went too far
-      if abs(V2 - FPOS) > 0.85
+      if FPOS >= V3
          V19 = 3
       else
          V19 = 0

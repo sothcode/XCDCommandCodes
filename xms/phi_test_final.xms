@@ -93,7 +93,7 @@ while 1
       // drive other way until stop
       enable
       velocityloop 2.0
-      delay 500
+      delay 1000
       while abs(V18 - FPOS) > 10*ENR
          V18 = FPOS
          delay 100
