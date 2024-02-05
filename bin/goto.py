@@ -6,14 +6,14 @@
 
 from quickAssign import sendcommand,writeXCD2
 from quickReport import readback
-#from dummySerial import sendcommand,readback,changeAxis
+from changeAxisDogleg import changeAxis
+#from dummySerial import sendcommand,readback,changeAxis, writeXCD2
 import sys
 import re
 import time
 from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
 from variableDictionaryXCD2 import varStatusValues as STAT
 from variableDictionaryXCD2 import varAllCommands as ALL_COMM
-from changeAxisDogleg import changeAxis
 
 # to load tty data from the db so we know which tty we want:
 sys.path.append("kfDatabase")
@@ -23,7 +23,7 @@ import kfDatabase
 min_distance=0.1 #in rotations
 sleeptime=0.6 #in seconds
 timeout=10
-debug=True
+debug=False
 #portsDb="xcd2_ports.kfdb"
 #mainDb="axis_parameters.kfdb"
 portsDb="test_only_xcd2_ports.kfdb"
@@ -116,7 +116,7 @@ def gotoVettedQuiet(destination,COMM):
             
     
     print("goto: sending command %s (%s)"%(COMM['GOTO'],'GOTO'))
-    commandSent=sendcommand(COMM['GOTO'],targetPos) # this sleeps until it sees the status change from new_command
+    commandSent=sendcommand(COMM['GOTO'],destination) # this sleeps until it sees the status change from new_command
     if not commandSent:
         return False, readback(ADDR['FPOS'])
     
@@ -129,7 +129,8 @@ def gotoVettedQuiet(destination,COMM):
     #status=STAT['BUSY']
     status=readback(ADDR['STATUS'])
     axis=readback(ADDR['XAXIS'])
-
+    hardstop1=readback(ADDR['HARD_STOP1'])
+    hardstop2=readback(ADDR['HARD_STOP2'])
     t1=time.time()
     while status==STAT['BUSY']  and (time.time()-t1) < timeout:
         turns=readback(ADDR['TURNS'])
@@ -154,7 +155,7 @@ def gotoVettedQuiet(destination,COMM):
         status=readback(ADDR['STATUS']) 
 
     if status==STAT['BUSY']:
-        writeXCD2([ADDR['STATUS'], 80])
+        writeXCD2([ADDR['STATUS'], 80]) # we need to get writeXXCD2 out of here.  maybe setStatus?
         time.sleep(sleeptime)
 
     #loop until controller busy flag is cleared
@@ -224,9 +225,9 @@ def goto( axisName=None, destination=None):
 
     #now that we have set up the environment, we can run the 'vetted' goto:
     #this does not have a return value.  errors must be inferred from readback.
-    ret=gotoVettedQuiet(destination,COMM)
-    if (ret[0]==False):
-    
+    ret=gotoVettedQuiet(targetPos,COMM)
+    if (ret[0]==False): #we didn't get where we need to go because of communication failures.
+        return ret
 
     status=readback(ADDR['STATUS'])
     position=readback(ADDR['FPOS'])
@@ -236,10 +237,10 @@ def goto( axisName=None, destination=None):
     hb=readback(ADDR['HARD_STOP2'])
 
     if status==STAT['READY']:
-        print("SUCCESS. goto%s %s complete.  status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName, destination, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
+        print("SUCCESS. goto %s %s complete.  status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName, destination, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
         return True, position
     
-    print("FAIL. goto%s %s failed.  status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName, destination, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
+    print("FAIL. goto %s %s failed.  status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName, destination, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
     return False, position
 
 
