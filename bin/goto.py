@@ -20,6 +20,7 @@ sys.path.append("kfDatabase")
 import kfDatabase
 
 #tuning settings
+min_distance=0.1 #in rotations
 sleeptime=0.6 #in seconds
 timeout=10
 debug=True
@@ -44,7 +45,7 @@ def _reverseLookup(dict,val):
     try:
         key=reverse_mapping[val]
     except KeyError as e:
-        print(f"errorCode lookup failed.  KeyError: {e}")
+        print(f"_reverseLookup failed.  KeyError: {e}")
         sys.exit()
     return key  
 
@@ -75,59 +76,12 @@ def find_comm(axisName):
         print("no match of '%s' to axis types.  Critical failure!"%(axisName))
         sys.exit()
     return isDogleg, COMM
-    
-def goto( axisName=None, destination=None):
-    if axisName==None or destination==None:
-        print("wrong args for goto.  requires two arguments.")
-        return False
-    
-    #check if that axis is connected.  Fail if not
-    success, value=kfDatabase.readVar(portsDb,axisName)
-    if not success:
-        print("goto: kfDatabase failed.  Axis '%s' not connected. (or port database is stale)" % axisName)
-        return False
-    targetPort,targetAxis=value[0],value[1]
-    
-    #set command lookup table to match the axis
-    isDogleg,COMM=find_comm(axisName)
-    
-    #check to see if the target is a number.
-    #if number: make it a float.
-    if (is_number(destination)):
-        targetPos=float(destination) # we handle the dogleg condition below.
-            
-    #if not number: open the dictionary and see if that axis has that variable set.  Fail if not
-    else:
-        #  get the value from the dict.
-        keyName=axisName+"/"+str(destination)
-        if debug:
-            print("goto: looking for value %s"%keyName)
-        success,value=kfDatabase.readVar(mainDb, keyName)
-        if not success:
-            print("goto: kfDatabase failed.  destination '%s' not found for %s. (kfdb=%s, key=%s)" % (destination,axisName,mainDb,keyName))
-            return False        
-        #  check to see if the dict value is a number.
-        #  if number: make it a float.
-        if (is_number(value)):
-            targetPos=float(value)
-        else:
-            print("goto: kfDatabase key '%s' has non-numeric value %s" % (keyName,str(value)))
-            return False
 
-    #refuse to move if we are asking a dogleg to move to a numeric position (to prevent accidents)
-    if isDogleg and is_number(destination):
-        print("goto: refused.  To prevent breaking alignment by accident, you must use gotoDogleg, not goto, to move '%s' to '%s'."%(axisName,destination))
-        return
-    
-    #now we are guaranteed we have a reachable axis, and a target position as a float.
-    #we are also guaranteed that we are not moving a dogleg to a numeric position.
+def gotoVettedQuiet(destination,COMM):
+    #the vetting occurs in goto, so this should not be called 'bare'.
+    #axisName is a real axis, destination is a float, COMM is set correctly
+    #the portfile and axis is also set correctly
 
-    #set the current port through the file:
-    with open(PORTFILE,'w') as file:
-        file.write(targetPort)
-    #changeAxis:
-    writeXCD2([ADDR['XAXIS'],0])
-    
     #check if controller is busy.  If so, exit with explanation
     if debug:
         print("goto:  Check status:")
@@ -136,6 +90,30 @@ def goto( axisName=None, destination=None):
     if status!=0:
         print("NOT EXECUTED. Controller status is not 0. status: %s (%s)"%(status,_reverseLookup(STAT,status)))
         return False, 0
+
+    #look at our position.  if we are too close, we may not move at all, so move away before going toward.
+    position=readback(ADDR['FPOS'])
+    if abs(destination-position)<min_distance:
+        print("gotoVettedQuiet: destination:%s is too close to position %s.  Attempting to jog"%(destination,position))
+        #try to move in the direction away from the actual destination
+        jogdir=-1
+        if (destination<position):
+            jogdir=1
+        jogtarget1=position+jogdir*2*min_distance
+        jogtarget2=position-jogdir*3*min_distance
+
+        lb=readback(ADDR['HARD_STOP1'])
+        hb=readback(ADDR['HARD_STOP2'])
+        #move away from our target first:
+        if (jogtarget1>lb and jogtarget1<hb):
+            gotoVettedQuiet(jogtarget1,COMM)
+        #if that doesn't work, overshoot the target instead
+        elif (jogtarget2>lb and jogtarget2<hb):
+            gotoVettedQuiet(jogtarget2,COMM)
+        #if neither work, admit our failure and do our best:
+        else:
+            print("gotoVettedQuiet: Original dest %s was too close to fpos %s, so tried to jog to %s or %s, but both are out of bounds (lb:%s, hb:%s)"%(destination,position,jogtarget1,jogtarget2,lb,hb))
+            
     
     print("goto: sending command %s (%s)"%(COMM['GOTO'],'GOTO'))
     commandSent=sendcommand(COMM['GOTO'],targetPos) # this sleeps until it sees the status change from new_command
@@ -183,7 +161,72 @@ def goto( axisName=None, destination=None):
 
     #report final position and success
     if debug:
-        print ("goto: finishing up.  check status and readback:")
+        print ("gotoVettedQuiet: finishing up.  check status and readback:")
+    return True, readback(ADDR['FPOS'])
+
+        
+def goto( axisName=None, destination=None):
+    if axisName==None or destination==None:
+        print("wrong args for goto.  requires two arguments.")
+        return False
+    
+    #check if that axis is connected.  Fail if not
+    success, value=kfDatabase.readVar(portsDb,axisName)
+    if not success:
+        print("goto: kfDatabase failed.  Axis '%s' not connected. (or port database is stale)" % axisName)
+        return False
+    targetPort,targetAxis=value[0],value[1]
+    
+    #set command lookup table to match the axis
+    isDogleg,COMM=find_comm(axisName)
+    
+    #check to see if the target is a number.
+    #if number: make it a float.
+    if (is_number(destination)):
+        targetPos=float(destination) # we handle the dogleg condition below.
+            
+    #if not number: open the dictionary and see if that axis has that variable set.  Fail if not
+    else:
+        #if we have specified a full path, go with it.
+        if "/" in destination:
+            keyName=destination
+        else:#otherwise, assume it's from the current axis
+            keyName=axisName+"/"+str(destination)
+        #  get the value from the dict.
+        if debug:
+            print("goto: looking for value %s"%keyName)
+        success,value=kfDatabase.readVar(mainDb, keyName)
+        if not success:
+            print("goto: kfDatabase failed.  destination '%s' not found for %s. (kfdb=%s, key=%s)" % (destination,axisName,mainDb,keyName))
+            return False        
+        #  check to see if the dict value is a number.
+        #  if number: make it a float.
+        if (is_number(value)):
+            targetPos=float(value)
+        else:
+            print("goto: kfDatabase key '%s' has non-numeric value %s" % (keyName,str(value)))
+            return False
+
+    #refuse to move if we are asking a dogleg to move to a numeric position (to prevent accidents)
+    if isDogleg and is_number(destination):
+        print("goto: refused.  To prevent breaking alignment by accident, you must use gotoDogleg, not goto, to move '%s' to '%s'."%(axisName,destination))
+        return
+    
+    #now we are guaranteed we have a reachable axis, and a target position as a float.
+    #we are also guaranteed that we are not moving a dogleg to a numeric position.
+
+    #set the current port through the file:
+    with open(PORTFILE,'w') as file:
+        file.write(targetPort)
+    #changeAxis:
+    #this really needs to be 'change axis'.
+    writeXCD2([ADDR['XAXIS'],targetAxis])
+
+    #now that we have set up the environment, we can run the 'vetted' goto:
+    #this does not have a return value.  errors must be inferred from readback.
+    ret=gotoVettedQuiet(destination,COMM)
+    if (ret[0]==False):
+    
 
     status=readback(ADDR['STATUS'])
     position=readback(ADDR['FPOS'])
