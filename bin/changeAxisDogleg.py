@@ -62,24 +62,23 @@ def readFromFile( filename ):
 
 
 def changeAxis( targetIDstr ):
-    print('changing axis')
-    debug=True
     #check if controller is busy.  If so, exit with explanation
     if debug:
         print("changeAxis:  Check status:")
 
-    print("before readback")
-    status=readback(ADDR['STATUS'])
-    print("after readback")
-    
-    if status!=0:
-        if status == 98.0:
-            print("Axis must be set by calling setAxis.py")
-
-        else:
-            print("NOT EXECUTED. Controller status is not 0.")
-            sys.exit()
-    print('about to look in AXID keys')
+    #commenting out the status check, which causes failures if something is unplugged -- we're unable to switch away.
+    #    print("before readback")
+#    status=readback(ADDR['STATUS'])
+#    print("after readback")
+#    
+#    if status!=0:
+#        if status == 98.0:
+#            print("Axis must be set by calling setAxis.py")
+#
+#        else:
+#            print("NOT EXECUTED. Controller status is not 0.")
+#            sys.exit()
+#    print('about to look in AXID keys')
     # check if axis we want to change to is a valid axis, and if not exit
     if targetIDstr not in AXID.keys():
         print("Axis ID - " + targetIDstr + " -  not recognized. Axis ID list given as:")
@@ -90,9 +89,9 @@ def changeAxis( targetIDstr ):
     
     # now find port corresponding to new axis 
     # first open port database file
-    print("about to query db")
+    # print("about to query db")
     ret = kfDatabase.readVar(portsDb, targetIDstr)
-    print("kfDatabase returns %s"%ret)
+    # print("kfDatabase returns %s"%ret)
 
     # exit if we don't have a port
     if ret[0] == False:
