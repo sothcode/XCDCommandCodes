@@ -66,6 +66,7 @@ while status==STAT['BUSY']:
 if debug:
     print ("homeThetaS: finishing up.  check status and readback:")
 
+position=readback(ADDR['FPOS'])   
 print("Setting current position to home.  Offset was %s from previous home"%position)
 writeXCD2([ADDR['FPOS'], 0])
 lb=readback(ADDR['HARD_STOP1'])

@@ -69,7 +69,7 @@ if debug:
      print ("goto: finishing up.  check status and readback:")
 
 
-
+position=readback(ADDR['FPOS'])   
 print("Setting current position to home and updating onboard hardstops.  Offset was %s from previous home"%position)
 writeXCD2([ADDR['FPOS'], 0])
 writeXCD2([ADDR['HARD_STOP1'], -1.0])
