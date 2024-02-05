@@ -55,9 +55,21 @@ while status==STAT['BUSY']:
 #report final position and success
 if debug:
      print ("goto: finishing up.  check status and readback:")
+
+
+
+print("Setting current position to home and updating onboard hardstops.  Offset was %s from previous home"%position)
+writeXCD2([ADDR['FPOS'], 0])
+writeXCD2([ADDR['HARD_STOP1'], -1.0])
+writeXCD2([ADDR['HARD_STOP2'], 1.0])
+
+lb=readback(ADDR['HARD_STOP1'])
+hb=readback(ADDR['HARD_STOP2'])
+position=readback(ADDR['FPOS'])   
+turns=readback(ADDR['TURNS'])
+axis=readback(ADDR['XAXIS'])   
+
 if status==STAT['READY']:
-    print("SUCCESS. homeThetaL complete.  status:",readback(ADDR['STATUS'])," position:",readback(ADDR['FPOS']), \
-          " lb:",readback(ADDR['HARD_STOP1']), " hb:",readback(ADDR['HARD_STOP2']));
+    print("SUCCESS. homeThetaL complete. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
 else:
-    print("FAIL. homeThetaL failed.  status:",readback(ADDR['STATUS'])," position:",readback(ADDR['FPOS']), \
-          " lb:",readback(ADDR['HARD_STOP1']), " hb:",readback(ADDR['HARD_STOP2']));
+    print("FAIL. homeThetaL failed. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))    

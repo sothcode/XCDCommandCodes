@@ -52,9 +52,17 @@ while status==STAT['BUSY']:
 
 #report final position and success
 if debug:
-     print ("goto: finishing up.  check status and readback:")
-if status==STAT['READY']:
-    print("SUCCESS. homeThetaS complete.  status:",readback(ADDR['STATUS'])," position:",readback(ADDR['FPOS']));
-else:
-    print("FAIL. homeThetaS failed.  status:",readback(ADDR['STATUS'])," position:",readback(ADDR['FPOS']));
+    print ("homeThetaS: finishing up.  check status and readback:")
 
+print("Setting current position to home.  Offset was %s from previous home"%position)
+writeXCD2([ADDR['FPOS'], 0])
+lb=readback(ADDR['HARD_STOP1'])
+hb=readback(ADDR['HARD_STOP2'])
+position=readback(ADDR['FPOS'])   
+turns=readback(ADDR['TURNS'])
+axis=readback(ADDR['XAXIS'])   
+
+if status==STAT['READY']:
+    print("SUCCESS. homeThetaS complete. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
+else:
+    print("FAIL. homeThetaS failed. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))    
