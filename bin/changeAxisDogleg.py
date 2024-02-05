@@ -63,11 +63,14 @@ def readFromFile( filename ):
 
 def changeAxis( targetIDstr ):
     print('changing axis')
+    debug=True
     #check if controller is busy.  If so, exit with explanation
     if debug:
         print("changeAxis:  Check status:")
+
     status=readback(ADDR['STATUS'])
 
+    
     if status!=0:
         if status == 98.0:
             print("Axis must be set by calling setAxis.py")
@@ -75,7 +78,7 @@ def changeAxis( targetIDstr ):
         else:
             print("NOT EXECUTED. Controller status is not 0.")
             sys.exit()
-
+    print('about to look in AXID keys')
     # check if axis we want to change to is a valid axis, and if not exit
     if targetIDstr not in AXID.keys():
         print("Axis ID - " + targetIDstr + " -  not recognized. Axis ID list given as:")
