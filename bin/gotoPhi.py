@@ -67,14 +67,11 @@ def gotoPhi( whereToGo ):
         oldposition=position
         position=readback(ADDR['FPOS'])
         turns=readback(ADDR['TURNS'])
-        print("position:%s status:%s (%s) turns:%s (not live: lb:%1.4f hb:%1.4f)"%(position,status,_reverseLookup(STAT,status),turns,hardstop1,hardstop2))
+        print("position:%s (axis %s) status:%s (%s) turns:%s (not live: lb:%1.4f hb:%1.4f)"%(position,axis,status,_reverseLookup(STAT,status),turns,hardstop1,hardstop2))
         if debug:
             print ("goto: loop: check status:")
         status=readback(ADDR['STATUS'])
-        time.sleep(sleeptime)
-        
-        turns=readback(ADDR['TURNS'])
-        print("position:", position," (axis",axis,") status:",status," (",_reverseLookup(STAT,status),") turns:",turns)
+
         if debug:
             print ("goto: loop: check status:")
 
