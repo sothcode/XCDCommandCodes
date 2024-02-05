@@ -14,6 +14,18 @@ sleeptime=0.5 #in seconds
 debug=False
 
 
+
+def _reverseLookup(dict,val):
+    #set up the reverse dictionary
+    reverse_mapping={v: k for k, v in dict.items()}
+    try:
+        key=reverse_mapping[val]
+    except KeyError as e:
+        print("reverse lookup failed.  KeyError: %s"%(e))
+        sys.exit()
+    return key
+
+
 #check args
 
 if len(sys.argv) != 1: #note that sys.argv has arg 1 as the command itself
