@@ -74,6 +74,9 @@ varUniqueID={
 'DEBUG_TH_L': 106,
 'DEBUG_PH': 107,
 'DEBUG_AT': 108,
+
+'DEBUG_NONAME':0,
+
 'L0_DL0_A0': 1,
 'L0_DL0_A1': 2,
 'L0_DL1_A0': 3,
