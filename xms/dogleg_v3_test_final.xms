@@ -76,6 +76,7 @@ while 1
          end
 
          // get pretty close (within quarter turn)
+         set S_IND = 0
          enable
          while S_IND = 0 & abs(V11) < 3
             V12 = FPOS + V16*0.25
@@ -141,6 +142,7 @@ while 1
             V16 = -1
          end
 
+         set S_IND = 0
          enable
          while V17 > 1 & V11*V16 < 3
             V12 = FPOS + V16*0.25

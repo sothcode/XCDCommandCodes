@@ -24,7 +24,7 @@ VEL = 1
 
 // configure theta motor settings (non-inverted drive and feedback)
 config 900, 0x00011001
-delay 1000
+delay 500
 
 XAXIS = 1
 ENR = 6.103515625e-5
@@ -117,6 +117,7 @@ while 1
       V3 = FPOS + 0.85
 
       // then go back and find home
+      set S_IND = 0
       enable
       velocityloop 1.2
       while S_IND = 0 & FPOS < V3
