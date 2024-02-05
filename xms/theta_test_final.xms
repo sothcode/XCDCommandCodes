@@ -87,23 +87,23 @@ while 1
 
       // first move back and forth
       enable
-      // replace 1.0 with minVEL_neg
+      // replace -1.0 with minVEL_neg
       velocityloop -1.0
-      delay 1000
+      delay 500
 
       V17 = FPOS
       V18 = FPOS
 
-      // replace 1.2 with minVEL_pos
-      velocityloop 1.2
-      delay 1000
+      // replace 1.5 with minVEL_pos
+      velocityloop 1.5
+      delay 500
       disable
 
       // drive one way until stop
       enable
       velocityloop -0.8
       delay 500
-      while abs(V18 - FPOS) > 10*ENR & abs(V17-FPOS) < 0.25
+      while abs(V18 - FPOS) > 10*ENR & abs(V17-FPOS) < 0.15
          V18 = FPOS
          delay 100
       end
