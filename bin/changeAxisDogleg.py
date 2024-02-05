@@ -68,8 +68,9 @@ def changeAxis( targetIDstr ):
     if debug:
         print("changeAxis:  Check status:")
 
+    print("before readback")
     status=readback(ADDR['STATUS'])
-
+    print("after readback")
     
     if status!=0:
         if status == 98.0:
