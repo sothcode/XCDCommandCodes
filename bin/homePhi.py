@@ -128,7 +128,7 @@ if referenceEgg!=None:
         if  (present[0] and present[1] and present[2]):
             print("FAIL.  Readback-db residuals are larger than tolerance %s: span:%s-%s=%s.  lbrel:%s-%s=%s. hbrel:%s-%s=%s."%(matchTolerance,span,spanDb,varSpan,lbRel,lbRelDb,varLb,hbRel,hbRel,varHb))
             print("   This does not match the expectations for %s.  If you are sure this really is %s, and want to update %s with new parameters, run the following commands:"%(referenceEgg,referenceEgg,mainDb))
-         if  (not present[0] or not present[1] or not present[2]):
+        if  (not present[0] or not present[1] or not present[2]):
             print("FAIL.  Not all values are in the database for egg %s."%(referenceEgg))
             print("   This does not match the expectations for %s.  If you are sure this really is %s, and want to update %s with new parameters, run the following commands:"%(referenceEgg,referenceEgg,mainDb))
         print("   ./kfDatabase/kfDatabase.py %s %s/%s %f %s"%(mainDb,referenceEgg,"home",home,"new"*present[0]))
