@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from quickAssign import sendcommand
+from quickAssign import sendcommand, writeXCD2
 from quickReport import readback
 import sys
 import time
@@ -131,12 +131,12 @@ if referenceEgg!=None:
         if  (not present[0] or not present[1] or not present[2]):
             print("FAIL.  Not all values are in the database for egg %s."%(referenceEgg))
             print("   This does not match the expectations for %s.  If you are sure this really is %s, and want to update %s with new parameters, run the following commands:"%(referenceEgg,referenceEgg,mainDb))
-        print("   ./kfDatabase/kfDatabase.py %s %s/%s %f %s"%(mainDb,referenceEgg,"home",home,"new"*(not present[0])))
+        print("   ./kfDatabase/kfDatabase.py %s %s/%s %f %s"%(mainDb,referenceEgg,"home",0.0,"new"*(not present[0])))
         print("   ./kfDatabase/kfDatabase.py %s %s/%s %f %s"%(mainDb,referenceEgg,"lowbound",lbRel,"new"*(not present[1])))
         print("   ./kfDatabase/kfDatabase.py %s %s/%s %f %s"%(mainDb,referenceEgg,"highbound",hbRel,"new"*(not present[2])))
         print("   NOTE:  If there are values for diode positions, these will move by the residuals above as well.")
     elif match:
-        print("SUCCESS.  Readnback-db residuals are within tolerance %s:span:%s-%s=%s.  lbrel:%s-%s=%s. hbrel:%s-%s=%s."%(matchTolerance,span,spanDb,varSpan,lbRel,lbRelDb,varLb,hbRel,hbRel,varHb))
+        print("SUCCESS.  Readback-db residuals are within tolerance %s:\n\tspan:%s-%s=%s.\n\tlbrel:%s-%s=%s.\n\thbrel:%s-%s=%s."%(matchTolerance,span,spanDb,varSpan,lbRel,lbRelDb,varLb,hbRel,hbRel,varHb))
         print("Setting current position to home and updating hardstops.")
         writeXCD2([ADDR['FPOS'], 0])
         writeXCD2([ADDR['HARD_STOP1'], lbRel])
