@@ -87,6 +87,7 @@ def changeAxis( targetIDstr ):
     # now find port corresponding to new axis 
     # first open port database file
     ret = kfDatabase.readVar(portsDb, targetIDstr)
+    print("kfDatabase returns %s"%ret)
 
     # exit if we don't have a port
     if ret[0] == False:
