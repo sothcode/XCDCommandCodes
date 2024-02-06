@@ -21,6 +21,7 @@ import kfDatabase
 
 #tuning settings
 min_distance=0.1 #in rotations
+move_tolerance=0.001 #in rotations.  causes an error if it did not get this close in the final move.
 sleeptime=0.6 #in seconds
 timeout=10
 debug=False
@@ -236,13 +237,20 @@ def goto( axisName=None, destination=None):
     lb=readback(ADDR['HARD_STOP1'])
     hb=readback(ADDR['HARD_STOP2'])
 
-    if status==STAT['READY']:
-        print("SUCCESS. goto %s %s complete.  status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName, destination, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
-        return True, position
-    
-    print("FAIL. goto %s %s failed.  status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName, destination, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
-    return False, position
+    residual=targetPos-position
+    move_tolerance=targetPos
 
+    if status==STAT['READY']:
+        if abs(residual)<move_tolerance:
+            print("SUCCESS. goto %s %s complete. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName, destination, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
+            return True, position
+        else:
+            print("FAIL. goto %s %s failed in tolerance check: position more than %s from %s. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(move_tolerance,targetPos,axisName, destination, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
+            return False, position
+    else:
+        print("FAIL. goto %s %s failed in controller. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName, destination, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
+        return False, position
+    return False, "GOTO: PANIC!  YOU SHOULD NOT BE ABLE TO REACH HERE"
 
 
 
