@@ -33,7 +33,7 @@ if __name__ == "__main__":
 
     #check args
     #note that sys.argv has arg 1 as the command itself
-    if len(sys.argv) != :
+    if len(sys.argv) != 1:
         print("NOT EXECUTED. Wrong number of arguments.  Correct usage is ./assignPorts[tab]")
         sys.exit()
     #if wrong arguments, exit with explanation
