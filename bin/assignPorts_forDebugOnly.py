@@ -3,6 +3,7 @@
 # a quick function to set the UARTS on ttyUSB0 and ttyUSB1 so that updatePorts sees two doglegs.
 from quickAssign import writeXCD2
 from quickReport import readback
+from xcdSerial import getCurrentPort
 import sys
 import time
 from variableDictionaryXCD2 import varUniqueID as ID
@@ -13,6 +14,8 @@ from variableDictionaryXCD2 import varStatusValues as STAT
 #tuning settings
 sleeptime=0.5 #in seconds
 debug=False
+PORTFILE="XCD_current_port"
+
 
 def _reverseLookup(dict,val):
     #set up the reverse dictionary
@@ -35,24 +38,18 @@ if __name__ == "__main__":
         sys.exit()
     #if wrong arguments, exit with explanation
 
-    #check if controller is busy.  If so, exit with explanation
-    if debug:
-        print("clear:  Check status:")
 
-
-
-    status=readback(ADDR['STATUS'])
-    axis=readback(ADDR['XAXIS'])
-
-    writeXCD2([ADDR['XAXIS'], sys.argv[1]])
-    writeXCD2([ADDR['STATUS'], 0])
-    writeXCD2([ADDR['COMMAND'], 0])
-    new_status=readback(ADDR['STATUS'])
-    new_axis=readback(ADDR['XAXIS'])
-    print("Done.  ax=%s, status %s (%s) ==> ax=%s, status %s (%s)"%(axis,status,_reverseLookup(STAT,status),new_axis,new_status,_reverseLookup(STAT,new_status)))
-
-
+    port_before=getCurrentPort()
+    with open(PORTFILE, 'w') as file:
+        file.write("/dev/ttyUSB0")
     writeXCD2(['UART0_ADDRESS', ID['DEBUG0_DL0_A0']])
     writeXCD2(['UART1_ADDRESS', ID['DEBUG0_DL0_A1']])
+    with open(PORTFILE, 'w') as file:
+        file.write("/dev/ttyUSB1")   
     writeXCD2(['UART0_ADDRESS', ID['DEBUG0_DL1_A0']])
     writeXCD2(['UART1_ADDRESS', ID['DEBUG0_DL1_A1']])
+   port_before=getCurrentPort()
+    with open(PORTFILE, 'w') as file:
+        file.write(port_before)
+     
+    print("Done.")
