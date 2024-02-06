@@ -64,7 +64,8 @@ varStatusValues={
 'NEWCOMMAND':8,
 'BUSY':9,
 'TIMEOUT':80,
-'FAIL_DID_NOT_RESPOND':97
+'FAIL_DID_NOT_RESPOND':97,
+'BOOT':98
 }
 
 varUniqueID={
