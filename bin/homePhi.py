@@ -18,7 +18,7 @@ import kfDatabase
 sleeptime=0.5 #in seconds
 debug=False
 mainDb="test_only_axis_parameters.kfdb"
-matchTolerance=0.0001
+matchTolerance=0.001
 
 
 def _reverseLookup(dict,val):
