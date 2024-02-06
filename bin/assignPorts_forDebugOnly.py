@@ -44,10 +44,14 @@ if __name__ == "__main__":
         file.write("/dev/ttyUSB0")
     writeXCD2(['UART0_ADDRESS', ID['DEBUG_DL0_A0']])
     writeXCD2(['UART1_ADDRESS', ID['DEBUG_DL0_A1']])
+    writeXCD2(['XAXIS',0])
+    writeXCD2([ADDR['ID'], ID['DEBUG_DL0_A0']])
     with open(PORTFILE, 'w') as file:
         file.write("/dev/ttyUSB1")   
     writeXCD2(['UART0_ADDRESS', ID['DEBUG_DL1_A0']])
     writeXCD2(['UART1_ADDRESS', ID['DEBUG_DL1_A1']])
+    writeXCD2(['XAXIS',0])
+    writeXCD2([ADDR['ID'], ID['DEBUG_DL1_A0']])
     port_before=getCurrentPort()
     with open(PORTFILE, 'w') as file:
         file.write(port_before)
