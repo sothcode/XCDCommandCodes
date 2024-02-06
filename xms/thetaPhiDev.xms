@@ -20,7 +20,7 @@ MTL = 4000000
 DZMIN = ENR
 DZMAX = 4*ENR
 KP = 10
-VEL = 1
+VEL = 2
 
 // configure theta motor settings (non-inverted drive and feedback)
 config 900, 0x00011001
@@ -50,52 +50,112 @@ set S_IND = 0
 // Start infinite loop
 while 1  
 
-   // find minimum velocity routine
-   if V0 = 99
+   // phi homing procedure - find hard stops
+   if V0 = 1
 
       // set statusBYTE BUSY
       V19 = 9
 
-      // set initial velocity
-      V13 = 0.0
-      V14 = 0.0
+      // initialize storage variables
+      V2 = 0
+      V3 = 0
+      V4 = 0
 
-      // set initial encoder iterator
+      // first move back and forth to set V18
+      // (in case already at hard stop)
+      enable
+      openloop -100
+      delay 300
+
       V18 = FPOS
 
-      // start at velocity 0 and iterate from there
-      enable
-      velocityloop V13
-      delay 100
-      while V18 = FPOS
-         V13 = V13 - 0.1
-         velocityloop V13
-         delay 100
-      end
-      velocityloop 0.0
+      openloop 100
+      delay 300
       disable
 
-      // start at velocity 0 again and iterate from there
+      // drive one way until stop
       enable
-      velocityloop V14
-      delay 100
-      while V18 = FPOS
-         V14 = V14 + 0.1
-         velocityloop V14
+      openloop -100
+      delay 500
+      while abs(V18 - FPOS) > 10*ENR
+         V18 = FPOS
          delay 100
       end
-      velocityloop 0.0
+      openloop 0.0
       disable
 
-      // set status as done once found
-      V19 = 0
+      // record first hard stop
+      V2 = FPOS
+
+      // drive other way until stop
+      enable
+      openloop 100
+      delay 500
+      while abs(V18 - FPOS) > 10*ENR
+         V18 = FPOS
+         delay 100
+      end
+      openloop 0.0
+      disable
+
+      // sets second hard stop
+      V3 = FPOS
+
+      // then find encoder latch pos if visible
+      set S_IND = 0
+      enable
+      openloop -100
+      while S_IND = 0
+      end
+      openloop 0.0
+      disable
+
+      // sets encoder latch pos, reset encoder latch flag
+      V4 = FPOS
+      set S_IND = 0
+
+      // check V2, V3, V4 flags and set statusBYTE accordingly
+      if (V2 - V4) <> 0 & (V3 - V4) <> 0
+         V19 = 0
+      else
+         V19 = 2
+      end
 
       // then reset to IDLE
       V0 = 0
 
-   // end find minimum velocity routine
+   // end phi homing procedure
    end
+
+
+
+   // phi goto procedure
+   if V0 = 2
+
+      // set statusBYTE BUSY
+      V19 = 9
+
       
+      // check if V10 a valid input and if so move
+      // if not, throw error code V19 = 1 (out of bounds)
+      if V10 >= V2 & V10 <= V3
+         enable
+         move V10
+         delay 7000
+         disable
+
+         V19 = 0
+      else
+         V19 = 1
+      end
+      
+      // reset to IDLE state
+      V0 = 0
+
+   // end phi goto procedure
+   end
+
+
 
    // theta long mirror homing procedure
    if V0 = 3
@@ -237,6 +297,54 @@ while 1
       V0 = 0
 
    // end theta short goto procedure
+   end
+
+
+
+   // find minimum velocity routine
+   if V0 = 99
+
+      // set statusBYTE BUSY
+      V19 = 9
+
+      // set initial velocity
+      V13 = 0.0
+      V14 = 0.0
+
+      // set initial encoder iterator
+      V18 = FPOS
+
+      // start at velocity 0 and iterate from there
+      enable
+      velocityloop V13
+      delay 100
+      while V18 = FPOS
+         V13 = V13 - 0.1
+         velocityloop V13
+         delay 100
+      end
+      velocityloop 0.0
+      disable
+
+      // start at velocity 0 again and iterate from there
+      enable
+      velocityloop V14
+      delay 100
+      while V18 = FPOS
+         V14 = V14 + 0.1
+         velocityloop V14
+         delay 100
+      end
+      velocityloop 0.0
+      disable
+
+      // set status as done once found
+      V19 = 0
+
+      // then reset to IDLE
+      V0 = 0
+
+   // end find minimum velocity routine
    end
 
 
