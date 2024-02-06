@@ -126,8 +126,13 @@ if referenceEgg!=None:
         match=False
     if not match:
         if  (present[0] and present[1] and present[2]):
-            print("FAIL.  Readback-db residuals are larger than tolerance %s: span:%s-%s=%s.  lbrel:%s-%s=%s. hbrel:%s-%s=%s."%(matchTolerance,span,spanDb,varSpan,lbRel,lbRelDb,varLb,hbRel,hbRel,varHb))
-            print("   This does not match the expectations for %s.  If you are sure this really is %s, and want to update %s with new parameters, run the following commands:"%(referenceEgg,referenceEgg,mainDb))
+            if(span<0.85):
+                print("FAIL.  Span is less than 0.85 (expect ~0.95).  Motor likely jammed.\n\tspan:%s-%s=%s.\n\tlbrel:%s-%s=%s.\n\thbrel:%s-%s=%s."%(matchTolerance,span,spanDb,varSpan,lbRel,lbRelDb,varLb,hbRel,hbRel,varHb))
+                print("aborting.  Db will not be updated.")
+                sys.exit()
+            else:
+                print("FAIL.  Readback-db residuals are larger than tolerance %s:\n\tspan:%s-%s=%s.\n\tlbrel:%s-%s=%s.\n\thbrel:%s-%s=%s."%(matchTolerance,span,spanDb,varSpan,lbRel,lbRelDb,varLb,hbRel,hbRel,varHb))
+                print("   This does not match the expectations for %s.  If you are sure this really is %s, and want to update %s with new parameters, run the following commands:"%(referenceEgg,referenceEgg,mainDb))
         if  (not present[0] or not present[1] or not present[2]):
             print("FAIL.  Not all values are in the database for egg %s."%(referenceEgg))
             print("   This does not match the expectations for %s.  If you are sure this really is %s, and want to update %s with new parameters, run the following commands:"%(referenceEgg,referenceEgg,mainDb))
