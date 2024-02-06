@@ -301,8 +301,8 @@ varDict = {
 'XMS_LENGTH' : 951, # Length of XMS program in Controller memory - Tags: RO
 'LAST_ERROR' : 960, # Returns real value of last error in the controller - Tags: AX
 'AXES_NUMBER' : 981, # Number of supported axes in the system - Tags: RO
-'UART0_ADDRESS' : 990, # Acces to Communication channel address - Tags: FL
-'UART1_ADDRESS' : 991, # Acces to Communication channel address - Tags: FL
+'UART0_ADDRESS' : 990, # Access to Communication channel address - Tags: FL
+'UART1_ADDRESS' : 991, # Access to Communication channel address - Tags: FL
 'IIC_ADDRESS' : 992, # Acces to Communication channel address - Tags: FL
 'SPI_ADDRESS' : 993, # Acces to Communication channel address - Tags: FL
 'POWERSAVE_ENABLE' : 994, # Power Save Enable; 1= enable, 0=disable - Tags: FL
