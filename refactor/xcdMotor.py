@@ -13,7 +13,7 @@ import struct
 sys.path.append("C:/Users/smh28/Documents/Github/XCDCommandCodes/bin/")
 import xcdSerial
 import variableDictionaryXCD2
-from variableDictionaryXCD2 import varAllCommands as ALL_COMM
+from variableDictionaryXCD2 import varAllCommands as ALL_COMM 
 from variableDictionaryXCD2 import varStatusValues as STAT
 from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
 
@@ -204,7 +204,7 @@ class Motor:
 #    return the motor 
 
 
-        self.type = self.getMType()
+        self.type = self.getType()
         self.axis = self.getAxis()
         self.port = self.getPort()
 
@@ -216,7 +216,7 @@ class Motor:
 
         return True
 
-    def getMType(axisName):
+    def getType(axisName):
         #return a command lookup table matching the axis.
         #also let us know if the axis is a dogleg, so we know how to behave.
         isDogleg=False
@@ -251,6 +251,9 @@ class Motor:
     
     def getVar(variable):
 
+############################################################
+# REPORTXCD2 SCRIPTS - need to be combined into one getVar()
+############################################################
 
 # def reportXCD2( argv ):
 #     if argv:
@@ -369,21 +372,6 @@ class Motor:
     
 
     # mutators
-    def home():
-        #    go to all the .s19-findable positions: (hard stops, home tick)
-        #    check those against the db
-        #    if all is well, return true.
-        #    if all is not well, update db, print caution to screen with new data.
-        return
-    
-    def gotoStr( str ):
-        #    looks up the string in the Db, goes there, returns true if it made it
-        return True
-
-    def gotoFloat( val ):
-        #    goes to that point, returns true if it made it.
-        return True
-        
     def setVar(variable, value):
         if value:
             if len() > 14:
@@ -400,7 +388,7 @@ class Motor:
 
             #getAxis = reportXCD2noAxis(['XAXIS'])[0]
 
-            ax_int = getAxis()#int(getAxis)
+            ax_int = self.getAxis()#int(getAxis)
             #print("writeXCD2 axis=",ax_int)
 
             ax_byte = ax_int.to_bytes(1,byteorder='little',signed=False)
@@ -466,6 +454,37 @@ class Motor:
 
         return success, ret
     
+    def home():
+        #    go to all the .s19-findable positions: (hard stops, home tick)
+        #    check those against the db
+        #    if all is well, return true.
+        #    if all is not well, update db, print caution to screen with new data.
+        return
+    
+    def gotoStr( str ):
+        #    looks up the string in the Db, goes there, returns true if it made it
+        return True
+
+    def gotoFloat( val ):
+        #    goes to that point, returns true if it made it.
+        return True
+    
+    def __gotoDogleg():
+        return
+    
+    def __gotoPhi():
+        return
+    
+    def __gotoThetaS():
+        return
+    
+    def __gotoThetaL():
+        return
+
+
+
+
+
 
     # destructor
     def __del__(self):
