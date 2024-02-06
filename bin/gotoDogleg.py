@@ -26,7 +26,7 @@ def _reverseLookup(dict,val):
     try:
         key=reverse_mapping[val]
     except KeyError as e:
-        print(f"errorCode lookup failed.  KeyError: {e}")
+        print(f"gotoDogleg lookup failed.  KeyError: {e}")
         sys.exit()
     return key  
 
