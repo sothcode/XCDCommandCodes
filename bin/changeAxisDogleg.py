@@ -4,6 +4,7 @@ import sys
 import os
 from quickAssign import writeXCD2
 from quickReport import readback, reportXCD2
+from xcdSerial import getCurrentPort
 from variableDictionaryXCD2 import varDict
 from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
 from variableDictionaryXCD2 import varStatusValues as STAT
@@ -27,20 +28,20 @@ def writeToFile( filename ):
 
     with open(filename, "w") as file:
         # go thru varDict
-        for varName in varDict:
+        for varName, varVal in ADDR.items():
 
             # report every variable from varDict
-            check, varVal = reportXCD2([varName])
+            check, trueVal = reportXCD2([varVal])
 
             if check==False:
                 print("CRITICAL FAILURE. Communication error.")
                 sys.exit()
         
             if debug:
-                print("_readback result: ", varVal[0])
+                print("_readback result: ", trueVal[0])
         
             # Logs the change to the log for a change
-            file.write('%s %s\n' % (varName, varVal[0]))
+            file.write('%s %s\n' % (varName, trueVal[0]))
 
 
     return 
@@ -56,7 +57,7 @@ def readFromFile( filename ):
         for line in file:
             (varName, varVal) = line.split()
 
-            writeXCD2([varName, varVal])
+            writeXCD2([ADDR[varName], varVal])
         
     return True
 
@@ -79,14 +80,12 @@ def changeAxis( targetIDstr ):
 #            print("NOT EXECUTED. Controller status is not 0.")
 #            sys.exit()
 #    print('about to look in AXID keys')
-    # check if axis we want to change to is a valid axis, and if not exit
+    # check if axis we want to change to is a valid motor, and if not exit
     if targetIDstr not in AXID.keys():
         print("Axis ID - " + targetIDstr + " -  not recognized. Axis ID list given as:")
         print(AXID.keys())
         sys.exit()
 
-
-    
     # now find port corresponding to new axis 
     # first open port database file
     # print("about to query db")
@@ -100,7 +99,7 @@ def changeAxis( targetIDstr ):
 
     # otherwise, assign new port to targetPort
     targetPort = ret[1][0]
-    print("switching to targetPort=%s"%targetPort)
+    targetAxis = ret[1][1]
 
     # check which serial port we were using - can be found in PORTFILE
     # (this will change to object in class when we refactor)
@@ -110,24 +109,33 @@ def changeAxis( targetIDstr ):
         sys.exit()
     
     # if PORTFILE exists, load in old port and set active port
-    with open(PORTFILE, 'r') as file:
-        oldPort = file.readline()
+    # with open(PORTFILE, 'r') as file:
+    #     oldPort = file.readline()
     with open(PORTFILE, 'w') as file:
         file.write(targetPort)
 
-    # readback current axis and find target axis IDs
-    currentID = readback(ADDR['ID'])
-    targetID = AXID[targetIDstr]
-
-    # check if current axis and target axis are the same
-    if (currentID == targetID) and (oldPort==targetPort):
-        print("changeAxis: Port and Laser ID are already correct.")
+    
+    # readback current axis and current axis ID and find target axis ID
+    # currentID = readback(ADDR['ID'])
+    # targetID = AXID[targetIDstr]
+    # oldAxis = readback(ADDR['XAXIS'])
+    currentAxis = readback(ADDR['XAXIS'])
+    
+    # check if current ID and target ID are the same
+    if (currentAxis == targetAxis):
+        print("changeAxis: XAXIS is the same.  Values remain from last use, not loaded from file.")
         return
+
+    # newAxis = readback(ADDR['XAXIS'])
+    # if oldAxis == newAxis:
+    #     print("changeAxis: Port changed but axis unchanged. Variables not updated.")
+    #     return
 
     # create lookup table of axis variables
     IDlookup = {v:k for k, v in AXID.items()}
 
     # write all variables to file corresponding to current ID
+    currentID = readback(ADDR['ID'])
     currentIDstr = IDlookup[currentID]
     writeToFile( currentIDstr + '.txt' )
 
