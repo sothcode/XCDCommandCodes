@@ -68,8 +68,10 @@ varStatusValues={
 }
 
 varUniqueID={
-'DEBUG_DL_A0': 100, 
-'DEBUG_DL_A1': 101,
+'DEBUG_DL0_A0': 101, 
+'DEBUG_DL0_A1': 102,
+'DEBUG_DL1_A0': 103, 
+'DEBUG_DL1_A1': 104,
 'DEBUG_TH_S': 105,
 'DEBUG_TH_L': 106,
 'DEBUG_PH': 107,

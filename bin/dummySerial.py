@@ -37,7 +37,7 @@ def readback(arg):
     elif legibleArg=='TURNS':
         ret = int(math.sin(count/10)*3)*1.0  #oscillates between -3 and +3
     elif legibleArg=='STATUS': #say busy for a while, then say 'ready'.
-        if count>10 or count<2:
+        if count>10 or count<2: #in goto, we currently have one status call before we expect busy.
             ret=0
         else:
             ret=9
