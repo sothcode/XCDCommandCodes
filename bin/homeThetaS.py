@@ -69,6 +69,8 @@ if debug:
 position=readback(ADDR['FPOS'])   
 print("Setting current position to home.  Offset was %s from previous home"%position)
 writeXCD2([ADDR['FPOS'], 0])
+writeXCD2([ADDR['HARD_STOP1'], -100.0])
+writeXCD2([ADDR['HARD_STOP2'], 100.0])
 lb=readback(ADDR['HARD_STOP1'])
 hb=readback(ADDR['HARD_STOP2'])
 position=readback(ADDR['FPOS'])   
