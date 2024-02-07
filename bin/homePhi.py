@@ -55,6 +55,8 @@ if status!=0:
     sys.exit()
 
 
+dummyHome=-1000
+writeXCD2([ADDR['HOME'],dummyHome]) #set the current POSI value to nonsense.
 sendcommand(COMM['HOME'],0) # this sleeps until it sees the status change from new_command
 
 #monitor the controller position and report at intervals of sleeptime
@@ -117,7 +119,7 @@ if(abs(hardstop1-position)>matchTolerance):
 
 #compare to db values
 if referenceEgg!=None:
-    print("Comparing to Db.  Current status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
+    print("Comparing to Db.  Current status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f home:%s%s%s"%(status,_reverseLookup(STAT,status),position,axis, turns,lb,hb, home,"(Real)"*homeIsReal,"(NotFound)"*(not homeIsReal)))
 
     match=True
     present=[True]*3
@@ -151,13 +153,8 @@ if referenceEgg!=None:
         match=False
     if not match:
         if  (present[0] and present[1] and present[2]):
-            if(span<0.85):
-                print("FAIL.  Span is less than 0.85 (expect ~0.95).  Motor likely jammed.\n\tspan:%s-%s=%s.\n\tlbrel:%s-%s=%s.\n\thbrel:%s-%s=%s."%(matchTolerance,span,spanDb,varSpan,lbRel,lbRelDb,varLb,hbRel,hbRel,varHb))
-                print("aborting.  Db will not be updated.")
-                sys.exit()
-            else:
-                print("FAIL.  Readback-db residuals are larger than tolerance %s:\n\tspan:%s-%s=%s.\n\tlbrel:%s-%s=%s.\n\thbrel:%s-%s=%s."%(matchTolerance,span,spanDb,varSpan,lbRel,lbRelDb,varLb,hbRel,hbRel,varHb))
-                print("   This does not match the expectations for %s.  If you are sure this really is %s, and want to update %s with new parameters, run the following commands:"%(referenceEgg,referenceEgg,mainDb))
+            print("FAIL.  Readback-db residuals are larger than tolerance %s:\n\tspan:%s-%s=%s.\n\tlbrel:%s-%s=%s.\n\thbrel:%s-%s=%s."%(matchTolerance,span,spanDb,varSpan,lbRel,lbRelDb,varLb,hbRel,hbRel,varHb))
+            print("   This does not match the expectations for %s.  If you are sure this really is %s, and want to update %s with new parameters, run the following commands:"%(referenceEgg,referenceEgg,mainDb))
         if  (not present[0] or not present[1] or not present[2]):
             print("FAIL.  Not all values are in the database for egg %s."%(referenceEgg))
             print("   This does not match the expectations for %s.  If you are sure this really is %s, and want to update %s with new parameters, run the following commands:"%(referenceEgg,referenceEgg,mainDb))
@@ -168,7 +165,7 @@ if referenceEgg!=None:
     elif match:
         print("SUCCESS.  Readback-db residuals are within tolerance %s:\n\tspan:%s-%s=%s.\n\tlbrel:%s-%s=%s.\n\thbrel:%s-%s=%s."%(matchTolerance,span,spanDb,varSpan,lbRel,lbRelDb,varLb,hbRel,hbRel,varHb))
     print("Setting current position to home and updating onboard hardstops.")
-    writeXCD2([ADDR['FPOS'], 0])
+    writeXCD2([ADDR['FPOS'], posRel])
     writeXCD2([ADDR['HARD_STOP1'], lbRel])
     writeXCD2([ADDR['HARD_STOP2'], hbRel])
     
