@@ -98,7 +98,7 @@ def changeAxis( targetIDstr ):
         sys.exit()
 
     # before we go, save the old FPOS and nturns, just in case:
-    oldID=reacback(ADDR['ID'])
+    oldID=readback(ADDR['ID'])
     oldAxis=readback(ADDR['XAXIS'])
     oldStatus=readback(ADDR['STATUS'])
     oldPos=readback(ADDR['FPOS'])
