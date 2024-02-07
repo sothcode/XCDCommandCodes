@@ -30,8 +30,8 @@ varDoglegCommands = {
 
 varAttenuatorCommands = {
 # Variables listed below are definitions in dogleg_v3_test_final.xms
-'GOTO': 9,
-'HOME': 10
+'GOTO': 10,
+'HOME': 9
 }
 
 varAllCommands = {
@@ -62,6 +62,8 @@ varStatusValues={
 'FAIL_PHI_HOME':2,
 'FAIL_PHI_GOTO':3,
 'FAIL_TH_S_DID_NOT_ARRIVE':4,
+'FAIL_ATT_NOT_HOME':5,
+'FAIL_ATT_DID_NOT_ARRIVE':6,
 'NEWCOMMAND':8,
 'BUSY':9,
 'TIMEOUT':80,

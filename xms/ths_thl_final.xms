@@ -40,7 +40,7 @@ config 900, 0x00051001
 // initialize commandBYTE, statusBYTE to IDLE
 V0 = 0
 V18 = 0
-V19 = 0
+V19 = 98
 
 // set encoder latch POS flag to 0
 set S_IND = 0
@@ -50,52 +50,6 @@ set S_IND = 0
 // Start infinite loop
 while 1  
 
-   // find minimum velocity routine
-   if V0 = 99
-
-      // set statusBYTE BUSY
-      V19 = 9
-
-      // set initial velocity
-      V13 = 0.0
-      V14 = 0.0
-
-      // set initial encoder iterator
-      V18 = FPOS
-
-      // start at velocity 0 and iterate from there
-      enable
-      velocityloop V13
-      delay 100
-      while V18 = FPOS
-         V13 = V13 - 0.1
-         velocityloop V13
-         delay 100
-      end
-      velocityloop 0.0
-      disable
-
-      // start at velocity 0 again and iterate from there
-      enable
-      velocityloop V14
-      delay 100
-      while V18 = FPOS
-         V14 = V14 + 0.1
-         velocityloop V14
-         delay 100
-      end
-      velocityloop 0.0
-      disable
-
-      // set status as done once found
-      V19 = 0
-
-      // then reset to IDLE
-      V0 = 0
-
-   // end find minimum velocity routine
-   end
-      
 
    // theta long mirror homing procedure
    if V0 = 3
@@ -237,6 +191,54 @@ while 1
       V0 = 0
 
    // end theta short goto procedure
+   end
+
+
+
+   // find minimum velocity routine
+   if V0 = 99
+
+      // set statusBYTE BUSY
+      V19 = 9
+
+      // set initial velocity
+      V13 = 0.0
+      V14 = 0.0
+
+      // set initial encoder iterator
+      V18 = FPOS
+
+      // start at velocity 0 and iterate from there
+      enable
+      velocityloop V13
+      delay 100
+      while V18 = FPOS
+         V13 = V13 - 0.1
+         velocityloop V13
+         delay 100
+      end
+      velocityloop 0.0
+      disable
+
+      // start at velocity 0 again and iterate from there
+      enable
+      velocityloop V14
+      delay 100
+      while V18 = FPOS
+         V14 = V14 + 0.1
+         velocityloop V14
+         delay 100
+      end
+      velocityloop 0.0
+      disable
+
+      // set status as done once found
+      V19 = 0
+
+      // then reset to IDLE
+      V0 = 0
+
+   // end find minimum velocity routine
    end
 
 
