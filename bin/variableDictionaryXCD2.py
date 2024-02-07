@@ -48,6 +48,7 @@ varInterfaceAddresses= {
 'ID':'V1',
 'HARD_STOP1':'V2',
 'HARD_STOP2':'V3',
+'HOME':'V4',
 'ARG':'V10',
 'TURNS':'V11',
 'STATUS':'V19',

@@ -106,7 +106,6 @@ if(abs(lbRel)>matchTolerance):
     print("FAIL.  home and lowbound are not the same?  Motor likely jammed.  span:%s. lb:%s home:%s."%(span,lb,home))
     print("aborting.  Db will not be updated.")
     sys.exit()
-
 #compare to db values
 
 if referenceEgg!=None:
