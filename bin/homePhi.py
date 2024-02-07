@@ -110,7 +110,7 @@ if(span>1.0):
     print("aborting.  Db will not be updated.")
     sys.exit()
 if(abs(hardstop1-position)>matchTolerance):
-    print("FAIL.  lowbound and return to lowbound are not the same?  Motor likely jammed.  posRel:%s. lbrel:%s hbrel:%s posi:%s%s%s."%(posRel,lbRel,hbRel, home,"(Real)"*homeIsReal,"(NotFound)"*(not homeIsReal)))
+    print("FAIL.  lowbound and return to lowbound are not the same?  Offset=%s Motor likely jammed.  posRel:%s. lbrel:%s hbrel:%s posi:%s%s%s."%(matchTolerance,posRel,lbRel,hbRel, home,"(Real)"*homeIsReal,"(NotFound)"*(not homeIsReal)))
     print("aborting.  Db will not be updated.")
     sys.exit()
 
