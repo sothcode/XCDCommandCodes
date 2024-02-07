@@ -56,7 +56,6 @@ varInterfaceAddresses= {
 'ENR':'ENR'
 }
 
-varGotoTuning={
 
 varStatusValues={
 'READY':0,
