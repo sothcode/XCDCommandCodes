@@ -113,7 +113,7 @@ if(abs(hardstop1-position)>matchTolerance):
 #compare to db values
 
 if referenceEgg!=None:
-    print("Comparing to Db.  Current status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f posi:%1.5f(should be zero)"%(status,_reverseLookup(STAT,status),position,axis, turns,lb,hb,home))
+    print("Comparing to Db.  Current status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f posi:%1.7f(should be zero)"%(status,_reverseLookup(STAT,status),position,axis, turns,lb,hb,home))
     match=True
     present=[True]*3
     success,homeDb=kfDatabase.readVar(mainDb,"%s/home"%referenceEgg)
