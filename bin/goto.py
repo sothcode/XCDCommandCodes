@@ -245,7 +245,7 @@ def goto( axisName=None, destination=None):
             print("SUCCESS. goto %s %s complete. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName, destination, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
             return True, position
         else:
-            print("FAIL. goto %s %s failed in tolerance check: position more than %s from %s. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(move_tolerance,targetPos,axisName, destination, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
+            print("FAIL. goto %s %s failed in tolerance check: position more than %s from %s. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName,destination,move_tolerance,targetPos, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
             return False, position
     else:
         print("FAIL. goto %s %s failed in controller. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName, destination, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
