@@ -176,6 +176,6 @@ if referenceEgg!=None:
     
 
 if status==STAT['READY']:
-    print("SUCCESS. homePhi complete. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
+    print("SUCCESS. homePhi complete. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f home:%1.5f"%(status,_reverseLookup(STAT,status),position,axis, turns,lb,hb, home))
 else:
-    print("FAIL. homePhi failed. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
+    print("FAIL. homePhi failed. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f home:%1.5f"%(status,_reverseLookup(STAT,status),position,axis, turns,lb,hb,home))
