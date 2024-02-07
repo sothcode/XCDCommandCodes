@@ -97,13 +97,17 @@ def changeAxis( targetIDstr ):
         print("Axis ID '%s' not found in database '%s'.  Run updatePorts.py." % (targetIDstr, portsDb))
         sys.exit()
 
+    # before we go, save the old FPOS and nturns, just in case:
+    oldID=reacback(ADDR['ID'])
+    oldAxis=readback(ADDR['XAXIS'])
+    oldStatus=readback(ADDR['STATUS'])
+    oldPos=readback(ADDR['FPOS'])
+    oldTurns=readback(ADDR['TURNS'])
+        
     # otherwise, assign new port to targetPort
     targetPort = ret[1][0]
     targetAxis = ret[1][1]
-
-    # check which serial port we were using - can be found in PORTFILE
-    # (this will change to object in class when we refactor)
-    oldPort = None
+   # (this will change to object in class when we refactor)
     if not (os.path.exists(PORTFILE)):
         print("PORTFILE %s does not exist.  PANIC" % PORTFILE)
         sys.exit()
@@ -142,11 +146,21 @@ def changeAxis( targetIDstr ):
     # find file corresponding to target ID and load from it
     readBool = readFromFile( targetIDstr + '.txt' )
 
+    # now read the current state:
+    newID=reacback(ADDR['ID'])
+    newAxis=readback(ADDR['XAXIS'])
+    newStatus=readback(ADDR['STATUS'])
+    newPos=readback(ADDR['FPOS'])
+    newTurns=readback(ADDR['TURNS'])
+
+    
     if readBool:
         print("changeAxis: Axis changed to '%s' on port '%s'"% (targetIDstr, targetPort))
     else:
         print("FAILURE: changeAxis: Axis could not be changed to '%s' on port '%s'"% (targetIDstr, targetPort))
-
+    print("was: %s pos=%s, axis=%s, stat=%s, turns=%s"%(IDlookup[oldID],oldPos,oldAxis,oldStatus,oldTurns)) 
+    print("now: %s pos=%s, axis=%s, stat=%s, turns=%s"%(IDlookup[newID],newPos,newAxis,newStatus,newTurns)) 
+        
     return
 
 
