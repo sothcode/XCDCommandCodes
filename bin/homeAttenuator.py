@@ -167,7 +167,7 @@ if referenceEgg!=None:
     lb=readback(ADDR['HARD_STOP1'])
     hb=readback(ADDR['HARD_STOP2'])
     position=readback(ADDR['FPOS'])   
-    home=readback(ADDR['FPOS'])   
+    home=readback(ADDR['HOME'])   
     
 
 if status==STAT['READY']:
