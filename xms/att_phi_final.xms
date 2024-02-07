@@ -147,7 +147,7 @@ while 1
          set TIME = 0
          enable
          move V10
-         while (V10 - FPOS) > 10*ENR & TIME < 7000
+         while abs(V10 - FPOS) > 10*ENR & TIME < 7000
          end
          disable
 
