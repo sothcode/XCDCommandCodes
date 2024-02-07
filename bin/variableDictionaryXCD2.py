@@ -48,13 +48,12 @@ varInterfaceAddresses= {
 'ID':'V1',
 'HARD_STOP1':'V2',
 'HARD_STOP2':'V3',
-'HOME':'V4',
+'HOME':'POSI',
 'ARG':'V10',
 'TURNS':'V11',
 'STATUS':'V19',
 'FPOS':'FPOS',
-'ENR':'ENR',
-'POSI':'POSI'
+'ENR':'ENR'
 }
 
 varStatusValues={
