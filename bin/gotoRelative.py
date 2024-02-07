@@ -11,6 +11,7 @@ from changeAxisDogleg import changeAxis
 import sys
 import re
 import time
+import math
 from goto import gotoVettedQuiet
 from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
 from variableDictionaryXCD2 import varStatusValues as STAT
@@ -161,12 +162,12 @@ if __name__ == "__main__":
         #get its port from the db
         axis=sys.argv[1]
         dest=sys.argv[2]
-#    elif len(sys.argv)==4:
-#        if sys.argv[2]=='deg' or sys.argv[2]=='degree'
-#        #assume first arg is leg, assume second arg is destination.
-#        #get its port from the db
-#        axis=sys.argv[1]
-#        dest=sys.argv[2]=
+    elif len(sys.argv)==4:
+        if sys.argv[2]=='deg' or sys.argv[2]=='degree'
+        #assume first arg is leg, assume second arg is destination.
+        #get its port from the db
+        axis=sys.argv[1]
+        dest=1.0/360.0*sys.argv[2]
     else:
         print("NOT EXECUTED. Wrong number of arguments.  Correct usage is:")
         print("   ./gotoRelative.py laser_name position")

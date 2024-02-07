@@ -147,7 +147,7 @@ def changeAxis( targetIDstr ):
     readBool = readFromFile( targetIDstr + '.txt' )
 
     # now read the current state:
-    newID=reacback(ADDR['ID'])
+    newID=readback(ADDR['ID'])
     newAxis=readback(ADDR['XAXIS'])
     newStatus=readback(ADDR['STATUS'])
     newPos=readback(ADDR['FPOS'])
