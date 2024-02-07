@@ -125,7 +125,7 @@ def gotoVettedQuiet(destination,COMM):
     if debug:
         print("goto:  Check position:");
     position=readback(ADDR['FPOS'])
-   if debug:
+    if debug:
         print("goto:  Check position: %s"%position);
     status=readback(ADDR['STATUS'])
     if debug:
