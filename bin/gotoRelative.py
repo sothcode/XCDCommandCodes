@@ -161,10 +161,16 @@ if __name__ == "__main__":
         #get its port from the db
         axis=sys.argv[1]
         dest=sys.argv[2]
+#    elif len(sys.argv)==4:
+#        if sys.argv[2]=='deg' or sys.argv[2]=='degree'
+#        #assume first arg is leg, assume second arg is destination.
+#        #get its port from the db
+#        axis=sys.argv[1]
+#        dest=sys.argv[2]=
     else:
         print("NOT EXECUTED. Wrong number of arguments.  Correct usage is:")
         print("   ./gotoRelative.py laser_name position")
         sys.exit()
     #if wrong arguments, exit with explanation
 
-    goto(axis,dest)
+    gotoRelative(axis,dest)
