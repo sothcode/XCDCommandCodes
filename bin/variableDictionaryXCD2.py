@@ -43,6 +43,7 @@ varAllCommands = {
 }
 
 varInterfaceAddresses= {
+'XAXIS':'XAXIS',
 'COMMAND':'V0',
 'ID':'V1',
 'HARD_STOP1':'V2',
@@ -51,8 +52,8 @@ varInterfaceAddresses= {
 'TURNS':'V11',
 'STATUS':'V19',
 'FPOS':'FPOS',
-'XAXIS':'XAXIS',
-'ENR':'ENR'
+'ENR':'ENR',
+'POSI':'POSI'
 }
 
 varStatusValues={
