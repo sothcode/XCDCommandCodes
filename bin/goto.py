@@ -85,7 +85,7 @@ def gotoVettedQuiet(destination,COMM):
 
     #check if controller is busy.  If so, exit with explanation
     if debug:
-        print("goto:  Check status:")
+        print("gotoVQ:  Check status:")
     status=readback(ADDR['STATUS'])
 
     if status!=0:
@@ -116,7 +116,7 @@ def gotoVettedQuiet(destination,COMM):
             print("gotoVettedQuiet: Original dest %s was too close to fpos %s, so tried to jog to %s or %s, but both are out of bounds (lb:%s, hb:%s)"%(destination,position,jogtarget1,jogtarget2,lb,hb))
             
     
-    print("goto: sending command %s (%s)"%(COMM['GOTO'],'GOTO'))
+    print("gotoVQ: sending command %s (%s) destination:%s"%(COMM['GOTO'],'GOTO',destination))
     commandSent=sendcommand(COMM['GOTO'],destination) # this sleeps until it sees the status change from new_command
     if not commandSent:
         return False, readback(ADDR['FPOS'])
@@ -125,10 +125,12 @@ def gotoVettedQuiet(destination,COMM):
     if debug:
         print("goto:  Check position:");
     position=readback(ADDR['FPOS'])
-    if debug:
-        print("goto:  Check status:");
-    #status=STAT['BUSY']
+   if debug:
+        print("goto:  Check position: %s"%position);
     status=readback(ADDR['STATUS'])
+    if debug:
+        print("goto:  Check status: %s"%status);
+    #status=STAT['BUSY']
     axis=readback(ADDR['XAXIS'])
     hardstop1=readback(ADDR['HARD_STOP1'])
     hardstop2=readback(ADDR['HARD_STOP2'])
