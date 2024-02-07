@@ -163,7 +163,7 @@ if __name__ == "__main__":
         axis=sys.argv[1]
         dest=sys.argv[2]
     elif len(sys.argv)==4:
-        if sys.argv[2]=='deg' or sys.argv[2]=='degree'
+        if sys.argv[2]=='deg' or sys.argv[2]=='degree':
             #assume first arg is leg, assume second arg is destination.
             #get its port from the db
             axis=sys.argv[1]
