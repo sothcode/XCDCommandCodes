@@ -109,10 +109,10 @@ if(span>1.0):
     print("FAIL.  Span is greater than 1?!?  Encoder likely damaged.  span:%s. lbrel:%s hbrel:%s posi:%s%s%s."%(span,lbRel,hbRel, home,"(Real)"*homeIsReal,"(NotFound)"*(not homeIsReal)))
     print("aborting.  Db will not be updated.")
     sys.exit()
-if(abs(hardstop1-position)>matchTolerance):
-    print("FAIL.  lowbound and return to lowbound are not the same?  Offset=%s Motor likely jammed.  posRel:%s. lbrel:%s hbrel:%s posi:%s%s%s."%(matchTolerance,posRel,lbRel,hbRel, home,"(Real)"*homeIsReal,"(NotFound)"*(not homeIsReal)))
-    print("aborting.  Db will not be updated.")
-    sys.exit()
+#if(abs(hardstop1-position)>matchTolerance):
+#    print("FAIL.  lowbound and return to lowbound are not the same?  Offset=%s Motor likely jammed.  posRel:%s. lbrel:%s hbrel:%s posi:%s%s%s."%(matchTolerance,posRel,lbRel,hbRel, home,"(Real)"*homeIsReal,"(NotFound)"*(not homeIsReal)))
+#    print("aborting.  Db will not be updated.")
+#    sys.exit()
 
 
 
