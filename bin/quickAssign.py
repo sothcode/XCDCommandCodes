@@ -8,7 +8,7 @@ from quickReport import getAxis, readback, reportXCD2noAxis
 import sys
 import struct
 
-debug=False
+debug=True
 sleeptime=0.1
 timeout=10
 
