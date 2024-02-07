@@ -167,7 +167,7 @@ if __name__ == "__main__":
             #assume first arg is leg, assume second arg is destination.
             #get its port from the db
             axis=sys.argv[1]
-            dest=1.0/360.0*sys.argv[2]
+            dest=1.0/360.0*float(sys.argv[2])
         else:
             print("don't know that unit: '%s'.  exiting."%sys.argv[3])
             sys.exit()
