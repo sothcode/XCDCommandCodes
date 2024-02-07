@@ -89,26 +89,25 @@ if debug:
      print ("home: finishing up.  check status and readback:")
 
     
-lbRel=0
-hbRel=hardstop2-hardstop1
-posRel=position-hardstop1
+lbRel=hardstop1-home
+hbRel=hardstop2-home
+posRel=position-home
 span=hardstop2-hardstop1
 homeIsReal=False
 if (home>hardstop1 and home<hardstop2):
     homeIsReal=True
-homeRel=home-hardstop1
 
 #sanity check
 if(span<0.75):
-    print("FAIL.  Span is less than 0.75 (expect ~0.80).  Motor likely jammed.  span:%s. lbrel:%s hbrel:%s home:%s%s%s."%(span,lbRel,hbRel, homeRel,"(Real)"*homeIsReal,"(NotFound)"*(not homeIsReal)))
+    print("FAIL.  Span is less than 0.75 (expect ~0.80).  Motor likely jammed.  span:%s. lbrel:%s hbrel:%s home:%s%s%s."%(span,lbRel,hbRel, home,"(Real)"*homeIsReal,"(NotFound)"*(not homeIsReal)))
     print("aborting.  Db will not be updated.")
     sys.exit()
 if(span>1.0):
-    print("FAIL.  Span is greater than 1?!?  Encoder likely damaged.  span:%s. lbrel:%s hbrel:%s home:%s%s%s."%(span,lbRel,hbRel, homeRel,"(Real)"*homeIsReal,"(NotFound)"*(not homeIsReal)))
+    print("FAIL.  Span is greater than 1?!?  Encoder likely damaged.  span:%s. lbrel:%s hbrel:%s home:%s%s%s."%(span,lbRel,hbRel, home,"(Real)"*homeIsReal,"(NotFound)"*(not homeIsReal)))
     print("aborting.  Db will not be updated.")
     sys.exit()
 if(abs(hardstop1-position)>matchTolerance):
-    print("FAIL.  lowbound and return to lowbound are not the same?  Motor likely jammed.  posRel:%s. lbrel:%s hbrel:%s home:%s%s%s."%(posRel,lbRel,hbRel, homeRel,"(Real)"*homeIsReal,"(NotFound)"*(not homeIsReal)))
+    print("FAIL.  lowbound and return to lowbound are not the same?  Motor likely jammed.  posRel:%s. lbrel:%s hbrel:%s home:%s%s%s."%(posRel,lbRel,hbRel, home,"(Real)"*homeIsReal,"(NotFound)"*(not homeIsReal)))
     print("aborting.  Db will not be updated.")
     sys.exit()
 #compare to db values
@@ -153,16 +152,16 @@ if referenceEgg!=None:
         if  (not present[0] or not present[1] or not present[2]):
             print("FAIL.  Not all values are in the database for egg %s."%(referenceEgg))
             print("   This does not match the expectations for %s.  If you are sure this really is %s, and want to update %s with new parameters, run the following commands:"%(referenceEgg,referenceEgg,mainDb))
-        print("   ./kfDatabase/kfDatabase.py %s %s/%s %f %s"%(mainDb,referenceEgg,"home",homeRel,"new"*(not present[0])))
+        print("   ./kfDatabase/kfDatabase.py %s %s/%s %f %s"%(mainDb,referenceEgg,"home",0.0,"new"*(not present[0])))
         print("   ./kfDatabase/kfDatabase.py %s %s/%s %f %s"%(mainDb,referenceEgg,"lowbound",lbRel,"new"*(not present[1])))
         print("   ./kfDatabase/kfDatabase.py %s %s/%s %f %s"%(mainDb,referenceEgg,"highbound",hbRel,"new"*(not present[2])))
     elif match:
         print("SUCCESS.  Readback-db residuals are within tolerance %s:\n\tspan:%s-%s=%s.\n\tlbrel:%s-%s=%s.\n\thbrel:%s-%s=%s."%(matchTolerance,span,spanDb,varSpan,lbRel,lbRelDb,varLb,hbRel,hbRel,varHb))
     print("Setting current position to distance from lowbound and updating onboard hardstops.")
     writeXCD2([ADDR['FPOS'], posRel])
-    writeXCD2([ADDR['HARD_STOP1'], 0.0])
+    writeXCD2([ADDR['HARD_STOP1'], lbRel])
     writeXCD2([ADDR['HARD_STOP2'], hbRel])
-    writeXCD2([ADDR['HOME'],homeRel])
+    writeXCD2([ADDR['HOME'],0.0])
     
     lb=readback(ADDR['HARD_STOP1'])
     hb=readback(ADDR['HARD_STOP2'])
