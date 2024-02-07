@@ -173,9 +173,11 @@ if __name__ == "__main__":
     if len(sys.argv) == 1:
         exerciseDogleg()
     elif len(sys.argv) == 2:
-        if sys.argv[1] == False:
+        if sys.argv[1] == 0:
             exerciseDogleg(loop=False)
-        sys.exit()
+        else
+            print("second argument can only be 0 to denote False for loop condition.")
+            sys.exit()
     else:
         sys.exit()
 
