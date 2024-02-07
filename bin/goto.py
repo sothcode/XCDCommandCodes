@@ -23,7 +23,7 @@ import kfDatabase
 min_distance=0.1 #in rotations
 move_tolerance=0.001 #in rotations.  causes an error if it did not get this close in the final move.
 sleeptime=0.6 #in seconds
-timeout=10
+timeout=10 #in seconds
 debug=False
 portsDb="xcd2_ports.kfdb"
 #mainDb="axis_parameters.kfdb"
@@ -85,7 +85,7 @@ def gotoVettedQuiet(destination,COMM):
 
     #check if controller is busy.  If so, exit with explanation
     if debug:
-        print("goto:  Check status:")
+        print("gotoVQ:  Check status:")
     status=readback(ADDR['STATUS'])
 
     if status!=0:
@@ -116,19 +116,19 @@ def gotoVettedQuiet(destination,COMM):
             print("gotoVettedQuiet: Original dest %s was too close to fpos %s, so tried to jog to %s or %s, but both are out of bounds (lb:%s, hb:%s)"%(destination,position,jogtarget1,jogtarget2,lb,hb))
             
     
-    print("goto: sending command %s (%s)"%(COMM['GOTO'],'GOTO'))
+    print("gotoVQ: sending command %s (%s) destination:%s"%(COMM['GOTO'],'GOTO',destination))
     commandSent=sendcommand(COMM['GOTO'],destination) # this sleeps until it sees the status change from new_command
     if not commandSent:
         return False, readback(ADDR['FPOS'])
     
     #monitor the controller position and report at intervals of sleeptime
-    if debug:
-        print("goto:  Check position:");
     position=readback(ADDR['FPOS'])
     if debug:
-        print("goto:  Check status:");
-    #status=STAT['BUSY']
+        print("gotoVQ:  Check position: %s"%position);
     status=readback(ADDR['STATUS'])
+    if debug:
+        print("gotoVQ:  Check status: %s"%status);
+    #status=STAT['BUSY']
     axis=readback(ADDR['XAXIS'])
     hardstop1=readback(ADDR['HARD_STOP1'])
     hardstop2=readback(ADDR['HARD_STOP2'])
@@ -139,12 +139,10 @@ def gotoVettedQuiet(destination,COMM):
         oldposition=position
         position=readback(ADDR['FPOS'])
         turns=readback(ADDR['TURNS'])
-        print("position:%s status:%s (%s) turns:%s (not live: ax: %s lb:%1.4f hb:%1.4f)"%(position,status,_reverseLookup(STAT,status),turns,axis,hardstop1,hardstop2))
+        print("position:%s status:%s (%s) turns:%s (not live: ax: %s lb:%1.4f hb:%1.4f) (gotoVQ)"%(position,status,_reverseLookup(STAT,status),turns,axis,hardstop1,hardstop2))
 
         #print("position:", position," (axis",axis,") status:",status," (",_reverseLookup(STAT,status),") turns:",turns)
-        if debug:
-            print ("goto: loop: check status:")
-
+ 
         # sleep a little, and if same position, enter timeout loop
         time.sleep(sleeptime)
 
@@ -154,7 +152,9 @@ def gotoVettedQuiet(destination,COMM):
 
         # otherwise update status and continue
         status=readback(ADDR['STATUS']) 
-
+        if debug:
+            print ("gotoVQ: loop: check status: %s"%status)
+ 
     if status==STAT['BUSY']:
         writeXCD2([ADDR['STATUS'], 80]) # we need to get writeXXCD2 out of here.  maybe setStatus?
         time.sleep(sleeptime)
@@ -163,7 +163,7 @@ def gotoVettedQuiet(destination,COMM):
 
     #report final position and success
     if debug:
-        print ("gotoVettedQuiet: finishing up.  check status and readback:")
+        print ("gotoVettedQuiet: finishing up.  check status and readback.")
     return True, readback(ADDR['FPOS'])
 
         
@@ -244,7 +244,7 @@ def goto( axisName=None, destination=None):
             print("SUCCESS. goto %s %s complete. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName, destination, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
             return True, position
         else:
-            print("FAIL. goto %s %s failed in tolerance check: position more than %s from %s. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName,destination,move_tolerance,targetPos, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
+            print("FAIL. goto %s %s failed in .py tolerance check: position more than %s from %s. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName,destination,move_tolerance,targetPos, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
             return False, position
     else:
         print("FAIL. goto %s %s failed in controller. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName, destination, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
