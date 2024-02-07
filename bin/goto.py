@@ -238,7 +238,6 @@ def goto( axisName=None, destination=None):
     hb=readback(ADDR['HARD_STOP2'])
 
     residual=targetPos-position
-    move_tolerance=targetPos
 
     if status==STAT['READY']:
         if abs(residual)<move_tolerance:
