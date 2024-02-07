@@ -158,8 +158,7 @@ def changeAxis( targetIDstr ):
         print("changeAxis: Axis changed to '%s' on port '%s'"% (targetIDstr, targetPort))
     else:
         print("FAILURE: changeAxis: Axis could not be changed to '%s' on port '%s'"% (targetIDstr, targetPort))
-    
-print("was: %s pos=%s, axis=%s, stat=%s, turns=%s"%(IDlookup[oldID],oldPos,oldAxis,oldStatus,oldTurns)) 
+    print("was: %s pos=%s, axis=%s, stat=%s, turns=%s"%(IDlookup[oldID],oldPos,oldAxis,oldStatus,oldTurns)) 
     print("now: %s pos=%s, axis=%s, stat=%s, turns=%s"%(IDlookup[newID],newPos,newAxis,newStatus,newTurns)) 
         
     return
