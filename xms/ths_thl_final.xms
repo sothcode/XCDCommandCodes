@@ -75,7 +75,7 @@ while 1
       enable
       velocityloop -0.8
       delay 500
-      while abs(V18 - FPOS) > 10*ENR & abs(V17-FPOS) < 0.15
+      while abs(V18 - FPOS) > 10*ENR & abs(V17 - FPOS) < 1
          V18 = FPOS
          delay 100
       end
@@ -86,7 +86,7 @@ while 1
       V2 = FPOS
 
       // calculate positive hard stop
-      V3 = FPOS + 0.85
+      V3 = FPOS + 0.6
 
       // then go back and find home
       set S_IND = 0

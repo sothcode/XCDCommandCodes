@@ -197,6 +197,7 @@ while 1
 
       // record first hard stop
       V2 = FPOS
+      V4 = FPOS - 1
 
       // drive other way until stop
       enable
@@ -213,10 +214,15 @@ while 1
       V3 = FPOS
 
       // move to low bound
+      set S_IND = 0
       set TIME = 0
       enable
       move V2
-      while S_IND = 0 & TIME < 7000
+      while abs(V2 - FPOS) > 10*ENR & TIME < 7000
+         if S_IND <> 0
+            V4 = FPOS
+            set S_IND = 0
+         end
       end
       openloop 0.0
       disable
