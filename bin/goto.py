@@ -25,9 +25,9 @@ move_tolerance=0.001 #in rotations.  causes an error if it did not get this clos
 sleeptime=0.6 #in seconds
 timeout=10
 debug=False
-#portsDb="xcd2_ports.kfdb"
+portsDb="xcd2_ports.kfdb"
 #mainDb="axis_parameters.kfdb"
-portsDb="test_only_xcd2_ports.kfdb"
+#portsDb="test_only_xcd2_ports.kfdb"
 mainDb="test_only_axis_parameters.kfdb"
 PORTFILE="XCD_current_port"
 
