@@ -35,7 +35,7 @@ if len(sys.argv) != 1: #note that sys.argv has arg 1 as the command itself
 
 #check if controller is busy.  If so, exit with explanation
 if debug:
-    print("goto:  Check status:")
+    print("homeThetaS:  Check status:")
 status=readback(ADDR['STATUS'])
 
 if status!=0:
@@ -47,19 +47,21 @@ sendcommand(COMM['HOME'],0) # this sleeps until it sees the status change from n
 
 #monitor the controller position and report at intervals of sleeptime
 if debug:
-    print("goto:  Check position:");
+    print("homeThetaS:  Check position:");
 position=readback(ADDR['FPOS'])
 if debug:
-    print("goto:  Check status:");
+    print("homeThetaS:  Check status:");
 status=STAT['BUSY']
 while status==STAT['BUSY']:
     status=readback(ADDR['STATUS'])
-    print("position:",readback(ADDR['FPOS'])," status:",status)
-    if debug:
-        print ("goto: loop: check status:")
-    status=readback(ADDR['STATUS'])
-    time.sleep(sleeptime)
+    hardstop1=readback(ADDR['HARD_STOP1'])
+    hardstop2=readback(ADDR['HARD_STOP2'])
+    home=readback(ADDR['HOME'])
+    print("position:",readback(ADDR['FPOS'])," status:",status, "lb:",hardstop1, "hb:",hardstop2, "posi:",home)
 
+    if debug:
+        print ("homeThetaS: loop: check status:")
+    time.sleep(sleeptime)
 #loop until controller busy flag is cleared
 
 #report final position and success
@@ -67,17 +69,19 @@ if debug:
     print ("homeThetaS: finishing up.  check status and readback:")
 
 position=readback(ADDR['FPOS'])   
-print("Setting current position to home.  Offset was %s from previous home"%position)
-writeXCD2([ADDR['FPOS'], 0])
-writeXCD2([ADDR['HARD_STOP1'], -100.0])
-writeXCD2([ADDR['HARD_STOP2'], 100.0])
+print("Setting POSI position to zero and updating onboard hardstops.  POSI Offset was %s from previous home"%(home))
+writeXCD2([ADDR['FPOS'], position-home])
+writeXCD2([ADDR['HARD_STOP1'], -1.0])
+writeXCD2([ADDR['HARD_STOP2'], 1.0])
 lb=readback(ADDR['HARD_STOP1'])
 hb=readback(ADDR['HARD_STOP2'])
 position=readback(ADDR['FPOS'])   
 turns=readback(ADDR['TURNS'])
 axis=readback(ADDR['XAXIS'])   
 
+
+
 if status==STAT['READY']:
-    print("SUCCESS. homeThetaS complete. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
+    print("SUCCESS. homeThetaS complete. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f home(before):%1.5f"%(status,_reverseLookup(STAT,status),position,axis, turns,lb,hb, home))
 else:
-    print("FAIL. homeThetaS failed. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))    
+    print("FAIL. homeThetaS failed. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f home(before):%1.5f"%(status,_reverseLookup(STAT,status),position,axis, turns,lb,hb,home))
