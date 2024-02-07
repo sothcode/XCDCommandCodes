@@ -76,21 +76,46 @@ while status==STAT['BUSY']:
 
 #loop until controller busy flag is cleared
 
+
 #report final position and success
 status=readback(ADDR['STATUS'])
 lb=readback(ADDR['HARD_STOP1'])
 hb=readback(ADDR['HARD_STOP2'])
 position=readback(ADDR['FPOS'])
-home=position
+home=readback(ADDR['HOME'])
 turns=readback(ADDR['TURNS'])
 axis=readback(ADDR['XAXIS'])
 
 if debug:
-     print ("goto: finishing up.  check status and readback:")
+     print ("home: finishing up.  check status and readback:")
 
-#compare to db values
+    
 lbRel=hardstop1-home
 hbRel=hardstop2-home
+posRel=position-home
+span=hardstop2-hardstop1
+homeIsReal=False
+if (home>hardstop1 and home<hardstop2):
+    homeIsReal=True
+
+#sanity check
+if(span<0.75):
+    print("FAIL.  Span is less than 0.75 (expect ~0.80).  Motor likely jammed.  span:%s. lbrel:%s hbrel:%s posi:%s%s%s."%(span,lbRel,hbRel, home,"(Real)"*homeIsReal,"(NotFound)"*(not homeIsReal)))
+    print("aborting.  Db will not be updated.")
+    sys.exit()
+if(span>1.0):
+    print("FAIL.  Span is greater than 1?!?  Encoder likely damaged.  span:%s. lbrel:%s hbrel:%s posi:%s%s%s."%(span,lbRel,hbRel, home,"(Real)"*homeIsReal,"(NotFound)"*(not homeIsReal)))
+    print("aborting.  Db will not be updated.")
+    sys.exit()
+if(abs(hardstop1-position)>matchTolerance):
+    print("FAIL.  lowbound and return to lowbound are not the same?  Motor likely jammed.  posRel:%s. lbrel:%s hbrel:%s posi:%s%s%s."%(posRel,lbRel,hbRel, home,"(Real)"*homeIsReal,"(NotFound)"*(not homeIsReal)))
+    print("aborting.  Db will not be updated.")
+    sys.exit()
+
+
+
+
+#compare to db values
 if referenceEgg!=None:
     print("Comparing to Db.  Current status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
 
