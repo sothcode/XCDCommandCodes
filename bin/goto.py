@@ -23,7 +23,7 @@ import kfDatabase
 min_distance=0.1 #in rotations
 move_tolerance=0.001 #in rotations.  causes an error if it did not get this close in the final move.
 sleeptime=0.6 #in seconds
-timeout=10
+timeout=10 #in seconds
 debug=True
 portsDb="xcd2_ports.kfdb"
 #mainDb="axis_parameters.kfdb"
@@ -122,8 +122,6 @@ def gotoVettedQuiet(destination,COMM):
         return False, readback(ADDR['FPOS'])
     
     #monitor the controller position and report at intervals of sleeptime
-    if debug:
-        print("goto:  Check position:");
     position=readback(ADDR['FPOS'])
     if debug:
         print("goto:  Check position: %s"%position);
@@ -141,12 +139,10 @@ def gotoVettedQuiet(destination,COMM):
         oldposition=position
         position=readback(ADDR['FPOS'])
         turns=readback(ADDR['TURNS'])
-        print("position:%s status:%s (%s) turns:%s (not live: ax: %s lb:%1.4f hb:%1.4f)"%(position,status,_reverseLookup(STAT,status),turns,axis,hardstop1,hardstop2))
+        print("position:%s status:%s (%s) turns:%s (not live: ax: %s lb:%1.4f hb:%1.4f) (gotoVQ)"%(position,status,_reverseLookup(STAT,status),turns,axis,hardstop1,hardstop2))
 
         #print("position:", position," (axis",axis,") status:",status," (",_reverseLookup(STAT,status),") turns:",turns)
-        if debug:
-            print ("goto: loop: check status:")
-
+ 
         # sleep a little, and if same position, enter timeout loop
         time.sleep(sleeptime)
 
@@ -156,7 +152,9 @@ def gotoVettedQuiet(destination,COMM):
 
         # otherwise update status and continue
         status=readback(ADDR['STATUS']) 
-
+        if debug:
+            print ("gotoVQ: loop: check status: %s"%status)
+ 
     if status==STAT['BUSY']:
         writeXCD2([ADDR['STATUS'], 80]) # we need to get writeXXCD2 out of here.  maybe setStatus?
         time.sleep(sleeptime)
@@ -165,7 +163,7 @@ def gotoVettedQuiet(destination,COMM):
 
     #report final position and success
     if debug:
-        print ("gotoVettedQuiet: finishing up.  check status and readback:")
+        print ("gotoVettedQuiet: finishing up.  check status and readback.")
     return True, readback(ADDR['FPOS'])
 
         
