@@ -30,8 +30,8 @@ varDoglegCommands = {
 
 varAttenuatorCommands = {
 # Variables listed below are definitions in dogleg_v3_test_final.xms
-'GOTO': 10,
-'HOME': 9
+'GOTO': 2,
+'HOME': 1
 }
 
 varAllCommands = {
