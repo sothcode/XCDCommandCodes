@@ -62,7 +62,6 @@ while 1
       // initialize storage variables
       V2 = 0
       V3 = 0
-      V4 = 0
 
       // first move back and forth to set V18
       // (in case already at hard stop)
@@ -90,6 +89,10 @@ while 1
       // record first hard stop
       V2 = FPOS
 
+      // set encoder latch off and nonsense encoder latch pos
+      set S_IND = 0
+      set POSI = V2 - 1
+
       // drive other way until stop
       enable
       openloop 100
@@ -104,22 +107,20 @@ while 1
       // sets second hard stop
       V3 = FPOS
 
-      // then find encoder latch pos if visible
-      set S_IND = 0
+      // then go back 
       set TIME = 0
       enable
-      openloop -100
-      while S_IND = 0 & TIME < 7000
+      move V2
+      while abs(V2 - FPOS) > 10*ENR & TIME < 7000
       end
       openloop 0.0
       disable
 
-      // sets encoder latch pos, reset encoder latch flag
-      V4 = FPOS
+      // reset encoder latch flag
       set S_IND = 0
 
-      // check V2, V3, V4 flags and set statusBYTE accordingly
-      if (V2 - V4) <> 0 & (V3 - V4) <> 0
+      // check return to low bound and set statusARG accordingly
+      if abs(V2 - FPOS) < 10*ENR
          V19 = 0
       else
          V19 = 2
@@ -197,7 +198,7 @@ while 1
 
       // record first hard stop
       V2 = FPOS
-      V4 = FPOS - 1
+      POSI = V2 - 1
 
       // drive other way until stop
       enable
