@@ -124,10 +124,10 @@ def gotoVettedQuiet(destination,COMM):
     #monitor the controller position and report at intervals of sleeptime
     position=readback(ADDR['FPOS'])
     if debug:
-        print("goto:  Check position: %s"%position);
+        print("gotoVQ:  Check position: %s"%position);
     status=readback(ADDR['STATUS'])
     if debug:
-        print("goto:  Check status: %s"%status);
+        print("gotoVQ:  Check status: %s"%status);
     #status=STAT['BUSY']
     axis=readback(ADDR['XAXIS'])
     hardstop1=readback(ADDR['HARD_STOP1'])
