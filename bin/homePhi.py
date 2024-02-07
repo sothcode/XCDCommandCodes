@@ -70,7 +70,8 @@ while status==STAT['BUSY']:
     status=readback(ADDR['STATUS'])
     hardstop1=readback(ADDR['HARD_STOP1'])
     hardstop2=readback(ADDR['HARD_STOP2'])
-    print("position:",readback(ADDR['FPOS'])," status:",status, "lb:",hardstop1, "hb:",hardstop2)
+    home=readback(ADDR['HOME'])
+    print("position:",readback(ADDR['FPOS'])," status:",status, "lb:",hardstop1, "hb:",hardstop2, "posi:",home)
     if debug:
         print ("goto: loop: check status:")
     status=readback(ADDR['STATUS'])
