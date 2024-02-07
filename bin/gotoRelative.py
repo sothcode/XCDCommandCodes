@@ -115,6 +115,8 @@ def gotoRelative( axisName=None, destination=None):
     #now we are guaranteed we have a reachable axis, and a target position as a float.
     #we are also guaranteed that we are not moving a dogleg to a numeric position.
 
+
+    
     #set the current port through the file:
     with open(PORTFILE,'w') as file:
         file.write(targetPort)
@@ -122,6 +124,8 @@ def gotoRelative( axisName=None, destination=None):
     #this really needs to be 'change axis'.
     writeXCD2([ADDR['XAXIS'],targetAxis])
 
+
+    
     #now that we have set up the environment, we need to calculate the desired position in absolute terms:
     currentPos=readback(ADDR['FPOS'])
     targetPos=currentPos+relativePos
