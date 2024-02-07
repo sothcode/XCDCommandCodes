@@ -56,6 +56,8 @@ varInterfaceAddresses= {
 'ENR':'ENR'
 }
 
+varGotoTuning={
+
 varStatusValues={
 'READY':0,
 'FAIL_OUT_OF_BOUNDS':1,

@@ -20,6 +20,16 @@ sys.path.append("kfDatabase")
 import kfDatabase
 
 #tuning settings
+varTuning={
+#min_distance (minimum amount we can move without doing a backoff-and-recover),
+#move_tolerance (how far from destination we are allowed to be without marking it FAIL)
+'Phi':[0.1,0.001],
+'ThetaS':[0.00001,0.001],
+'ThetaL':[0.0001,0.001],
+'Att':[0.01,0.001],
+'Dogleg':[0.01,0.001]
+}
+    
 min_distance=0.1 #in rotations
 move_tolerance=0.001 #in rotations.  causes an error if it did not get this close in the final move.
 sleeptime=0.6 #in seconds
@@ -57,25 +67,29 @@ def is_number(s):
     except ValueError:
         return False
 
-def find_comm(axisName):
+def find_comm_and_set_tuning(axisName):
     #return a command lookup table matching the axis.
     #also let us know if the axis is a dogleg, so we know how to behave.
     isDogleg=False
     COMM={}
+    axisType=None
     if bool(re.match(r'^.+_DL\d_A\d$',axisName)):
-        COMM=ALL_COMM['Dogleg']
+        axisType='Dogleg'
         isDogleg=True
     elif bool(re.match(r'^.+_TH_S$',axisName)):
-        COMM=ALL_COMM['ThetaS']
+        axisType='ThetaS'
     elif bool(re.match(r'^.+_TH_L$',axisName)):
-        COMM=ALL_COMM['ThetaL']
+        axisType='ThetaL'
     elif bool(re.match(r'^.+_PH$',axisName)):
-        COMM=ALL_COMM['Phi']        
+        axisType='Phi'    
     elif bool(re.match(r'^.+_AT$',axisName)):
-        COMM=ALL_COMM['Attenuator']
+        axisType='Attenuator'
     else:
         print("no match of '%s' to axis types.  Critical failure!"%(axisName))
         sys.exit()
+    COMM=ALL_COMM[axisType]
+    min_distance=varTuning[axisType][0]
+    move_tolerance=varTuning[axisType][1]
     return isDogleg, COMM
 
 def gotoVettedQuiet(destination,COMM):
@@ -180,7 +194,7 @@ def goto( axisName=None, destination=None):
     targetPort,targetAxis=value[0],value[1]
     
     #set command lookup table to match the axis
-    isDogleg,COMM=find_comm(axisName)
+    isDogleg,COMM=find_comm_and_set_tuning(axisName)
     
     #check to see if the target is a number.
     #if number: make it a float.
