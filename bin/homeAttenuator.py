@@ -136,12 +136,10 @@ if referenceEgg!=None:
     hbRelDb=hbDb-homeDb
     varLb=lbRel-lbRelDb
     varHb=hbRel-hbRelDb
-    varHome=homeRel-homeDb
     varSpan=span-spanDb
     if (
         abs(varLb)>matchTolerance or
         abs(varHb)>matchTolerance or
-        abs(varHome)>matchTolerance or
         abs(varSpan)>matchTolerance
     ):
         match=False
