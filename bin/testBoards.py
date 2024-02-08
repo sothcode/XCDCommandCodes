@@ -52,6 +52,10 @@ def testBoards():
                 file.write(ser)
             print(">>>>>>>testing controller on", ser, "...")
 
+            os.system(stopXMS)
+            os.system(startXMS)
+            writeXCD2([ADDR['STATUS'], 0])
+
             # check status, then initialize proper variables
             status=readback(ADDR['STATUS'])
             if status!=0:
