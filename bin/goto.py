@@ -88,11 +88,33 @@ def find_comm_and_set_tuning(axisName):
         print("no match of '%s' to axis types.  Critical failure!"%(axisName))
         sys.exit()
     COMM=ALL_COMM[axisType]
+    global min_distance, move_tolerance
     min_distance=varTuning[axisType][0]
     move_tolerance=varTuning[axisType][1]
     #if debug:
     print("Setting COMM. channel is type %s, min_distance=%s, move_tolerance=%s"%(axisType,min_distance,move_tolerance))
     return isDogleg, COMM
+
+
+def set_tuning( axisType ):
+
+    #tuning settings
+    varTuning={
+    #min_distance (minimum amount we can move without doing a backoff-and-recover),
+    #move_tolerance (how far from destination we are allowed to be without marking it FAIL)
+    'Phi':[0.1,0.001],
+    'ThetaS':[0.00001,0.001],
+    'ThetaL':[0.0001,0.001],
+    'Attenuator':[0.001,0.001],
+    'Dogleg':[0.01,0.001]
+    }
+
+    min_distance=varTuning[axisType][0]
+    move_tolerance=varTuning[axisType][1]
+
+    return min_distance, move_tolerance
+
+
 
 def gotoVettedQuiet(destination,COMM):
     #the vetting occurs in goto, so this should not be called 'bare'.
@@ -195,12 +217,28 @@ def goto( axisName=None, destination=None):
 
 
     # change axis does the following
-    # 1) checks if targetIDstr (i.e. axisName) is in AXID.keys()
+    # 1) checks if targetIDstr (i.e. axisName) is in ID_dict.keys()
     # 2) looks up axisName in kfDatabase
-    # 3) if ret[0]/success is False, print axis not found
+    # 3) if ret[0]/success is False, print axis not found and return False
     # 4) extracts target port and axis from ret (same as value[0], value[1])
     # 5) check if portfile exists, and if so, write target port from kfdb
-    # 6)  
+    # 6) readback current XAXIS
+    # 7) if XAXIS same values remain from last use and return
+    # 8) otherwise create lookup table from ID_dict and find ID corresponding to current axis
+    # 9) write values from current axis to file
+    # 10) read from file values corresponding to current axis
+    # 11) print report of what changed
+
+
+    # goto does the following
+    # 1) verifies given an axisName and destination
+    # 2) looks up axisName in kfDatabase
+    # 3) if not success, then print kfDatabase failed and return
+    # 4) otherwise extracts target port and axis
+    # 5) find command type and tuning parameters 
+    # 6) check if destination is a number
+    # 7) if not a number, open database of known positions and search
+    # 8) 
 
     success, value=kfDatabase.readVar(portsDb,axisName)
     if not success:
