@@ -30,7 +30,7 @@ def getAxis():
 def reportXCD2( argv ):#by default, we ask for the variables from the current active axis.
     ax_int = getAxis()
     if debug:
-        print("passing through from reportXCD2 to reportXCDspecifyAxis(%s,%s)"%(ax_int,argv)
+        print("passing through from reportXCD2 to reportXCDspecifyAxis(%s,%s)"%(ax_int,argv))
     success,ret = reportXCD2specifyAxis(ax_int,argv)
     return success,ret
  
