@@ -189,6 +189,19 @@ def goto( axisName=None, destination=None):
         return False
     
     #check if that axis is connected.  Fail if not
+
+
+    # success, targetPort, targetAxis = changeAxis( axisName )
+
+
+    # change axis does the following
+    # 1) checks if targetIDstr (i.e. axisName) is in AXID.keys()
+    # 2) looks up axisName in kfDatabase
+    # 3) if ret[0]/success is False, print axis not found
+    # 4) extracts target port and axis from ret (same as value[0], value[1])
+    # 5) check if portfile exists, and if so, write target port from kfdb
+    # 6)  
+
     success, value=kfDatabase.readVar(portsDb,axisName)
     if not success:
         print("goto: kfDatabase failed.  Axis '%s' not connected. (or port database is stale)" % axisName)
