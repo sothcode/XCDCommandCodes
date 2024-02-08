@@ -83,19 +83,19 @@ def changeAxis( targetIDstr ):
 #    print('about to look in AXID keys')
     # check if axis we want to change to is a valid motor, and if not exit
     if targetIDstr not in AXID.keys():
-        print("Axis ID - " + targetIDstr + " -  not recognized. Axis ID list given as:")
+        print("changeAxis: Axis ID - " + targetIDstr + " -  not recognized. Axis ID list given as:")
         print(AXID.keys())
         return False
 
     # now find port corresponding to new axis 
     # first open port database file
     # print("about to query db")
-    ret = kfDatabase.readVar(portsDb, targetIDstr)
+    success, values = kfDatabase.readVar(portsDb, targetIDstr)
     # print("kfDatabase returns %s"%ret)
 
     # exit if we don't have a port
-    if ret[0] == False:
-        print("Axis ID '%s' not found in database '%s'.  Run updatePorts.py." % (targetIDstr, portsDb))
+    if not success:
+        print("changeAxis: Axis ID '%s' not found in database '%s'.  Run updatePorts.py." % (targetIDstr, portsDb))
         return False
 
     # before we go, save the old FPOS and nturns, just in case:
@@ -106,12 +106,12 @@ def changeAxis( targetIDstr ):
     oldTurns=readback(ADDR['TURNS'])
         
     # otherwise, assign new port to targetPort
-    targetPort = ret[1][0]
-    targetAxis = ret[1][1]
+    targetPort = values[0]
+    targetAxis = values[1]
    # (this will change to object in class when we refactor)
     if not (os.path.exists(PORTFILE)):
-        print("PORTFILE %s does not exist.  PANIC" % PORTFILE)
-        sys.exit()
+        print("changeAxis: PORTFILE %s does not exist.  PANIC" % PORTFILE)
+        return False
     
     # if PORTFILE exists, load in old port and set active port
     # with open(PORTFILE, 'r') as file:
@@ -129,7 +129,7 @@ def changeAxis( targetIDstr ):
     # check if current ID and target ID are the same
     if (currentAxis == targetAxis):
         print("changeAxis: XAXIS is the same.  Values remain from last use, not loaded from file.")
-        return
+        return True
 
     # newAxis = readback(ADDR['XAXIS'])
     # if oldAxis == newAxis:
@@ -158,11 +158,12 @@ def changeAxis( targetIDstr ):
     if readBool:
         print("changeAxis: Axis changed to '%s' on port '%s'"% (targetIDstr, targetPort))
     else:
-        print("FAILURE: changeAxis: Axis could not be changed to '%s' on port '%s'"% (targetIDstr, targetPort))
+        print("FAILURE: changeAxis: Axis could not be changed to '%s' on port '%s' - variables not read from file."% (targetIDstr, targetPort))
+        return False
     print("was: %s pos=%s, axis=%s, stat=%s, turns=%s"%(IDlookup[oldID],oldPos,oldAxis,oldStatus,oldTurns)) 
     print("now: %s pos=%s, axis=%s, stat=%s, turns=%s"%(IDlookup[newID],newPos,newAxis,newStatus,newTurns)) 
         
-    return
+    return True
 
 
 if __name__ == "__main__":
