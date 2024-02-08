@@ -1,3 +1,4 @@
+#!/bin/python3
 
 from quickAssign import sendcommand, writeXCD2
 from quickReport import reportXCD2specifyAxis
