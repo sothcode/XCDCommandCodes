@@ -47,6 +47,7 @@ def sendline(port, command):
         print("Port = '%s'" % port)
         return False, 0
 
+    print("sendline:  this should not be reachable.  Panic?")
     return False, 0
 
 
