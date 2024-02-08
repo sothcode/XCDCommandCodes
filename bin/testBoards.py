@@ -47,8 +47,7 @@ def testBoards():
     for ser in ttyUSB_ports:
         # check if port exists
         if os.path.exists(ser):
-            print(ser)
-            with open(PORTFILE, 'r') as file:
+            with open(PORTFILE, 'w') as file:
                 file.write(ser)
             print(">>>>>>>testing controller on", ser, "...")
 
