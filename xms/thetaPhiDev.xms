@@ -14,18 +14,6 @@
 //     - V19 = 0 SUCCESS/IDLE
 //     - V19 = 1 FAILURE
 //     - V19 = 9 BUSY
-XAXIS = 0
-ENR = 6.103515625e-5
-MTL = 4000000
-DZMIN = ENR
-DZMAX = 4*ENR
-KP = 10
-VEL = 2
-
-// configure theta motor settings (non-inverted drive and feedback)
-config 900, 0x00011001
-delay 500
-
 XAXIS = 1
 ENR = 6.103515625e-5
 MTL = 4000000
@@ -36,6 +24,18 @@ VEL = 2
 
 // configure theta motor settings (non-inverted drive and feedback)
 config 900, 0x00051001
+delay 500
+
+XAXIS = 0
+ENR = 6.103515625e-5
+MTL = 4000000
+DZMIN = ENR
+DZMAX = 4*ENR
+KP = 10
+VEL = 2
+
+// configure theta motor settings (non-inverted drive and feedback)
+config 900, 0x00011001
 
 // initialize commandBYTE, statusBYTE to IDLE
 V0 = 0
