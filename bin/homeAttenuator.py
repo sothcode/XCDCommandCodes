@@ -15,7 +15,8 @@ import kfDatabase
 
 
 #tuning settings
-sleeptime=0.5 #in seconds
+sleeptime = 0.5 # in seconds
+timeout = 10    # in seconds
 debug=False
 mainDb="test_only_axis_parameters.kfdb"
 matchTolerance=0.001
@@ -64,6 +65,7 @@ position=readback(ADDR['FPOS'])
 if debug:
     print("goto:  Check status:");
 status=STAT['BUSY']
+t1=time.time()
 while status==STAT['BUSY']:
     status=readback(ADDR['STATUS'])
     hardstop1=readback(ADDR['HARD_STOP1'])
@@ -75,6 +77,48 @@ while status==STAT['BUSY']:
     time.sleep(sleeptime)
 
 #loop until controller busy flag is cleared
+    
+'''
+    # while status is busy, print to screen position, axis, status and nTurns
+    
+    while status==STAT['BUSY']  and (time.time()-t1) < timeout:
+        axis=readback(ADDR['XAXIS'])
+        turns=readback(ADDR['TURNS'])
+        position=readback(ADDR['FPOS'])
+        print("position:", position," (axis",axis,") status:",status," (",_reverseLookup(STAT,status),") turns:",turns)
+        if debug:
+            print ("goto: loop: check status:")
+
+        # sleep a little, and if same position, enter timeout loop
+        time.sleep(sleeptime)
+
+        # check 
+        if abs(readback(ADDR['FPOS'])-position) > 3*readback('ENR'):
+            t1 = time.time()
+
+        # otherwise update status and continue
+        status=readback(ADDR['STATUS']) 
+
+    if status==STAT['BUSY']:
+        writeXCD2([ADDR['STATUS'], 80])
+        time.sleep(sleeptime)
+
+    #loop until controller busy flag is cleared
+
+    #report final position and success
+    if debug:
+        print ("goto: finishing up.  check status and readback:")
+
+    #status=readback(ADDR['STATUS'])  this is already read in the way we left the while loop above.
+    lastpos=readback(ADDR['FPOS'])
+    if status==STAT['READY']:
+        print("SUCCESS. gotoDogleg complete.  status:",status," (", _reverseLookup(STAT,status),") position:{:.4g} (ax{:.1g})".format(readback(ADDR['FPOS']),readback(ADDR['XAXIS'])), "nTurns:",readback(ADDR['TURNS']));
+        return True, lastpos
+    
+    print("FAIL. gotoDogleg failed.  status:",status," (", _reverseLookup(STAT,status),") position:{:.4g} (ax{:.1g})".format(readback(ADDR['FPOS']),readback(ADDR['XAXIS'])), "nTurns:",readback(ADDR['TURNS']));
+    return False, lastpos
+'''
+
 
 #report final position and success
 status=readback(ADDR['STATUS'])
