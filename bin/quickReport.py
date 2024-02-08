@@ -27,10 +27,19 @@ def getAxis():
         sys.exit()
     return int(ret[0])
 
-def reportXCD2( argv ):
+def reportXCD2( argv ):#by default, we ask for the variables from the current active axis.
+    ax_int = getAxis()
+    if debug:
+        print("passing through from reportXCD2 to reportXCDspecifyAxis(%s,%s)"%(ax_int,argv)
+    success,ret=reportXCD2(getAxis,argv)
+    return success,ret
+ 
+
+
+def reportXCD2specifyAxis(axis, argv ):
     if argv:
         if len(argv) > 10:
-            print("Too many variables trying to be assigned.  Max 10 variables can be assigned at once.")
+            print("reportXCD2specifyAxis: Too many variables trying to be assigned.  Max 10 variables can be assigned at once.")
             return False, 0
 
         var_names = argv
@@ -39,9 +48,7 @@ def reportXCD2( argv ):
         
         #getAxis = reportXCD2noAxis(['XAXIS'])[0]
 
-        ax_int = getAxis()
-        #int(getAxis)
-        #print("reportXCD2 axis=",ax_int)
+        ax_int = axis
         ax_byte = ax_int.to_bytes(1,byteorder='little',signed=True)
         ax_comm = [int(ax_byte[0])]
         
@@ -88,12 +95,10 @@ def reportXCD2( argv ):
         print(ret)
     return success, ret
 
-
-
-def reportXCD2noAxis( argv ):
+def reportXCD2noAxis( argv ): #reports the requested argument list using the current port, and without specifying an axis  (hence using current axis)
     return reportXCD2noAxisPort(getCurrentPort(),argv)
 
-def reportXCD2noAxisPort(target_port, argv ):
+def reportXCD2noAxisPort(target_port, argv ): #reports the requested argument list from the requested port, without specifying an axis (hence using current axis)
     if argv:
         if len(argv) > 10:
             print("Too many variables trying to be assigned.  Max 10 variables can be assigned at once.")
