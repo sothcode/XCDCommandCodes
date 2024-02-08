@@ -155,7 +155,7 @@ if referenceEgg!=None:
         print("   ./kfDatabase/kfDatabase.py %s %s/%s %f %s"%(mainDb,referenceEgg,"highbound",hbRel,"new"*(not present[2])))
     elif match:
         print("SUCCESS.  Readback-db residuals are within tolerance %s:\n\tspan:%s-%s=%s.\n\tlbrel:%s-%s=%s.\n\thbrel:%s-%s=%s."%(matchTolerance,span,spanDb,varSpan,lbRel,lbRelDb,varLb,hbRel,hbRel,varHb))
-    print("Setting current position to distance from lowbound and updating onboard hardstops.")
+    print("Setting current position to distance from home(POSI) and updating onboard hardstops.")
     writeXCD2([ADDR['FPOS'], posRel])
     writeXCD2([ADDR['HARD_STOP1'], lbRel])
     writeXCD2([ADDR['HARD_STOP2'], hbRel])
