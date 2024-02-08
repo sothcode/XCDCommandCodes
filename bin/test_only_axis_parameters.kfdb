@@ -151,3 +151,7 @@ ATT6/highbound 0.150635
 ATT7/home 0.0
 ATT7/lowbound -0.19635
 ATT7/highbound 0.61554
+ATT2/minlight 0.60174560546875
+ATT8/home 0.0
+ATT8/lowbound 0.0
+ATT8/highbound 0.805115
