@@ -47,7 +47,7 @@ def sendline(port, command):
         print("Port = '%s'" % port)
         return False, 0
 
-    return False
+    return False, 0
 
 
 
