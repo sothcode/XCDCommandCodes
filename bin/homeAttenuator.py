@@ -133,14 +133,15 @@ axis=readback(ADDR['XAXIS'])
 if debug:
      print ("home: finishing up.  check status and readback:")
 
-    
+homeIsReal=False
+if (home>hardstop1 and home<hardstop2):
+    homeIsReal=True   
+if not homeIsReal:
+    home=hardstop1
 lbRel=hardstop1-home
 hbRel=hardstop2-home
 posRel=position-home
 span=hardstop2-hardstop1
-homeIsReal=False
-if (home>hardstop1 and home<hardstop2):
-    homeIsReal=True
 
 #sanity check
 if(span<0.75):
