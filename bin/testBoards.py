@@ -9,6 +9,7 @@ from quickAssign import writeXCD2
 from quickReport import readback
 from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
 from gotoDogleg import gotoDogleg
+import clearDogleg as clearDogleg
 
 # SET GLOBAL VARIABLES
 move1 = 1       # move to position 1
