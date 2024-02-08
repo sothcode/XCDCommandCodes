@@ -66,7 +66,7 @@ def is_number(s):
         return True
     except ValueError:
         return False
-
+    
 def find_comm_and_set_tuning(axisName):
     #return a command lookup table matching the axis.
     #also let us know if the axis is a dogleg, so we know how to behave.
