@@ -91,7 +91,7 @@ def find_comm_and_set_tuning(axisName):
     min_distance=varTuning[axisType][0]
     move_tolerance=varTuning[axisType][1]
     #if debug:
-    print("Setting COMM. channel is type %s, min_distance=%s, move_tolerance=%s"%(axisType,min_distance,move_tolerance)
+    print("Setting COMM. channel is type %s, min_distance=%s, move_tolerance=%s"%(axisType,min_distance,move_tolerance))
     return isDogleg, COMM
 
 def gotoVettedQuiet(destination,COMM):
