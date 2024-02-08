@@ -229,22 +229,35 @@ def goto( axisName=None, destination=None):
     # 10) read from file values corresponding to current axis
     # 11) print report of what changed
 
+    # changeAxis needs to do the following
+    # 1) 
+
 
     # goto does the following
-    # 1) verifies given an axisName and destination
+    # 1) verifies if given an axisName and destination
+
     # 2) looks up axisName in kfDatabase
     # 3) if not success, then print kfDatabase failed and return
     # 4) otherwise extracts target port and axis
+
     # 5) find command type and tuning parameters 
     # 6) check if destination is a number
     # 7) if not a number, open database of known positions and search
-    # 8) 
+    # 8) check if dogleg - if so gotoDogleg instead
 
-    success, value=kfDatabase.readVar(portsDb,axisName)
-    if not success:
-        print("goto: kfDatabase failed.  Axis '%s' not connected. (or port database is stale)" % axisName)
+    # 9) write target port to portfile, target axis to XAXIS
+
+    # 10) call gotoVQ to handle movement
+
+    # success, value=kfDatabase.readVar(portsDb,axisName)
+    # if not success:
+    #     print("goto: kfDatabase failed.  Axis '%s' not connected. (or port database is stale)" % axisName)
+    #     return False 
+    # targetPort,targetAxis=value[0],value[1]
+
+    didAxisChange = changeAxis( axisName )
+    if not didAxisChange:
         return False
-    targetPort,targetAxis=value[0],value[1]
     
     #set command lookup table to match the axis
     isDogleg,COMM=find_comm_and_set_tuning(axisName)
@@ -284,12 +297,12 @@ def goto( axisName=None, destination=None):
     #now we are guaranteed we have a reachable axis, and a target position as a float.
     #we are also guaranteed that we are not moving a dogleg to a numeric position.
 
-    #set the current port through the file:
-    with open(PORTFILE,'w') as file:
-        file.write(targetPort)
-    #changeAxis:
-    #this really needs to be 'change axis'.
-    writeXCD2([ADDR['XAXIS'],targetAxis])
+    # # set the current port through the file:
+    # with open(PORTFILE,'w') as file:
+    #     file.write(targetPort)
+    # # changeAxis:
+    # # this really needs to be 'change axis'.
+    # writeXCD2([ADDR['XAXIS'],targetAxis])
 
     #now that we have set up the environment, we can run the 'vetted' goto:
     #this does not have a return value.  errors must be inferred from readback.
