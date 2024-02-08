@@ -55,7 +55,7 @@ if status!=0:
     print("NOT EXECUTED. Controller status is not 0.")
     sys.exit()
 
-
+writeXCD2([ADDR['HOME'],-999)
 sendcommand(COMM['HOME'],0) # this sleeps until it sees the status change from new_command
 
 #monitor the controller position and report at intervals of sleeptime
@@ -70,7 +70,8 @@ while status==STAT['BUSY']:
     status=readback(ADDR['STATUS'])
     hardstop1=readback(ADDR['HARD_STOP1'])
     hardstop2=readback(ADDR['HARD_STOP2'])
-    print("position:",readback(ADDR['FPOS'])," status:",status, "lb:",hardstop1, "hb:",hardstop2)
+    home=readback(ADDR['HOME'])
+    print("position:",readback(ADDR['FPOS'])," status:",status, "lb:",hardstop1, "hb:",hardstop2, "home:",home)
     if debug:
         print ("home: loop: check status:")
     status=readback(ADDR['STATUS'])
