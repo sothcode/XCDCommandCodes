@@ -62,6 +62,7 @@ def readFromFile( filename ):
     return True
 
 
+
 def changeAxis( targetIDstr ):
     #check if controller is busy.  If so, exit with explanation
     if debug:
@@ -84,7 +85,7 @@ def changeAxis( targetIDstr ):
     if targetIDstr not in AXID.keys():
         print("Axis ID - " + targetIDstr + " -  not recognized. Axis ID list given as:")
         print(AXID.keys())
-        sys.exit()
+        return False
 
     # now find port corresponding to new axis 
     # first open port database file
@@ -95,7 +96,7 @@ def changeAxis( targetIDstr ):
     # exit if we don't have a port
     if ret[0] == False:
         print("Axis ID '%s' not found in database '%s'.  Run updatePorts.py." % (targetIDstr, portsDb))
-        sys.exit()
+        return False
 
     # before we go, save the old FPOS and nturns, just in case:
     oldID=readback(ADDR['ID'])
@@ -177,3 +178,21 @@ if __name__ == "__main__":
         print("   ./changeAxisDogleg.py L#_DL#_A#")
         print("or turn on debug with   ./changeAxisDogleg.py L#_DL#_A# 1")
         sys.exit()
+
+
+
+# success, targetPort, targetAxis = changeAxis( axisName )
+
+
+# change axis does the following
+# 1) checks if targetIDstr (i.e. axisName) is in ID_dict.keys()
+# 2) looks up axisName in kfDatabase
+# 3) if ret[0]/success is False, print axis not found
+# 4) extracts target port and axis from ret (same as value[0], value[1])
+# 5) check if portfile exists, and if so, write target port from kfdb
+# 6) readback current XAXIS
+# 7) if XAXIS same values remain from last use and return
+# 8) otherwise create lookup table from ID_dict and find ID corresponding to current axis
+# 9) write values from current axis to file
+# 10) read from file values corresponding to current axis
+# 11) print report of what changed
