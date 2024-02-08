@@ -22,6 +22,7 @@ reset = './debug_reset_doglegs.sh'
 
 # Initialize file to store movement report
 REPORTFILE = ''
+PORTFILE = 'XCD_current_port'
 
 # Iterate over all serial controllers we find matching /dev/ttyUSB*
 ttyUSB_ports = find_ttyUSB_ports()
@@ -46,6 +47,8 @@ def testBoards():
     for ser in ttyUSB_ports:
         # check if port exists
         if os.path.exists(ser):
+            with open(PORTFILE, 'r') as file:
+                file.write(ser)
             print(">>>>>>>testing controller on", ser, "...")
 
             # check status, then initialize proper variables
