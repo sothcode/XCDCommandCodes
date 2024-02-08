@@ -159,7 +159,7 @@ if(abs(hardstop1-position)>matchTolerance):
 #compare to db values
 
 if referenceEgg!=None:
-    print("Comparing to Db.  Current status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f posi:%1.7f(should be zero)"%(status,_reverseLookup(STAT,status),position,axis, turns,lb,hb,home))
+    print("Comparing to Db.  Current status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f posi:%1.7f%s%s(should be zero)"%(status,_reverseLookup(STAT,status),position,axis, turns,lb,hb,home,"(Real)"*homeIsReal,"(NotFound)"*(not homeIsReal)))
     match=True
     present=[True]*3
     success,homeDb=kfDatabase.readVar(mainDb,"%s/home"%referenceEgg)
@@ -212,8 +212,7 @@ if referenceEgg!=None:
     position=readback(ADDR['FPOS'])   
     home=readback(ADDR['HOME'])   
     
-
 if status==STAT['READY']:
-    print("SUCCESS. homeAttenuator complete. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f home:%1.5f"%(status,_reverseLookup(STAT,status),position,axis, turns,lb,hb, home))
+    print("SUCCESS. homeAttenuator complete. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f home:%1.5f%s%s"%(status,_reverseLookup(STAT,status),position,axis, turns,lb,hb, home,"(Real)"*homeIsReal,"(NotFound)"*(not homeIsReal)))
 else:
-    print("FAIL. homeAttenuator failed. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f home:%1.5f"%(status,_reverseLookup(STAT,status),position,axis, turns,lb,hb,home))
+    print("FAIL. homeAttenuator failed. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f home:%1.5f%s%s"%(status,_reverseLookup(STAT,status),position,axis, turns,lb,hb,home,"(Real)"*homeIsReal,"(NotFound)"*(not homeIsReal)))
