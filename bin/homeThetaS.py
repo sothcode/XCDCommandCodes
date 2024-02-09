@@ -118,6 +118,7 @@ if debug:
 
 homeIsReal=False
 if (home==1.0 or home==-1.0):
+    home=0.0
     homeIsReal=True
 
 #sanity check
@@ -145,7 +146,7 @@ if referenceEgg!=None:
         if  (present[0]):
             print("FAIL.  Home is not zero in the db for some reason.  home:%s homeDb:%s.  residual:%s"%(home,homeDb,home-homeDb))
             print("   This does not match the expectations for %s.  If you are sure this really is %s, and want to update %s with new parameters, run the following command:"%(referenceEgg,referenceEgg,mainDb))
-        if  (not present[0] or not present[1] or not present[2]):
+        if  (not present[0] ):
             print("FAIL.  Not all values are in the database for egg %s."%(referenceEgg))
             print("   This does not match the expectations for %s.  If you are sure this really is %s, and want to update %s with new parameters, run the following command:"%(referenceEgg,referenceEgg,mainDb))
         print("   ./kfDatabase/kfDatabase.py %s %s/%s %f %s"%(mainDb,referenceEgg,"home",0.0,"new"*(not present[0])))
