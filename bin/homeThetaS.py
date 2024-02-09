@@ -38,7 +38,7 @@ if len(sys.argv) == 2: #note that sys.argv has arg 1 as the command itself
 elif len(sys.argv) == 1: #note that sys.argv has arg 1 as the command itself
     referenceEgg=None
 else:
-    print("NOT EXECUTED. Wrong number of arguments.  Correct usage is ./homePhi.py or ./homePhi.py Egg")
+    print("NOT EXECUTED. Wrong number of arguments.  Correct usage is ./homeThetaS.py or ./homeThetaS.py Egg_TH_S")
     sys.exit()
 #if wrong arguments, exit with explanation
 
