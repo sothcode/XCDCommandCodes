@@ -180,38 +180,3 @@ if status==STAT['READY']:
     print("SUCCESS. homeThetaL complete. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f home(before):%1.5f"%(status,_reverseLookup(STAT,status),position,axis, turns,lb,hb, home))
 else:
     print("FAIL. homeThetaL failed. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f home(before):%1.5f"%(status,_reverseLookup(STAT,status),position,axis, turns,lb,hb,home))
-
-
-######
-
-
-
-
-
-
-
-    
-#loop until controller busy flag is cleared
-
-#report final position and success
-if debug:
-     print ("homeThetaL: finishing up.  check status and readback:")
-
-
-position=readback(ADDR['FPOS'])   
-print("Setting POSI position to zero and updating onboard hardstops.  POSI Offset was %s from previous home"%(home))
-writeXCD2([ADDR['FPOS'], position-home])
-writeXCD2([ADDR['HARD_STOP1'], hardstop1-home])
-writeXCD2([ADDR['HARD_STOP2'],hardstop2-home])
-
-lb=readback(ADDR['HARD_STOP1'])
-hb=readback(ADDR['HARD_STOP2'])
-position=readback(ADDR['FPOS'])   
-turns=readback(ADDR['TURNS'])
-axis=readback(ADDR['XAXIS'])   
-
-
-if status==STAT['READY']:
-    print("SUCCESS. homeThetaL complete. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f home(before):%1.5f"%(status,_reverseLookup(STAT,status),position,axis, turns,lb,hb, home))
-else:
-    print("FAIL. homeThetaL failed. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f home(before):%1.5f"%(status,_reverseLookup(STAT,status),position,axis, turns,lb,hb,home))
