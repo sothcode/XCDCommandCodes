@@ -11,7 +11,7 @@ DEBUG_ATT/lowbound -0.5
 DEBUG_ATT/highbound 0.5
 DEBUG_ATT/minlight -0.4
 DEBUG_ATT/maxlight -0.15
-----------EGG1 ----------EGG1
+----------EGG1 ----------EGG1.still.has.thetaS.problems.2024.02.09
 EGG1_PH/home 0.0
 EGG1_PH/lowbound -0.272888
 EGG1_PH/highbound 0.70636
