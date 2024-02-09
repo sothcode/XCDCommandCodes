@@ -63,7 +63,7 @@ if __name__ == "__main__":
         port=sys.argv[1]
         idstr={}
         idnum={}
-        for i in range(0,1)
+        for i in range(0,1):
             idstr[i]=sys.argv[i+2]
             idnum[i]=ID[idstr[i]]
         print("Assigning %s with UARTS %s(%s) and %s(%s)"%(port,idstr[0],idnum[0],idstr[1],idnum[1]))
