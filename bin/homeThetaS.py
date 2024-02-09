@@ -7,7 +7,11 @@ import time
 from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
 from variableDictionaryXCD2 import varStatusValues as STAT
 from variableDictionaryXCD2 import varThetaSCommands as COMM
-#import random #for testing
+
+
+# to load tty data from the db so we know which tty we want:
+sys.path.append("kfDatabase")
+import kfDatabase
 
 #tuning settings
 sleeptime=0.5 #in seconds
