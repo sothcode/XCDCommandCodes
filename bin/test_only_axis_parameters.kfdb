@@ -136,6 +136,8 @@ ATT1/highbound 0.811462
 ATT2/home 0.0
 ATT2/lowbound -0.206299
 ATT2/highbound 0.603027
+ATT2/minlight 0.60174560546875
+ATT2/maxlight 0.47442626953125
 ATT3/home 0.0
 ATT3/lowbound -0.765503
 ATT3/highbound 0.043213
@@ -151,8 +153,6 @@ ATT6/highbound 0.150635
 ATT7/home 0.0
 ATT7/lowbound -0.19635
 ATT7/highbound 0.61554
-ATT2/minlight 0.60174560546875
 ATT8/home 0.0
 ATT8/lowbound 0.0
 ATT8/highbound 0.805115
-ATT2/maxlight 0.47442626953125
