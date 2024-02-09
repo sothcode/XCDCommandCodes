@@ -27,6 +27,14 @@ def _reverseLookup(dict,val):
         sys.exit()
     return key
 
+def assignUARTsToPort(port, id0, id1):
+    port_before=getCurrentPort()
+    with open(PORTFILE, 'w') as file:
+        file.write(port)
+    writeXCD2(['UART0_ADDRESS', id0])
+    writeXCD2(['UART1_ADDRESS', id1])    
+    with open(PORTFILE, 'w') as file:
+        file.write(port_before)
 
 
 if __name__ == "__main__":
@@ -38,22 +46,7 @@ if __name__ == "__main__":
         sys.exit()
     #if wrong arguments, exit with explanation
 
-
-    port_before=getCurrentPort()
-    with open(PORTFILE, 'w') as file:
-        file.write("/dev/ttyUSB0")
-    writeXCD2(['UART0_ADDRESS', ID['DEBUG_DL0_A0']])
-    writeXCD2(['UART1_ADDRESS', ID['DEBUG_DL0_A1']])
-    writeXCD2(['XAXIS',0])
-    writeXCD2([ADDR['ID'], ID['DEBUG_DL0_A0']])
-    with open(PORTFILE, 'w') as file:
-        file.write("/dev/ttyUSB1")   
-    writeXCD2(['UART0_ADDRESS', ID['DEBUG_DL1_A0']])
-    writeXCD2(['UART1_ADDRESS', ID['DEBUG_DL1_A1']])
-    writeXCD2(['XAXIS',0])
-    writeXCD2([ADDR['ID'], ID['DEBUG_DL1_A0']])
-    port_before=getCurrentPort()
-    with open(PORTFILE, 'w') as file:
-        file.write(port_before)
+    asssignUARTsToPort("/dev/ttyUSB0", ID['DEBUG_DL0_A1']], ID['DEBUG_DL0_A0']])
+    asssignUARTsToPort("/dev/ttyUSB1", ID['DEBUG_DL1_A1']], ID['DEBUG_DL1_A0']])
      
     print("Done.")
