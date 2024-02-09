@@ -134,8 +134,7 @@ def changeAxis( targetIDstr ):
     currentIDstr = IDlookup[currentID]
     if (currentAxis == targetAxis):
         print("changeAxis: XAXIS is the same.  Values remain from last use, not loaded from file.")
-        print("was: %s pos=%s, axis=%s, stat=%s, turns=%s"%(IDlookup[oldID],oldPos,oldAxis,oldStatus,oldTurns)) 
-        print("now: %s pos=%s, axis=%s, stat=%s, turns=%s"%(IDlookup[newID],newPos,newAxis,newStatus,newTurns)) 
+        print("remains: %s pos=%s, axis=%s, stat=%s, turns=%s"%(IDlookup[oldID],oldPos,oldAxis,oldStatus,oldTurns)) 
         return True
 
     # newAxis = readback(ADDR['XAXIS'])
