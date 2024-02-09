@@ -11,7 +11,7 @@ DEBUG_ATT/lowbound -0.5
 DEBUG_ATT/highbound 0.5
 DEBUG_ATT/minlight -0.4
 DEBUG_ATT/maxlight -0.15
-----------EGG1 ----------EGG1
+----------EGG1 ----------EGG1.still.has.thetaS.problems.2024.02.09
 EGG1_PH/home 0.0
 EGG1_PH/lowbound -0.272888
 EGG1_PH/highbound 0.70636
@@ -25,8 +25,8 @@ EGG1_TH_L/downstream -0.22711181640625
 EGG1_TH_L/diode0 0.43963623046875
 ----------EGG3 ----------EGG3
 EGG3_PH/home 0.0
-EGG3_PH/lowbound -0.647644
-EGG3_PH/highbound 0.315918
+EGG3_PH/lowbound -0.649292
+EGG3_PH/highbound 0.313965
 EGG3_PH/diode1 -0.074951171875
 EGG3_PH/diode0 -0.41107177734375
 EGG3_PH/diode2 0.26116943359375
@@ -136,6 +136,8 @@ ATT1/highbound 0.811462
 ATT2/home 0.0
 ATT2/lowbound -0.206299
 ATT2/highbound 0.603027
+ATT2/minlight 0.60174560546875
+ATT2/maxlight 0.47442626953125
 ATT3/home 0.0
 ATT3/lowbound -0.765503
 ATT3/highbound 0.043213
@@ -151,7 +153,6 @@ ATT6/highbound 0.150635
 ATT7/home 0.0
 ATT7/lowbound -0.19635
 ATT7/highbound 0.61554
-ATT2/minlight 0.60174560546875
 ATT8/home 0.0
 ATT8/lowbound 0.0
 ATT8/highbound 0.805115
