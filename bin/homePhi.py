@@ -165,7 +165,7 @@ if referenceEgg!=None:
         print("   NOTE:  If there are values for diode positions, these will move by the residuals above as well.")
     elif match:
         print("SUCCESS.  Readback-db residuals are within tolerance %s:\n\tspan:%s-%s=%s.\n\tlbrel:%s-%s=%s.\n\thbrel:%s-%s=%s."%(matchTolerance,span,spanDb,varSpan,lbRel,lbRelDb,varLb,hbRel,hbRel,varHb))
-    print("Setting current position to home and updating onboard hardstops.")
+    print("Setting current position relative to home and updating onboard hardstops.")
     writeXCD2([ADDR['FPOS'], posRel])
     writeXCD2([ADDR['HARD_STOP1'], lbRel])
     writeXCD2([ADDR['HARD_STOP2'], hbRel])
