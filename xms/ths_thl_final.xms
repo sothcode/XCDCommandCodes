@@ -131,7 +131,10 @@ while 1
          delay 2000
          disable
 
-         V19 = 0
+         if abs(V10 - FPOS) > 10*ENR
+            V19 = 0
+         else
+            V19 = 4 // did not arrive
 
       else
          V19 = 1
