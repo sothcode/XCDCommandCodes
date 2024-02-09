@@ -108,7 +108,7 @@ if debug:
      print ("home: finishing up.  check status and readback:")
 
 homeIsReal=False
-if (home=1.0 or home=-1.0):
+if (home==1.0 or home==-1.0):
     homeIsReal=True
 
 #sanity check
