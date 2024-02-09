@@ -14,6 +14,7 @@ sys.path.append("kfDatabase")
 import kfDatabase
 
 #tuning settings
+mainDb="test_only_axis_parameters.kfdb"
 sleeptime=0.5 #in seconds
 debug=False
 
