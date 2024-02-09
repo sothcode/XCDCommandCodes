@@ -55,6 +55,7 @@ position=readback(ADDR['FPOS'])
 if debug:
     print("homeThetaS:  Check status:");
 status=STAT['BUSY']
+print("homeThetaS:  first pass")
 while status==STAT['BUSY']:
     status=readback(ADDR['STATUS'])
     hardstop1=readback(ADDR['HARD_STOP1'])
@@ -73,6 +74,8 @@ writeXCD2([ADDR['FPOS'], position-home])
 
 #now do it again.  if home moves by exactly +1, we know it is real and reliable.
 sendcommand(COMM['HOME'],0) # this sleeps until it sees the status change from new_command
+status=STAT['BUSY']
+print("homeThetaS:  second pass")
 while status==STAT['BUSY']:
     status=readback(ADDR['STATUS'])
     hardstop1=readback(ADDR['HARD_STOP1'])
