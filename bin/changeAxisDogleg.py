@@ -126,9 +126,16 @@ def changeAxis( targetIDstr ):
     # oldAxis = readback(ADDR['XAXIS'])
     currentAxis = readback(ADDR['XAXIS'])
     
+    # create lookup table of axis variables
+    IDlookup = {v:k for k, v in AXID.items()}
+
     # check if current ID and target ID are the same
+    currentID = readback(ADDR['ID'])
+    currentIDstr = IDlookup[currentID]
     if (currentAxis == targetAxis):
         print("changeAxis: XAXIS is the same.  Values remain from last use, not loaded from file.")
+        print("was: %s pos=%s, axis=%s, stat=%s, turns=%s"%(IDlookup[oldID],oldPos,oldAxis,oldStatus,oldTurns)) 
+        print("now: %s pos=%s, axis=%s, stat=%s, turns=%s"%(IDlookup[newID],newPos,newAxis,newStatus,newTurns)) 
         return True
 
     # newAxis = readback(ADDR['XAXIS'])
@@ -136,12 +143,8 @@ def changeAxis( targetIDstr ):
     #     print("changeAxis: Port changed but axis unchanged. Variables not updated.")
     #     return
 
-    # create lookup table of axis variables
-    IDlookup = {v:k for k, v in AXID.items()}
-
+ 
     # write all variables to file corresponding to current ID
-    currentID = readback(ADDR['ID'])
-    currentIDstr = IDlookup[currentID]
     writeToFile( currentIDstr + '.txt' )
 
     # find file corresponding to target ID and load from it
@@ -154,16 +157,16 @@ def changeAxis( targetIDstr ):
     newPos=readback(ADDR['FPOS'])
     newTurns=readback(ADDR['TURNS'])
 
+    print("was: %s pos=%s, axis=%s, stat=%s, turns=%s"%(IDlookup[oldID],oldPos,oldAxis,oldStatus,oldTurns)) 
+    print("now: %s pos=%s, axis=%s, stat=%s, turns=%s"%(IDlookup[newID],newPos,newAxis,newStatus,newTurns)) 
     
     if readBool:
         print("changeAxis: Axis changed to '%s' on port '%s'"% (targetIDstr, targetPort))
+        return True
     else:
         print("FAILURE: changeAxis: Axis could not be changed to '%s' on port '%s' - variables not read from file."% (targetIDstr, targetPort))
         return False
-    print("was: %s pos=%s, axis=%s, stat=%s, turns=%s"%(IDlookup[oldID],oldPos,oldAxis,oldStatus,oldTurns)) 
-    print("now: %s pos=%s, axis=%s, stat=%s, turns=%s"%(IDlookup[newID],newPos,newAxis,newStatus,newTurns)) 
-        
-    return True
+         
 
 
 if __name__ == "__main__":
