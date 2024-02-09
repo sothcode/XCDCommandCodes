@@ -78,6 +78,8 @@ while status==STAT['BUSY']:
     time.sleep(sleeptime)
 
 #loop until controller busy flag is cleared
+home=readback(ADDR['HOME'])
+print("loop finished. final position:",readback(ADDR['FPOS'])," status:",status, "lb:",hardstop1, "hb:",hardstop2, "posi:",home)
 
 
 #report final position and success
