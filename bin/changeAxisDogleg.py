@@ -157,16 +157,14 @@ def changeAxis( targetIDstr ):
     newPos=readback(ADDR['FPOS'])
     newTurns=readback(ADDR['TURNS'])
 
+    if readBool:
+        print("changeAxis: Axis changed to '%s' on port '%s'"% (targetIDstr, targetPort))
+    else:
+        print("FAILURE: changeAxis: Axis could not be changed to '%s' on port '%s' - variables not read from file."% (targetIDstr, targetPort))
     print("was: %s pos=%s, axis=%s, stat=%s, turns=%s"%(IDlookup[oldID],oldPos,oldAxis,oldStatus,oldTurns)) 
     print("now: %s pos=%s, axis=%s, stat=%s, turns=%s"%(IDlookup[newID],newPos,newAxis,newStatus,newTurns)) 
     
-    if readBool:
-        print("changeAxis: Axis changed to '%s' on port '%s'"% (targetIDstr, targetPort))
-        return True
-    else:
-        print("FAILURE: changeAxis: Axis could not be changed to '%s' on port '%s' - variables not read from file."% (targetIDstr, targetPort))
-        return False
-         
+    return readBool  
 
 
 if __name__ == "__main__":
