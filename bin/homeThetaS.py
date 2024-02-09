@@ -27,9 +27,13 @@ def _reverseLookup(dict,val):
 
 
 #check args
-
-if len(sys.argv) != 1: #note that sys.argv has arg 1 as the command itself
-    print("NOT EXECUTED. Wrong number of arguments.  Correct usage is ./homeThetaS.py")
+referenceEgg=None
+if len(sys.argv) == 2: #note that sys.argv has arg 1 as the command itself
+    referenceEgg=sys.argv[1]
+elif len(sys.argv) == 1: #note that sys.argv has arg 1 as the command itself
+    referenceEgg=None
+else:
+    print("NOT EXECUTED. Wrong number of arguments.  Correct usage is ./homePhi.py or ./homePhi.py Egg")
     sys.exit()
 #if wrong arguments, exit with explanation
 
