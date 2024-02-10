@@ -115,7 +115,7 @@ def changeAxis( targetIDstr ):
     
     # if PORTFILE exists, load in old port and set active port
     # with open(PORTFILE, 'r') as file:
-    #     oldPort = file.readline()
+    oldPort = file.readline()
     with open(PORTFILE, 'w') as file:
         file.write(targetPort)
 
@@ -133,8 +133,8 @@ def changeAxis( targetIDstr ):
     currentID = readback(ADDR['ID'])
     currentIDstr = IDlookup[currentID]
     if (currentAxis == targetAxis):
-        print("changeAxis: XAXIS is the same.  Values remain from last use, not loaded from file.")
-        print("remains: %s pos=%s, axis=%s, stat=%s, turns=%s"%(IDlookup[oldID],oldPos,oldAxis,oldStatus,oldTurns)) 
+        print("changeAxis: XAXIS is the same. (target:%s. %s says this is %s, axis %s) Values remain from last use, not loaded from file."%(targetIDstr,portsDb,targetPort,targetAxis))
+        print("remains: %s port=%s, pos=%s, axis=%s, stat=%s, turns=%s"%(IDlookup[oldID],oldPort,oldPos,oldAxis,oldStatus,oldTurns)) 
         return True
 
     # newAxis = readback(ADDR['XAXIS'])
@@ -160,8 +160,8 @@ def changeAxis( targetIDstr ):
         print("changeAxis: Axis changed to '%s' on port '%s'"% (targetIDstr, targetPort))
     else:
         print("FAILURE: changeAxis: Axis could not be changed to '%s' on port '%s' - variables not read from file."% (targetIDstr, targetPort))
-    print("was: %s pos=%s, axis=%s, stat=%s, turns=%s"%(IDlookup[oldID],oldPos,oldAxis,oldStatus,oldTurns)) 
-    print("now: %s pos=%s, axis=%s, stat=%s, turns=%s"%(IDlookup[newID],newPos,newAxis,newStatus,newTurns)) 
+    print("was: %s(%s) port=%s, axis=%s, pos=%s, stat=%s, turns=%s"%(IDlookup[oldID],oldID,oldPort,oldAxis,oldPos,oldStatus,oldTurns)) 
+    print("now: %s(%s) port=%s, axis=%s, pos=%s, stat=%s, turns=%s"%(IDlookup[newID],newID,targetPort,newAxis,newPos,newStatus,newTurns)) 
     
     return readBool  
 
