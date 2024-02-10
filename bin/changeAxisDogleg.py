@@ -114,8 +114,8 @@ def changeAxis( targetIDstr ):
         return False
     
     # if PORTFILE exists, load in old port and set active port
-    # with open(PORTFILE, 'r') as file:
-    oldPort = file.readline()
+    with open(PORTFILE, 'r') as file:
+        oldPort = file.readline()
     with open(PORTFILE, 'w') as file:
         file.write(targetPort)
 
