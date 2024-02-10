@@ -28,7 +28,7 @@ EGG2_PH/home 0.0
 EGG2_PH/lowbound -0.361084
 EGG2_PH/highbound 0.603516
 EGG2_TH_S/home 0.0
-----------EGG3 ----------EGG3.seemed.to.diffuse.the.light.dont.know.why.yet.20204.02.09
+----------EGG3 ----------EGG3.seemed.to.diffuse.the.light.dont.know.why.yet.20204.02.09...rebuilt.and.needs.retest.
 EGG3_PH/home 0.0
 EGG3_PH/lowbound -0.649292
 EGG3_PH/highbound 0.313965
@@ -170,3 +170,6 @@ ATT7/highbound 0.61554
 ATT8/home 0.0
 ATT8/lowbound 0.0
 ATT8/highbound 0.805115
+EGG6_TH_L/dandiode0 0.06787109375
+EGG6_TH_S/dandiode0 -0.2236328125
+EGG6_PH/dandiode0 -0.083740234375
