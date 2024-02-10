@@ -156,3 +156,16 @@ ATT7/highbound 0.61554
 ATT8/home 0.0
 ATT8/lowbound 0.0
 ATT8/highbound 0.805115
+EGG2_PH/home 0.0
+EGG2_PH/lowbound -0.361084
+EGG2_PH/highbound 0.603516
+EGG2_TH_S/home 0.0
+EGG3_TH_L/home 0.0
+EGG3_TH_L/lowbound -0.366882
+EGG3_TH_L/highbound 0.233118
+EGG3_PH/dandiode0 -0.075439453125
+EGG4_PH_test/home 0.0
+EGG4_PH_test/lowbound -0.079346
+EGG4_PH_test/highbound 0.885132
+EGG3_TH_S/dandiode0 -0.0882568359375
+EGG3_TH_L/dandiode0 0.13250732421875
