@@ -81,6 +81,7 @@ while status==STAT['BUSY']:
 position=readback(ADDR['FPOS'])   
 home=readback(ADDR['HOME'])   
 writeXCD2([ADDR['FPOS'], position-home])
+writeXCD2([ADDR['HOME'],0.0])
 
 #now do it again.  if home moves by exactly +1, we know it is real and reliable.
 sendcommand(COMM['HOME'],0) # this sleeps until it sees the status change from new_command
