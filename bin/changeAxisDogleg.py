@@ -150,15 +150,15 @@ def changeAxis( targetIDstr ):
     readBool = readFromFile( targetIDstr + '.txt' )
 
     # now read the current state:
-    newID=readback(ADDR['ID'])
     newAxis=readback(ADDR['XAXIS'])
-    newStatus=readback(ADDR['STATUS'])
-    newPos=readback(ADDR['FPOS'])
-    newTurns=readback(ADDR['TURNS'])
-
     if (newAxis!=targetAxis): #possibly port file is corrupted, but in any case we still have a change to make:
         writeXCD2([ADDR['XAXIS'], targetAxis])
         writeXCD2([ADDR['FPOS'], newPos])
+        newAxis=readback(ADDR['XAXIS'])
+    newID=readback(ADDR['ID'])
+    newPos=readback(ADDR['FPOS'])
+    newStatus=readback(ADDR['STATUS'])
+    newTurns=readback(ADDR['TURNS'])
         
         
 
