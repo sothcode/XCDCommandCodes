@@ -126,7 +126,7 @@ if (home==1.0 or home ==-1.0):
     homeIsConsistent=True
     home=0.0
 #sanity check
-if(not homeIsReal):
+if(not homeIsReal or not homeIsConsistent):
     print("FAIL.  Home does not match the previous home.  Encoder is not reading back correctly, or home is damaged.  lb:%s hb:%s posi:%s%s%s."%(lb,hb, home,"(Real)"*homeIsReal,"(NotFound)"*(not homeIsReal)))
     print("aborting.  Db will not be updated.")
     sys.exit()
