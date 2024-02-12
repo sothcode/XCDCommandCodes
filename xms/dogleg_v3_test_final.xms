@@ -80,8 +80,9 @@ while 1
          enable
          while S_IND = 0 & abs(V11) < 3
             V12 = FPOS + V16*0.25
+            set TIME = 0
             move V12
-            while V16*(V12-FPOS) > 20*ENR
+            while V16*(V12-FPOS) > 20*ENR & TIME < 10000
             end
             move FPOS - V16*0.01
             delay 100
@@ -146,8 +147,9 @@ while 1
          enable
          while V17 > 1 & V11*V16 < 3
             V12 = FPOS + V16*0.25
+            set TIME = 0
             move V12
-            while V16*(V12-FPOS) > 20*ENR
+            while V16*(V12-FPOS) > 20*ENR & TIME < 7000
             end
             move FPOS - V16*0.01
             delay 100
@@ -160,20 +162,25 @@ while 1
             V17 = V17 - 1
          end
 
-         if V11*V16 < 3
+         if V11*V16 < 3 & V16*(V10 - FPOS) < 0.25
+            set TIME = 0
             move V10
-            delay 1000
+            while V16*(V10-FPOS) > 20*ENR & TIME < 7000
+            end
       
             if S_IND <> 0
                V11 = V11 + V16
                set S_IND = 0
             end
 
+            // set statusBYTE SUCCESS
+            V19 = 0
+
+         else
+            // set statusBYTE FAIL_FINAL_MOVE
+            V19 = 4
          end
          disable
-
-         // set statusBYTE SUCCESS
-         V19 = 0
 
       end
 
