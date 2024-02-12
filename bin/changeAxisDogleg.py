@@ -83,7 +83,7 @@ def changeAxis( targetIDstr ):
 #    print('about to look in AXID keys')
     # check if axis we want to change to is a valid motor, and if not exit
     if targetIDstr not in AXID.keys():
-        print("changeAxis: Axis ID - " + targetIDstr + " -  not recognized. Axis ID list given as:")
+        print("changeAxis: Axis ID '%s' not recognized. Axis ID list given as:"%targetIDstr)
         print(AXID.keys())
         return False
 
@@ -104,6 +104,8 @@ def changeAxis( targetIDstr ):
     oldStatus=readback(ADDR['STATUS'])
     oldPos=readback(ADDR['FPOS'])
     oldTurns=readback(ADDR['TURNS'])
+    with open(PORTFILE, 'r') as file:
+        oldPort = file.readline()
         
     # otherwise, assign new port to targetPort
     targetPort = values[0]
@@ -113,17 +115,12 @@ def changeAxis( targetIDstr ):
         print("changeAxis: PORTFILE %s does not exist.  PANIC" % PORTFILE)
         return False
     
-    # if PORTFILE exists, load in old port and set active port
-    with open(PORTFILE, 'r') as file:
-        oldPort = file.readline()
+    # set active port
     with open(PORTFILE, 'w') as file:
         file.write(targetPort)
 
     
     # readback current axis and current axis ID and find target axis ID
-    # currentID = readback(ADDR['ID'])
-    # targetID = AXID[targetIDstr]
-    # oldAxis = readback(ADDR['XAXIS'])
     currentAxis = readback(ADDR['XAXIS'])
     
     # create lookup table of axis variables
