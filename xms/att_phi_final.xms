@@ -60,8 +60,8 @@ while 1
       V19 = 9
 
       // initialize storage variables
-      V2 = 0
-      V3 = 0
+      V2 = 0 //lowbound
+      V3 = 0 //highbound
 
       // first move back and forth to set V18
       // (in case already at hard stop)
@@ -69,7 +69,7 @@ while 1
       openloop -100
       delay 300
 
-      V18 = FPOS
+      V18 = FPOS //position progress monitor
 
       openloop 100
       delay 300
@@ -86,7 +86,7 @@ while 1
       openloop 0.0
       disable
 
-      // record first hard stop
+      // record first (lowbound) hard stop
       V2 = FPOS
 
       // set encoder latch off and nonsense encoder latch pos
@@ -103,7 +103,7 @@ while 1
       openloop 0.0
       disable
 
-      // sets second hard stop
+      // sets second (highbound) hard stop
       V3 = FPOS
 
       // then go back 
@@ -150,13 +150,13 @@ while 1
          end
          disable
 
-         V19 = 0
+         V19 = 0 //errorcode SUCCESS
       else
-         V19 = 1
+         V19 = 1 //errorcode OUT_OF_BOUNDS
       end
       
       // reset to IDLE state
-      V0 = 0
+      V0 = 0 //statusBYTE IDLE
 
    // end phi goto procedure
    end
