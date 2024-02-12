@@ -120,7 +120,7 @@ homeIsReal=True
 homeIsConsistent=False
 if (home==0.0):
     homeIsReal=False
-if (home==1.0 or home ==-1.0)
+if (home==1.0 or home ==-1.0):
     homeIsConsistent=True
     home=0.0
 #sanity check
