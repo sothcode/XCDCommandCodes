@@ -151,12 +151,12 @@ def changeAxis( targetIDstr ):
 
     # now read the current state:
     newAxis=readback(ADDR['XAXIS'])
+    newPos=readback(ADDR['FPOS'])
     if (newAxis!=targetAxis): #possibly port file is corrupted, but in any case we still have a change to make:
         writeXCD2([ADDR['XAXIS'], targetAxis])
         writeXCD2([ADDR['FPOS'], newPos])
         newAxis=readback(ADDR['XAXIS'])
     newID=readback(ADDR['ID'])
-    newPos=readback(ADDR['FPOS'])
     newStatus=readback(ADDR['STATUS'])
     newTurns=readback(ADDR['TURNS'])
         
