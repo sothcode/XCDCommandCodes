@@ -32,7 +32,7 @@ varTuning={
     
 min_distance=0.1 #in rotations
 move_tolerance=0.001 #in rotations.  causes an error if it did not get this close in the final move.
-sleeptime=0.6 #in seconds
+sleeptime=0.2 #in seconds
 timeout=10 #in seconds
 debug=False
 portsDb="xcd2_ports.kfdb"
@@ -177,7 +177,8 @@ def gotoVettedQuiet(destination,COMM):
         oldposition=position
         position=readback(ADDR['FPOS'])
         turns=readback(ADDR['TURNS'])
-        print("position:%s status:%s (%s) turns:%s (not live: ax: %s lb:%1.4f hb:%1.4f) (gotoVQ)"%(position,status,_reverseLookup(STAT,status),turns,axis,hardstop1,hardstop2))
+        home=readback(ADDR['HOME'])
+        print("position:%s status:%s (%s) turns:%s home:%s (not live: ax: %s lb:%1.4f hb:%1.4f) (gotoVQ)"%(position,status,_reverseLookup(STAT,status),turns,home,axis,hardstop1,hardstop2))
 
         #print("position:", position," (axis",axis,") status:",status," (",_reverseLookup(STAT,status),") turns:",turns)
  
