@@ -79,12 +79,13 @@ while status==STAT['BUSY']:
 
 #set position to the correct offset from the measured home.  This means the next time we find home, it should be at +1.0
 position=readback(ADDR['FPOS'])   
+home=readback(ADDR['HOME'])   
 writeXCD2([ADDR['FPOS'], position-home])
 
 #now do it again.  if home moves by exactly +1, we know it is real and reliable.
 sendcommand(COMM['HOME'],0) # this sleeps until it sees the status change from new_command
 status=STAT['BUSY']
-print("homeThetaS:  second pass")
+print("homeThetaS:  second pass.  Defined home is 0.0")
 while status==STAT['BUSY']:
     status=readback(ADDR['STATUS'])
     hardstop1=readback(ADDR['HARD_STOP1'])
