@@ -91,7 +91,6 @@ while 1
 
       // set encoder latch off and nonsense encoder latch pos
       set S_IND = 0
-      set POSI = V2 - 1
 
       // drive other way until stop
       enable
