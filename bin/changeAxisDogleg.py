@@ -91,7 +91,7 @@ def changeAxis( targetIDstr ):
     # first open port database file
     # print("about to query db")
     success, values = kfDatabase.readVar(portsDb, targetIDstr)
-    print("kfDatabase returns %s"%ret)
+    print("kfDatabase returns %s"%values)
 
     # exit if we don't have a port
     if not success:
