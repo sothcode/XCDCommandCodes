@@ -116,11 +116,13 @@ axis=readback(ADDR['XAXIS'])
 if debug:
      print ("home: finishing up.  check status and readback:")
 
-homeIsReal=False
-if (home==1.0 or home==-1.0):
+homeIsReal=True
+homeIsConsistent=False
+if (home==0.0):
+    homeIsReal=False
+if (home==1.0 or home ==-1.0)
+    homeIsConsistent=True
     home=0.0
-    homeIsReal=True
-
 #sanity check
 if(not homeIsReal):
     print("FAIL.  Home does not match the previous home.  Encoder is not reading back correctly, or home is damaged.  lb:%s hb:%s posi:%s%s%s."%(lb,hb, home,"(Real)"*homeIsReal,"(NotFound)"*(not homeIsReal)))
