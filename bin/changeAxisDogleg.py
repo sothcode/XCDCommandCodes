@@ -91,7 +91,7 @@ def changeAxis( targetIDstr ):
     # first open port database file
     # print("about to query db")
     success, values = kfDatabase.readVar(portsDb, targetIDstr)
-    # print("kfDatabase returns %s"%ret)
+    print("kfDatabase returns %s"%values)
 
     # exit if we don't have a port
     if not success:
@@ -150,11 +150,17 @@ def changeAxis( targetIDstr ):
     readBool = readFromFile( targetIDstr + '.txt' )
 
     # now read the current state:
-    newID=readback(ADDR['ID'])
     newAxis=readback(ADDR['XAXIS'])
-    newStatus=readback(ADDR['STATUS'])
+    if (newAxis!=targetAxis): #possibly port file is corrupted, but in any case we still have a change to make:
+        writeXCD2([ADDR['XAXIS'], targetAxis])
+        writeXCD2([ADDR['FPOS'], newPos])
+        newAxis=readback(ADDR['XAXIS'])
+    newID=readback(ADDR['ID'])
     newPos=readback(ADDR['FPOS'])
+    newStatus=readback(ADDR['STATUS'])
     newTurns=readback(ADDR['TURNS'])
+        
+        
 
     if readBool:
         print("changeAxis: Axis changed to '%s' on port '%s'"% (targetIDstr, targetPort))
