@@ -145,7 +145,7 @@ while 1
 
          set S_IND = 0
          enable
-         while V17 > 1 & V11*V16 < 3
+         while V17 > 1 & V11*V16 <= 3
             V12 = FPOS + V16*0.25
             set TIME = 0
             move V12
@@ -162,7 +162,7 @@ while 1
             V17 = V17 - 1
          end
 
-         if V11*V16 < 3 & V16*(V10 - FPOS) < 0.25
+         if V11*V16 <= 3 & V16*(V10 - FPOS) <= 0.25
             set TIME = 0
             move V10
             while V16*(V10-FPOS) > 20*ENR & TIME < 7000
