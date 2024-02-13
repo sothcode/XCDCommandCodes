@@ -162,7 +162,7 @@ while 1
             V17 = V17 - 1
          end
 
-         if V11*V16 <= 3 & V16*(V10 - FPOS) <= 0.25
+         if V11*V16 <= 3 & V16*(V10 - FPOS) < 0.3
             set TIME = 0
             move V10
             while V16*(V10-FPOS) > 20*ENR & TIME < 7000
