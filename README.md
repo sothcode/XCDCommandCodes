@@ -1,18 +1,32 @@
 For dev work:
 1) stop any running loops in the .s19 software, then restart
+
 ./killXCD2.sh ; ./startXMS.sh
+
 2)set up the default ports and UARTS for an egg (or 'doglegs' if doing those)
+
 ./assignPorts_forDebugOnly.py egg
+
 3) update the ports:
+   
 ./updatePorts.py
+
 then set the active port and axis with:
+
 ./changeAxisDogleg DEBUG_PH (or _TH_S or _TH_L or _DL_A0 or _DL_A1)
+
 3a) the first time you do this, you will need to clear the 'boot' error:
+
 ./quickAssign.py V19 0
+
 3b) in other error modes, you can clear with: (this works on all motos, not just the doglegs)
+
 ./clearDogleg.py
+
 then you can run homePhi on the phi motors, or homeThetaL or homeThetaS on those motors
+
 ./homePhi.py test
+
 the 'test' can be any string, and checks against the kfdb to see if there is existing data.
 if it gets stuck in the loop you can go back and killXCD2 above.
 
