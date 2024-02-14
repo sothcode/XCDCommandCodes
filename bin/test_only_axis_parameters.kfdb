@@ -13,8 +13,8 @@ DEBUG_ATT/minlight -0.4
 DEBUG_ATT/maxlight -0.15
 ----------EGG1 ----------EGG1.still.has.thetaS.problems.2024.02.09
 EGG1_PH/home 0.0
-EGG1_PH/lowbound -0.272888
-EGG1_PH/highbound 0.70636
+EGG1_PH/lowbound -0.266113
+EGG1_PH/highbound 0.708252
 EGG1_PH/diode0 0.03094482421875
 EGG1_PH/diode1 0.36431884765625
 EGG1_PH/diode2 0.69757080078125
@@ -25,8 +25,8 @@ EGG1_TH_L/downstream -0.22711181640625
 EGG1_TH_L/diode0 0.43963623046875
 ----------EGG2 ----------EGG2.has.th_l.home.obstructing.LP.dan.is.reworking.2024.02.09
 EGG2_PH/home 0.0
-EGG2_PH/lowbound -0.354492
-EGG2_PH/highbound 0.60791
+EGG2_PH/lowbound -0.354736
+EGG2_PH/highbound 0.609375
 EGG2_TH_S/home 0.0
 ----------EGG3 ----------EGG3.seemed.to.diffuse.the.light.dont.know.why.yet.20204.02.09...rebuilt.and.needs.retest.
 EGG3_PH/home 0.0
@@ -193,3 +193,11 @@ EGG2_TH_L/upstream 0.00445556640625
 EGG2_TH_L/downstream 0.508056640625
 EGG2_TH_L/diode0 0.17181396484375
 EGG2_TH_S/diode0 -0.3309326171875
+ATT3/minlight 0.042724609375
+ATT3/maxlight -0.074462890625
+ATT4/maxlight 0.44940185546875
+ATT4/minlight 0.554443359375
+ATT7/maxlight 0.469482421875
+ATT7/minlight 0.614501953125
+ATT1/maxlight 0.699462890625
+ATT1/minlight 0.80950927734375
