@@ -54,6 +54,5 @@ if __name__ == "__main__":
         writeToFile(sys.argv[1])
     else:
         print("NOT EXECUTED. Wrong number of arguments.  Correct usage is:")
-        print("   ./changeAxisDogleg.py L#_DL#_A#")
-        print("or turn on debug with   ./changeAxisDogleg.py L#_DL#_A# 1")
+        print("   ./writeVars.py \"filename\"")
         sys.exit()
