@@ -32,6 +32,15 @@ portsDb="xcd2_ports.kfdb"
 #portsDb="test_only_xcd2_ports.kfdb"
 mainDb="test_only_axis_parameters.kfdb"
 PORTFILE="XCD_current_port"
+varTuning={
+#min_distance (minimum amount we can move without doing a backoff-and-recover),
+#move_tolerance (how far from destination we are allowed to be without marking it FAIL)
+'Phi':[0.1,0.001],
+'ThetaS':[0.00001,0.001],
+'ThetaL':[0.0001,0.001],
+'Attenuator':[0.001,0.001],
+'Dogleg':[0.01,0.001]
+}
 
 
 #{later:
@@ -64,22 +73,27 @@ def find_comm(axisName):
     #also let us know if the axis is a dogleg, so we know how to behave.
     isDogleg=False
     COMM={}
+    axisType=None
     if bool(re.match(r'^.+_DL\d_A\d$',axisName)):
-        COMM=ALL_COMM['Dogleg']
+        axisType='Dogleg'
         isDogleg=True
     elif bool(re.match(r'^.+_TH_S$',axisName)):
-        COMM=ALL_COMM['ThetaS']
+        axisType='ThetaS'
     elif bool(re.match(r'^.+_TH_L$',axisName)):
-        COMM=ALL_COMM['ThetaL']
+        axisType='ThetaL'
     elif bool(re.match(r'^.+_PH$',axisName)):
-        COMM=ALL_COMM['Phi']        
+        axisType='Phi'    
     elif bool(re.match(r'^.+_AT$',axisName)):
-        COMM=ALL_COMM['Attenuator']
+        axisType='Attenuator'
     else:
         print("no match of '%s' to axis types.  Critical failure!"%(axisName))
         sys.exit()
+    COMM=ALL_COMM[axisType]
+    global min_distance, move_tolerance
+    min_distance=varTuning[axisType][0]
+    move_tolerance=varTuning[axisType][1]
+    print("Setting COMM. channel is type %s, min_distance=%s, move_tolerance=%s"%(axisType,min_distance,move_tolerance))
     return isDogleg, COMM
-
 
 
 

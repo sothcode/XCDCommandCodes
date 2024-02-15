@@ -63,18 +63,18 @@ while 1
       velocityloop -1.0
       delay 500
 
-      V18 = FPOS
+      V18 = FPOS //lower position we were able to find
 
       // replace 1.5 with minVEL_pos
       velocityloop 1.5
       delay 500
       disable
 
-      V17 = FPOS
+      V17 = FPOS //higher position we were able to find
 
-      // drive one way until stop
+      // drive to negative way until stop
       enable
-      velocityloop -1.0
+      velocityloop -1.5
       delay 500
       while abs(V18 - FPOS) > 10*ENR & abs(V17 - FPOS) < 1
          V18 = FPOS
