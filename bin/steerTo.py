@@ -2,50 +2,32 @@
 
 import math
 
-# pick a trajectory and starting location, compute where that ray intersects the edge of the square,
-# reflect it around the x (y) axis, and then repeat from the point of the intersection.  If you
-# extract the path length in xy, then we can go until a total path length of L.  You can relate the
-# needed L to the theta angle later
-
-# snells law in/out, reflect, intersect finder
-# package to draw things in python - make phi in vs phi out plot
+####################################################
+## GLOBAL VARS 
+####################################################
+L_l = 3
+L_s = 3
 
 
-# we have a line in 3d we want to know how it intersects a plane
-# take in a vector with some dx dy dz
-# do in root - tvector3 class  that does rotations
-# instead of all bounces at once, just calculate each bounce until you reach end of light pipe
+####################################################
+## COORDINATE TRANFORMS 
+####################################################
 
-
-'''
-take in theta, phi, (x,y) position
-convert theta, phi to unit vector
-establish
-
-x = r*sin(theta)*cos(phi)
-y = r*sin(theta)*sin(phi)
-z = r*cos(theta)
-'''
-
-
-
-# 3D Cartesian to 3D cylindrical polar coordinate transformation function
+# Cartesian to cylindrical polar coordinates
 def cart2cyl(coords):
     x, y, z = coords
     r = math.sqrt(x**2 + y**2 + z**2)
     phi = math.atan2(y/x)
     return r, phi, z
 
-
-# 3D cylindrical polar to 3D Cartesian coordinate transformation function
+# Cylindrical polar to Cartesian coordinates
 def cyl2cart(coords):
     r, phi, z = coords
     x = r*math.cos(phi)
     y = r*math.sin(phi)
     return x, y, z
 
-
-# Convert Cartesian coordinates to spherical coordinates
+# Cartesian to spherical polar coordinates
 def cart2sph(coords):
     x, y, z = coords
     r = math.sqrt(x**2 + y**2 + z**2)
@@ -53,8 +35,7 @@ def cart2sph(coords):
     phi = math.acos(z / r)
     return r, theta, phi
 
-
-# Convert spherical coordinates to Cartesian coordinates
+# Spherical polar to Cartesian coordinates
 def sph2cart(coords):
     r, phi, theta = coords
     x = r * math.sin(phi) * math.cos(theta)
@@ -63,6 +44,9 @@ def sph2cart(coords):
     return
 
 
+####################################################
+## STEERING FUNCTIONS 
+####################################################
 
 def lpStart(beta1, beta2, phi):
     """
