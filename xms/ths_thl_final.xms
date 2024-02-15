@@ -139,6 +139,7 @@ while 1
             V19 = 0
          else
             V19 = 4 // did not arrive
+         end
 
       else
          V19 = 1
