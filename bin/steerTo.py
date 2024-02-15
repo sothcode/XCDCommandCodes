@@ -17,24 +17,50 @@ import math
 # instead of all bounces at once, just calculate each bounce until you reach end of light pipe
 
 
+'''
+take in theta, phi, (x,y) position
+convert theta, phi to unit vector
+establish
+
+x = r*sin(theta)*cos(phi)
+y = r*sin(theta)*sin(phi)
+z = r*cos(theta)
+'''
+
+
+
+# 3D Cartesian to 3D cylindrical polar coordinate transformation function
 def cart2cyl(coords):
-    """3D Cartesian to 3D cylindrical polar coordinate transformation function"""
     x, y, z = coords
-    
     r = math.sqrt(x**2 + y**2 + z**2)
     phi = math.atan2(y/x)
-    
     return r, phi, z
 
 
+# 3D cylindrical polar to 3D Cartesian coordinate transformation function
 def cyl2cart(coords):
-    """3D cylindrical polar to 3D Cartesian coordinate transformation function"""
     r, phi, z = coords
-    
     x = r*math.cos(phi)
     y = r*math.sin(phi)
-    
     return x, y, z
+
+
+# Convert Cartesian coordinates to spherical coordinates
+def cart2sph(coords):
+    x, y, z = coords
+    r = math.sqrt(x**2 + y**2 + z**2)
+    theta = math.atan2(y, x)
+    phi = math.acos(z / r)
+    return r, theta, phi
+
+
+# Convert spherical coordinates to Cartesian coordinates
+def sph2cart(coords):
+    r, phi, theta = coords
+    x = r * math.sin(phi) * math.cos(theta)
+    y = r * math.sin(phi) * math.sin(theta)
+    z = r * math.cos(phi)
+    return
 
 
 
