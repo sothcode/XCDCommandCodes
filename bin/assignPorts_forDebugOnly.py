@@ -45,17 +45,17 @@ if __name__ == "__main__":
     #if wrong arguments, exit with explanation
     if len(sys.argv) == 1: #overall default
         print("Assigning to ttyUSB0 and USB1 to default dogleg assumption:")
-        assignUARTsToPort("/dev/ttyUSB0", ID['DEBUG_DL0_A1'], ID['DEBUG_DL0_A0'])
-        assignUARTsToPort("/dev/ttyUSB1", ID['DEBUG_DL1_A1'], ID['DEBUG_DL1_A0'])
+        assignUARTsToPort("/dev/ttyUSB0", ID['DEBUG_DL0_A0'], ID['DEBUG_DL0_A1'])
+        assignUARTsToPort("/dev/ttyUSB1", ID['DEBUG_DL1_A0'], ID['DEBUG_DL1_A1'])
     elif len(sys.argv)==2: #allow two possibilities:  'doglegs' or 'egg'.  do the default assumption for those.
         if sys.argv[1]=='doglegs':
             print("Assigning to ttyUSB0 and USB1 to default dogleg assumption:")
-            assignUARTsToPort("/dev/ttyUSB0", ID['DEBUG_DL0_A1'], ID['DEBUG_DL0_A0'])
-            assignUARTsToPort("/dev/ttyUSB1", ID['DEBUG_DL1_A1'], ID['DEBUG_DL1_A0'])
+            assignUARTsToPort("/dev/ttyUSB0", ID['DEBUG_DL0_A0'], ID['DEBUG_DL0_A1'])
+            assignUARTsToPort("/dev/ttyUSB1", ID['DEBUG_DL1_A0'], ID['DEBUG_DL1_A1'])
         elif sys.argv[1]=='egg':
             print("Assigning to ttyUSB0 and USB1 to default egg assumption:")
-            assignUARTsToPort("/dev/ttyUSB0", ID['DEBUG_TH_L'], ID['DEBUG_TH_S'])
-            assignUARTsToPort("/dev/ttyUSB1", ID['DEBUG_AT'], ID['DEBUG_PH'])
+            assignUARTsToPort("/dev/ttyUSB0", ID['DEBUG_TH_S'], ID['DEBUG_TH_L'])
+            assignUARTsToPort("/dev/ttyUSB1", ID['DEBUG_PH'], ID['DEBUG_AT'])
         else:
             print("no default assumption for '%s'.  Args are either 'doglegs' of 'egg'")
             sys.exit()
