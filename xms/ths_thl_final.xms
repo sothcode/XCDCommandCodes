@@ -59,8 +59,8 @@ while 1
 
       // first move back and forth
       enable
-      // replace -1.0 with minVEL_neg
-      velocityloop -1.0
+      // replace -1.5 with minVEL_neg
+      velocityloop -1.5
       delay 500
 
       V18 = FPOS //lower position we were able to find
@@ -72,7 +72,11 @@ while 1
 
       V17 = FPOS //higher position we were able to find
 
+<<<<<<< HEAD
       // drive to negative way until stop
+=======
+      // drive to low bound
+>>>>>>> refs/remotes/origin/main
       enable
       velocityloop -1.5
       delay 500
@@ -92,11 +96,15 @@ while 1
       // then go back and find home
       set S_IND = 0
       enable
-      velocityloop 1.2
-      while S_IND = 0 & FPOS < V3
+      velocityloop 1.5
+      while S_IND = 0 & FPOS < V3 & abs(V18 - FPOS) > 10*ENR
       end
       velocityloop 0.0
       disable
+
+      if abs(V18 - FPOS) > 10*ENR
+         V19 = 7
+      end
 
       // sets encoder latch pos, reset encoder latch flag
       V4 = FPOS
@@ -135,6 +143,7 @@ while 1
             V19 = 0
          else
             V19 = 4 // did not arrive
+         end
 
       else
          V19 = 1
