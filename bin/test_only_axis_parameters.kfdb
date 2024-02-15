@@ -54,8 +54,8 @@ EGG3_TH_L/highbound 0.233118
 EGG3_PH/dandiode0 -0.405439453125
 ----------EGG4 ----------EGG4.moved.badly.in.phi.Dan.added.washers.now.spins.okay.2024.02.09.Home.still.walks.in.phi.though.small.effect..needs.work.
 EGG4_PH/home 0.0
-EGG4_PH/lowbound -0.584473
-EGG4_PH/highbound 0.38092
+EGG4_PH/lowbound -0.076599
+EGG4_PH/highbound 0.889954
 EGG4_TH_S/home 0.0
 EGG4_TH_S/downstream 0.20001220703125
 EGG4_TH_S/upstream -0.2900390625
@@ -65,7 +65,7 @@ EGG4_TH_S/right -0.050048828125
 EGG4_TH_S/left 0.45904541015625
 EGG4_TH_L/home 0.0
 EGG4_TH_L/upstream 0.1470947265625
-EGG4_TH_L/downstream -0.35333251953125
+EGG4_TH_L/downstream -0.36102294921875
 EGG4_TH_L/diode0 0.3065185546875
 EGG4_TH_L/park 0.3065185546875
 EGG4_PH_test/home 0.0
@@ -162,8 +162,8 @@ ATT4/home 0.0
 ATT4/lowbound -0.248047
 ATT4/highbound 0.559204
 ATT5/home 0.0
-ATT5/lowbound -0.038269
-ATT5/highbound 0.774414
+ATT5/lowbound -0.037903
+ATT5/highbound 0.776001
 ATT6/home 0.0
 ATT6/lowbound -0.654541
 ATT6/highbound 0.150635
@@ -201,3 +201,8 @@ ATT7/maxlight 0.469482421875
 ATT7/minlight 0.614501953125
 ATT1/maxlight 0.699462890625
 ATT1/minlight 0.80950927734375
+ATT5/maxlight 0.67974853515625
+ATT5/minlight2 0.5504150390625
+EGG4_PH/diode0 -0.00177001953125
+EGG4_PH/diode1 0.33087158203125
+EGG4_PH/diode2 0.66455078125
