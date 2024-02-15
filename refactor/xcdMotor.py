@@ -77,7 +77,7 @@ def sendcommand(com,arg):
 
     #now wait until the status changes to indicate the command has been acted on:
     if debug:
-        print ("sendcommand: priming status check before wait")
+        print ("sendcommand: priming status check be ore wait")
     status=readback(ADDR['STATUS'])
     print("sendcommand says status is ",status," (",_reverseLookup(STAT,status),").")
     t1=time.time()
