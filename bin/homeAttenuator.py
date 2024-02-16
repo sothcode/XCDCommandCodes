@@ -35,7 +35,7 @@ def _reverseLookup(dict,val):
 
 #homeAttenuator() should return success, lowbound, highbound,home, in that order.
 
-def homeAttenuator(referenceEgg)    
+def homeAttenuator(referenceEgg):    
     #check if controller is busy.  If so, exit with explanation
     if debug:
         print("goto:  Check status:")
