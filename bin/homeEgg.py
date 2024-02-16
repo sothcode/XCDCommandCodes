@@ -68,7 +68,7 @@ def homeEgg(laser, referenceEgg):
 
 
     print("\n\nHome procedure for egg %s at %s complete:"%(referenceEgg,laser))
-    for i in range(0,3)
+    for i in range(0,3):
         print("\t%s at %s: %s.  lb:%s hb:%s home:%s"%(dbRef[i],laserAxisName[i],("Success"*hResult[i]+">>FAIL<<"*(not hResult[i])),lb[i],hb[i],home[i]))
     return hResult[0] and hResult[1] and hResult[2]
 
