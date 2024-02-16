@@ -11,6 +11,7 @@ from changeAxisDogleg import changeAxis
 import sys
 import re
 import time
+import math
 from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
 from variableDictionaryXCD2 import varStatusValues as STAT
 from variableDictionaryXCD2 import varAllCommands as ALL_COMM
