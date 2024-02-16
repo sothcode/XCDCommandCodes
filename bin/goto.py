@@ -347,7 +347,7 @@ def goto( axisName=None, destination=None):
         if abs(residual)<move_tolerance:
             print("SUCCESS. goto %s %s complete. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName, destination, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
             return True, position
-        elif abs(residual-floor(residual))<move_tolerance
+        elif abs(residual-floor(residual))<move_tolerance:
             print("SUCCESS. goto %s %s complete. status: %s (%s) position:%1.6f (with wrap-around) axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName, destination, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
             return True, position
         else:
