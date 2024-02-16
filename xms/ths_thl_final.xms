@@ -70,18 +70,18 @@ while 1
       delay 500
       disable
 
-      V17 = FPOS //higher position we were able to find
-
-<<<<<<< HEAD
       // drive to negative way until stop
-=======
       // drive to low bound
->>>>>>> refs/remotes/origin/main
+      set S_IND = 0
       enable
+      V17 = FPOS
       velocityloop -1.5
-      delay 500
-      while abs(V18 - FPOS) > 10*ENR & abs(V17 - FPOS) < 1
+      delay 300
+      while abs(V18 - FPOS) > 10*ENR & abs(V17 - FPOS) < 0.6
          V18 = FPOS
+         if S_IND <> 0
+            V17 = FPOS
+         end
          delay 100
       end
       velocityloop 0.0
@@ -97,7 +97,7 @@ while 1
       set S_IND = 0
       enable
       velocityloop 1.5
-      while S_IND = 0 & FPOS < V3 & abs(V18 - FPOS) > 10*ENR
+      while S_IND = 0 & abs(V18 - FPOS) > 10*ENR
       end
       velocityloop 0.0
       disable
@@ -140,9 +140,9 @@ while 1
          disable
 
          if abs(V10 - FPOS) > 10*ENR
-            V19 = 0
+            V19 = 4
          else
-            V19 = 4 // did not arrive
+            V19 = 0 // did not arrive
          end
 
       else
