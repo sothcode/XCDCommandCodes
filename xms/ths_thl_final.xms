@@ -57,27 +57,29 @@ while 1
       // set statusBYTE BUSY
       V19 = 9
 
+      // check gain param, if not valid, set to 1
+      if V7 > 5 | V7 < 0
+         V7 = 1
+      end
+
       // first move back and forth
       enable
-      // replace -1.5 with minVEL_neg
-      velocityloop -1.5
+      velocityloop -1.5*V7
       delay 500
 
       V18 = FPOS //lower position we were able to find
 
-      // replace 1.5 with minVEL_pos
-      velocityloop 1.5
+      velocityloop 1.5*V7
       delay 500
       disable
 
       V17 = FPOS //higher position we found
 
-      // drive to negative way until stop
-      // drive to low bound
+      // drive in negative dir'n to lowbound until stop
       set S_IND = 0
       enable
-      velocityloop -1.5
-      delay 300
+      velocityloop -1.5*V7
+      delay 100
       while abs(V18 - FPOS) > 10*ENR & abs(V17 - FPOS) < 0.8
          V18 = FPOS
          delay 100
@@ -88,27 +90,26 @@ while 1
       // record negative hard stop
       V2 = FPOS
 
-      // calculate positive hard stop
-      V3 = FPOS + 0.6
+      // set a conservative positive hard stop
+      V3 = FPOS + 0.65
 
-      // then go back and find home
+      // then turn in positive dir'n to find home
       set S_IND = 0
       enable
-      velocityloop 1.5
+      velocityloop 1.5*V7
       while S_IND = 0 & FPOS < V3
       end
       velocityloop 0.0
       disable
 
-      // sets encoder latch pos, reset encoder latch flag
-      V4 = FPOS
-      set S_IND = 0
-
-      // check if we went too far
-      if FPOS >= V3
-         V19 = 3
+      // if encoder latch pos not found, set errorcode
+      // otherwise set latch pos, reset encoder latch flag, and set status
+      if S_IND = 0
+         V19 = 3 //errorcode FAIL_THL_HOME
       else
-         V19 = 0
+         V4 = FPOS
+         set S_IND = 0
+         V19 = 0 //errorcode SUCCESS
       end
          
       // then reset to IDLE
@@ -125,22 +126,23 @@ while 1
       // set statusBYTE BUSY
       V19 = 9
 
-      // check if V10 a valid input and if so move
+      // check if V10 a valid input and if so move (2.5secs to complete)
       // if not, throw error code V19 = 4
       if V10 >= V2 & V10 <= V3
+         set TIME = 0
          enable
          move V10
-         delay 2000
+         while abs(V10 - FPOS) > 10*ENR & TIME < 2500
          disable
 
          if abs(V10 - FPOS) > 10*ENR
-            V19 = 4
+            V19 = 4 //errorcode FAIL_DID_NOT_ARRIVE
          else
-            V19 = 0 // did not arrive
+            V19 = 0 //errorcode SUCCESS
          end
 
       else
-         V19 = 1
+         V19 = 1 //errorcode FAIL_OUT_OF_BOUNDS
       end
 
       // reset to IDLE state
@@ -166,7 +168,7 @@ while 1
       velocityloop 0.0
       disable
 
-      // set status as done once found
+      // set status SUCCESS
       V19 = 0
 
       // then reset to IDLE
@@ -183,15 +185,17 @@ while 1
       // set statusBYTE BUSY
       V19 = 9
 
-      // move to argVAL (has 2 secs to complete)
+      // move to argVAL (2secs to complete)
+      set TIME = 0
       move V10
-      delay 2000
+      while abs(V10 - FPOS) > 10*ENR & TIME < 2000
+      end
 
       // if not there, throw error code
       if abs(V10 - FPOS) > 10*ENR
-         V19 = 4
+         V19 = 4 //errorcode FAIL_DID_NOT_ARRIVE
       else
-         V19 = 0
+         V19 = 0 //errorcode SUCCESS
       end
 
       // then reset to IDLE
@@ -203,7 +207,7 @@ while 1
 
 
    // find minimum velocity routine
-   if V0 = 99
+   if V0 = 98
 
       // set statusBYTE BUSY
       V19 = 9

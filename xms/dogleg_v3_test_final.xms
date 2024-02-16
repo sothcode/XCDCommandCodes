@@ -65,7 +65,7 @@ while 1
 
       // check if out of bounds
       if abs(V11) > 4
-         V19 = 1
+         V19 = 1 //errorcode FAIL_OUT_OF_BOUNDS
          V0 = 0
       else
 
@@ -75,14 +75,15 @@ while 1
             V16 = -1
          end
 
-         // get pretty close (within quarter turn)
+         // moves in quarter turn steps in dir'n with greater range (more turns)
+         // gets pretty close (within quarter turn)
          set S_IND = 0
          enable
          while S_IND = 0 & abs(V11) < 3
             V12 = FPOS + V16*0.25
             set TIME = 0
             move V12
-            while V16*(V12-FPOS) > 20*ENR & TIME < 10000
+            while V16*(V12-FPOS) > 10*ENR & TIME < 10000
             end
             move FPOS - V16*0.01
             delay 100
@@ -127,45 +128,52 @@ while 1
       // set statusBYTE BUSY
       V19 = 9
 
-      // calculate if destination is out of bounds
+      // calculate signed relative distance to destination
       V18 = V10 - FPOS
 
+      // if destination is out of bounds (based on number of turns)
+      // then throw errorcode and reset
       if abs(V18 + V11) > 4
-         V19 = 1
-         V0 = 0
+         V19 = 1 //errorcode FAIL_OUT_OF_BOUNDS
+         V0 = 0  //reset commandBYTE
+
       else
          // calculate number of steps to take V17
          V17 = abs(4*V18)
 
-         // calculate direction
+         // calculate dir'n to turn based on signed relative dist
          V16 = 1
          if V18 < 0
             V16 = -1
          end
 
+         // begin moves - happens in quarter turn steps
          set S_IND = 0
          enable
          while V17 > 1 & V11*V16 <= 3
             V12 = FPOS + V16*0.25
             set TIME = 0
             move V12
-            while V16*(V12-FPOS) > 20*ENR & TIME < 7000
+            while V16*(V12-FPOS) > 10*ENR & TIME < 7000
             end
             move FPOS - V16*0.01
             delay 100
   
+            // every time home flag fires, update nTurns (V11)
             if S_IND <> 0
                V11 = V11 + V16
                set S_IND = 0
             end
 
+            // after every quarter turn, decrement numSteps (V17)
             V17 = V17 - 1
          end
 
+         // perform final move if still in bounds (7 secs to complete)
          if V11*V16 <= 3 & V16*(V10 - FPOS) < 0.3
             set TIME = 0
             move V10
-            while V16*(V10-FPOS) > 20*ENR & TIME < 7000
+            while V16*(V10-FPOS) > 10*ENR & TIME < 7000
             end
       
             if S_IND <> 0
@@ -173,12 +181,15 @@ while 1
                set S_IND = 0
             end
 
-            // set statusBYTE SUCCESS
-            V19 = 0
+            if V16*(V10-FPOS) > 10*ENR
+               V19 = 4 //errorcode FAIL_DID_NOT_ARRIVE
+            else
+               V19 = 0 //errorcode SUCCESS
+            end
 
          else
-            // set statusBYTE FAIL_FINAL_MOVE
-            V19 = 4
+            // set statusBYTE FAIL_DL_LAST_MOVE
+            V19 = 5
          end
          disable
 

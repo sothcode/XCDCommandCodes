@@ -120,9 +120,9 @@ while 1
 
       // check return to low bound and set statusARG accordingly
       if abs(V2 - FPOS) < 10*ENR
-         V19 = 0
+         V19 = 0 //errorcode SUCCESS
       else
-         V19 = 2
+         V19 = 2 //errorcode DIDNT_GET_HOME
       end
 
       // then reset to IDLE
@@ -140,7 +140,7 @@ while 1
       V19 = 9
 
       
-      // check if V10 a valid input and if so move
+      // check if V10 a valid input and if so move (7 secs to complete)
       // if not, throw error code V19 = 1 (out of bounds)
       if V10 >= V2 & V10 <= V3
          set TIME = 0
@@ -150,13 +150,134 @@ while 1
          end
          disable
 
-         V19 = 0 //errorcode SUCCESS
+         if abs(V10 - FPOS) > 10*ENR
+            V19 = 4 //errorcode DID_NOT_ARRIVE
+         else
+            V19 = 0 //errorcode SUCCESS
+         end
+
       else
          V19 = 1 //errorcode OUT_OF_BOUNDS
       end
       
       // reset to IDLE state
       V0 = 0 //statusBYTE IDLE
+
+   // end phi goto procedure
+   end
+
+
+
+   // attenuator homing procedure - find hard stops
+   if V0 = 9
+
+      // set statusBYTE BUSY
+      V19 = 9
+
+      // initialize storage variables
+      V2 = 0
+      V3 = 0
+
+      // first move back and forth to set V18
+      // (in case already at hard stop)
+      enable
+      openloop -100
+      delay 300
+
+      V18 = FPOS
+
+      openloop 100
+      delay 300
+      disable
+
+      // drive one way until stop (to lowbound)
+      enable
+      openloop -100
+      delay 500
+      while abs(V18 - FPOS) > 10*ENR
+         V18 = FPOS
+         delay 100
+      end
+      openloop 0.0
+      disable
+
+      // record first hard stop
+      // set V4 (encoder latch) to be inaccessible position
+      V2 = FPOS
+      V4 = FPOS - 1
+
+      // drive other way until stop
+      enable
+      openloop 100
+      delay 500
+      while abs(V18 - FPOS) > 10*ENR
+         V18 = FPOS
+         delay 100
+      end
+      openloop 0.0
+      disable
+
+      // sets second hard stop
+      V3 = FPOS
+
+      // move to low bound
+      set S_IND = 0
+      set TIME = 0
+      enable
+      move V2
+      while abs(V2 - FPOS) > 10*ENR & TIME < 7000
+         if S_IND <> 0
+            V4 = FPOS
+            set S_IND = 0
+         end
+      end
+      openloop 0.0
+      disable
+
+      // check V2, V3, V4 flags and set statusBYTE accordingly
+      if abs(V2 - FPOS) > 10*ENR
+         V19 = 2 //errorcode DIDNT_GET_HOME
+      else
+         V19 = 0 //errorcode SUCCESS
+      end
+
+      // then reset to IDLE
+      V0 = 0
+
+   // end phi homing procedure
+   end
+
+
+
+   // attenuator goto procedure
+   if V0 = 10
+
+      // set statusBYTE BUSY
+      V19 = 9
+
+      
+      // check if V10 a valid input and if so move (7 secs to complete)
+      // if not, throw error code V19 = 1 (out of bounds)
+      if V10 >= V2 & V10 <= V3
+         set TIME = 0
+         enable
+         move V10
+         while (V10 - FPOS) > 10*ENR & TIME < 7000
+         end
+         disable
+         
+         if (V10 - FPOS) > 10*ENR
+            V19 = 4 //errorcode DID_NOT_ARRIVE
+         else
+            V19 = 0 //errorcode SUCCESS
+         end
+
+      else
+         V19 = 1 //errorcode FAIL_OUT_OF_BOUNDS
+      end
+      
+      // reset to IDLE state
+      V0 = 0
 
    // end phi goto procedure
    end
