@@ -5,8 +5,11 @@ import math
 ####################################################
 ## GLOBAL VARS 
 ####################################################
-L_l = 3
-L_s = 3
+L_l = 3     # length of theta long mirror
+L_s = 3     # length of theta short mirror
+D = 1       # distance between lightpipe and first (inner) mirror
+r0 = 1      # distance between first (inner) and second (outer) mirror
+W = 1       # lightpipe width - need to check if initial position exceeds pipe dimension
 
 
 ####################################################
@@ -57,11 +60,6 @@ def lpStart(beta1, beta2, phi):
     beta2 --- angle of second mirror wrt mirror normal
     phi ----- azimuthal rotation of the egg
     """
-    
-    # set global constants
-    D = 1   # distance between lightpipe and first (inner) mirror
-    r0 = 1  # distance between first (inner) and second (outer) mirror
-    W = 1   # lightpipe width - need to check if initial position exceeds pipe dimension
             
     # calculate angle of incidence 
     theta1 = 2*beta1 - 2*beta2 
