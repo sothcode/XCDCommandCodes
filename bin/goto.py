@@ -333,13 +333,25 @@ def goto( axisName=None, destination=None):
     hb=readback(ADDR['HARD_STOP2'])
 
     residual=targetPos-position
+    if COMM!=ALL_COMM["Dogleg"]: #dogleg does not get adjusted (not that we use it here in general)
+        while destination >hb:
+            destination=destination-1
+        while destination <lb: #ditto if it is below lowbound.
+            destination=destination+1
+        if destination >hb: #if that correction leaves us above the hb again, it is unreachable by defined bounds.
+            print("NOT EXECUTED. Controller requires %s<dest<%s, and that is not possible for any +N rotations of dest=%s"%(lb,hb,dest))
+            return False, readback(ADDR['FPOS'])
+
 
     if status==STAT['READY']:
         if abs(residual)<move_tolerance:
             print("SUCCESS. goto %s %s complete. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName, destination, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
             return True, position
+        elif abs(residual-floor(residual))<move_tolerance
+            print("SUCCESS. goto %s %s complete. status: %s (%s) position:%1.6f (with wrap-around) axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName, destination, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
+            return True, position
         else:
-            print("FAIL. goto %s %s failed in .py tolerance check: position more than %s from %s. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName,destination,move_tolerance,targetPos, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
+            print("FAIL. goto %s %s failed in .py tolerance check: position more than %s from %s, even with wrap-arounds. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName,destination,move_tolerance,targetPos, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
             return False, position
     else:
         print("FAIL. goto %s %s failed in controller. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName, destination, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))

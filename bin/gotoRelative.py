@@ -117,17 +117,24 @@ def gotoRelative( axisName=None, destination=None):
 
     residual=targetPos-position
 
+
+
     if status==STAT['READY']:
         if abs(residual)<move_tolerance:
             print("SUCCESS. gotoRelative %s %s complete. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName, destination, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
             return True, position
+        elif abs(residual-floor(residual))<move_tolerance
+            print("SUCCESS. gotoRelative %s %s complete. status: %s (%s) position:%1.6f (with wrap-around) axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName, destination, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
+            return True, position
         else:
-            print("FAIL. gotoRelative %s %s failed in .py tolerance check: position more than %s from %s. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName,destination,move_tolerance,targetPos, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
+            print("FAIL. gotoRelative %s %s failed in .py tolerance check: position more than %s from %s, even with wrap-arounds. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName,destination,move_tolerance,targetPos, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
             return False, position
     else:
-        print("FAIL. gotoRelative %s %s failed in controller. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName, destination, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
+        print("FAIL. goto %s %s failed in controller. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName, destination, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
         return False, position
     return False, "GOTORELATIVE: PANIC!  YOU SHOULD NOT BE ABLE TO REACH HERE"
+
+
 
 
 
