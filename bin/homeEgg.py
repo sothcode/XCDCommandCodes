@@ -60,7 +60,7 @@ def homeEgg(laser, referenceEgg):
         return False
     hResult[1],lb[1],hb[1],home[1]=homeThetaS(dbRef[1])
 
-   cResult=changeAxis(laserAxisName[2])
+    cResult=changeAxis(laserAxisName[2])
     if cResult==False:
         print("Could not changeAxis(%s)."%laserAxisName[2])
         return False
