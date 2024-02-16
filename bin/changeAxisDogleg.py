@@ -130,9 +130,19 @@ def changeAxis( targetIDstr ):
     currentID = readback(ADDR['ID'])
     currentIDstr = IDlookup[currentID]
     if (currentAxis == targetAxis):
-        print("changeAxis: XAXIS is the same. (target:%s. %s says this is %s, axis %s) Values remain from last use, not loaded from file."%(targetIDstr,portsDb,targetPort,targetAxis))
-        print("remains: %s port=%s, pos=%s, axis=%s, stat=%s, turns=%s"%(IDlookup[oldID],oldPort,oldPos,oldAxis,oldStatus,oldTurns)) 
-        return True
+        if (oldPort==targetPort):
+            print("changeAxis: XAXIS and Port are unchanged. (target:%s. %s says this is %s, axis %s) Values remain from last use, not loaded from file."%(targetIDstr,portsDb,targetPort,targetAxis))
+            print("remains: %s port=%s, pos=%s, axis=%s, stat=%s, turns=%s"%(IDlookup[oldID],oldPort,oldPos,oldAxis,oldStatus,oldTurns))
+            return True
+        else:
+            print("changeAxis: Port changed from %s . XAXIS is already set correctly on %s. (target:%s. %s says this is %s, axis %s) Values remain from last use, not loaded from file."%(oldPort,targetIDstr,targetPort,portsDb,targetPort,targetAxis))
+            newAxis=readback(ADDR['XAXIS'])
+            newPos=readback(ADDR['FPOS'])
+            newStatus=readback(ADDR['STATUS'])
+            newTurns=readback(ADDR['TURNS'])
+            print("was: %s port=%s, pos=%s, axis=%s, stat=%s, turns=%s"%(IDlookup[oldID],oldPort,oldPos,oldAxis,oldStatus,oldTurns))            
+            print("now: %s port=%s, pos=%s, axis=%s, stat=%s, turns=%s"%(currentIDstr,targetPort,newPos,newAxis,newStatus,newTurns))
+            return True
 
     # newAxis = readback(ADDR['XAXIS'])
     # if oldAxis == newAxis:
