@@ -142,7 +142,7 @@ def gotoVettedQuiet(destination,COMM):
         while destination <lb: #ditto if it is below lowbound.
             destination=destination+1
         if destination >hb: #if that correction leaves us above the hb again, it is unreachable by defined bounds.
-            print("NOT EXECUTED. Controller requires %s<dest<%s, and that is not possible for any +N rotations of dest=%s"%(lb,hb,dest))
+            print("NOT EXECUTED. Controller requires %s<dest<%s, and that is not possible for any +N rotations of dest=%s"%(lb,hb,destination))
             return False, readback(ADDR['FPOS'])
         
     
