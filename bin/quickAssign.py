@@ -18,7 +18,7 @@ def sendcommand(com,arg):
         print("command:  Check status:")
     status=readback(ADDR['STATUS'])
     if status!=STAT['READY']:
-        print("NOT EXECUTED.  Error: sendcommand: Controller is not in ready state.  Status=",status)
+        print("NOT EXECUTED.  Error: sendcommand: Controller is not in ready state. sendcommand(com=%s) says status is %s (%s) "%(com,status,_reverseLookup(STAT,status)))
         return False
         #instead of sys.exit()
     try:
