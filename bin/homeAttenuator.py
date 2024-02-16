@@ -89,7 +89,7 @@ def homeAttenuator(referenceEgg):
         homeIsReal=True   
     if not homeIsReal:
         home=hardstop1
-        lbRel=hardstop1-home
+    lbRel=hardstop1-home
     hbRel=hardstop2-home
     posRel=position-home
     span=hardstop2-hardstop1
