@@ -59,6 +59,10 @@ if __name__ == "__main__":
             print("Assigning to ttyUSB0 and USB1 to default egg assumption:")
             assignUARTsToPort("/dev/ttyUSB0", ID['DEBUG_TH_S'], ID['DEBUG_TH_L'])
             assignUARTsToPort("/dev/ttyUSB1", ID['DEBUG_PH'], ID['DEBUG_AT'])
+        elif sys.argv[1]=='clear':
+            print("Assigning to ttyUSB0 and USB1 to default egg assumption:")
+            assignUARTsToPort("/dev/ttyUSB0", 0,0)
+            assignUARTsToPort("/dev/ttyUSB1", 0,0)
         else:
             print("no default assumption for '%s'.  Args are either 'doglegs' of 'egg'")
             sys.exit()
@@ -72,7 +76,7 @@ if __name__ == "__main__":
         print("Assigning %s with UARTS %s(%s) and %s(%s)"%(port,idstr[0],idnum[0],idstr[1],idnum[1]))
         assignUARTsToPort(port,idnum[0],idnum[1])
     else:
-        print("NOT EXECUTED. Wrong number of arguments.  Correct usage is ./assignPorts[tab] [doglegs/egg] or ./assignPorts[tab] port,  name0, name1")        
+        print("NOT EXECUTED. Wrong number of arguments.  Correct usage is ./assignPorts[tab] [doglegs/egg/clear] or ./assignPorts[tab] port,  name0, name1")        
         sys.exit()
      
     print("Done.")
