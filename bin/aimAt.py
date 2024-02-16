@@ -141,7 +141,7 @@ def aimAt(laserName="DEBUG",eggName=None, theta=None, phi=None):
     retThS=goto(laserName+"_TH_S",thetaS)
     retThL=goto(laserName+"_TH_L",thetaL)
 
-    print("aimAt returns:  %s_PH:%s  %_TH_S:%s  %s_TH_L:%s"%(laserName,retPh,laserName,retThS,laserName,retThL))
+    print("aimAt returns:  %s_PH:%s  %s_TH_S:%s  %s_TH_L:%s"%(laserName,retPh,laserName,retThS,laserName,retThL))
 
 
 
