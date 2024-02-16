@@ -141,7 +141,7 @@ def aimAt(laserName="DEBUG",eggName=None, theta=None, phi=None):
     phiCoord=getPhiMotorCoordinate(eggName,debouncedPhi)
     thetaS,thetaL=getThetaMotorCoordinates(eggName,theta)
 
-    print("(%s,%s)==>Move %s(%s) to:(p%s,ts%s,tl%s)"%(laserName,eggName,theta,phi,phiCoord,thetaS,thetaL))
+    print("(%s,%s)==>Move %s(%s) to:(p%s,ts%s,tl%s)"%(theta,phi,laserName,eggName,phiCoord,thetaS,thetaL))
 
     retPh=goto(laserName+"_PH",phiCoord)
     retThS=goto(laserName+"_TH_S",thetaS)
