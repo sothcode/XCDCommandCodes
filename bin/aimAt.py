@@ -32,7 +32,7 @@ def is_number(s):
     except ValueError:
         return False
     
-def countBounces(theta):
+def countBounces(theta,phi):
     # count the number of bounces in the light pipe's x direction and y-direction,
     # also report back if the desired theta is very close to exiting at an edge.
     # if we are at an edge, we will need to do some special calculation/steering
@@ -52,10 +52,10 @@ def debounce(phi, bouncesX, bouncesY):
 def getPhiMotorCoordinate(eggName,phi):
     #look up the position that points at phi0 (=pointing outward(or inward?  ask Charles) along the radial spoke)
     #TODO: phi0=kfDatabase.readVar(mainDb,eggName+"_PH/phi0")
-    lb=kfDatabase.readVar(mainDb,eggName+"_PH/lowbound")
-    hb=kfDatabase.readVar(mainDb,eggName+"_PH/highbound")
+    s,lb=kfDatabase.readVar(mainDb,eggName+"_PH/lowbound")
+    s,hb=kfDatabase.readVar(mainDb,eggName+"_PH/highbound")
     phi0=0 #for now
-    phiInTurns=phi/360.0
+    phiInTurns=float(phi)/360.0
     phiCoord=phiInTurns+phi0
     #TODO: determine whether this rotates clockwise or counterclockwise, and fix it so it agrees with Charles' convention
 
@@ -71,10 +71,10 @@ def getPhiMotorCoordinate(eggName,phi):
     return phiCoord
 
 def getThetaMotorCoordinates(eggName,theta):
-    thl0=kfDatabase.readVar(mainDb,eggName+"_TH_L/upstream")
-    ths0=kfDatabase.readVar(mainDb,eggName+"_TH_S/upstream")
-    lb=kfDatabase.readVar(mainDb,eggName+"_TH_L/lowbound")
-    hb=kfDatabase.readVar(mainDb,eggName+"_TH_L/highbound")
+    s,thl0=kfDatabase.readVar(mainDb,eggName+"_TH_L/upstream")
+    s,ths0=kfDatabase.readVar(mainDb,eggName+"_TH_S/upstream")
+    s,lb=kfDatabase.readVar(mainDb,eggName+"_TH_L/lowbound")
+    s,hb=kfDatabase.readVar(mainDb,eggName+"_TH_L/highbound")
 
     #parameters from dan's fit:
     p=[0]*4
@@ -82,8 +82,9 @@ def getThetaMotorCoordinates(eggName,theta):
     p[1]=0.689
     p[2]=-0.00208
     p[3]=0.0000111
+    theta=float(theta)
 
-    thsDeg=p[0]+p[1]*theta+p[2]*theta^2+p[3]*theta^3
+    thsDeg=p[0]+theta*p[1]+theta**2*p[2]+theta**3*p[3]
     #this ought to work, but is probably too snappy:
     #ths=0
     #for i in range(0,3):
@@ -106,9 +107,9 @@ def getThetaMotorCoordinates(eggName,theta):
         sys.exit()
 
     #set the thS within our range of -1 to +1.  This can't fail;
-    while thsCoord >1
+    while thsCoord >1:
         thsCoord=thsCoord-1
-     while thsCoord <-1
+    while thsCoord <-1:
         thsCoord=thsCoord+1
     
     return thsCoord, thlCoord
@@ -134,6 +135,8 @@ def aimAt(laserName="DEBUG",eggName=None, theta=None, phi=None):
     phiCoord=getPhiMotorCoordinate(eggName,debouncedPhi)
     thetaS,thetaL=getThetaMotorCoordinates(eggName,theta)
 
+    print("(%s,%s)==>Move %s(%s) to:(p%s,ts%s,tl%s)"%(laserName,eggName,theta,phi,phiCoord,thetaS,thetaL))
+
     retPh=goto(laserName+"_PH",phiCoord)
     retThS=goto(laserName+"_TH_S",thetaS)
     retThL=goto(laserName+"_TH_L",thetaL)
@@ -147,7 +150,7 @@ if __name__ == "__main__":
         #assume (eggDbName,theta,phi).
         #TODO:  specify which laser (port,axis), and which egg?  Or should we mate those permanently in the db?
         #get its port from the db
-        egg=sys.argv[1]
+        eggName=sys.argv[1]
         theta=sys.argv[2]
         phi=sys.argv[3]
     else:
@@ -156,4 +159,4 @@ if __name__ == "__main__":
         sys.exit()
     #if wrong arguments, exit with explanation
 
-    steerTo("DEBUG",eggName,theta,phi)
+    aimAt("DEBUG",eggName,theta,phi)
