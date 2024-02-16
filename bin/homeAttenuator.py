@@ -163,7 +163,7 @@ def homeAttenuator(referenceEgg):
         hb=readback(ADDR['HARD_STOP2'])
         position=readback(ADDR['FPOS'])   
         home=readback(ADDR['HOME'])
-    result=match or (not present[0] or not present[1] or not present[2]) or referenceEgg=None    
+    result=match or (not present[0] or not present[1] or not present[2]) or referenceEgg==None    
     
     if status==STAT['READY'] and result==True:
         print("SUCCESS. homeAttenuator complete. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f home:%1.5f%s%s"%(status,_reverseLookup(STAT,status),position,axis, turns,lb,hb, home,"(Real)"*homeIsReal,"(NotFound)"*(not homeIsReal)))
