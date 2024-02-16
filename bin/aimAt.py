@@ -66,9 +66,53 @@ def getPhiMotorCoordinate(eggName,phi):
         phiCoord=phiCoord+1.0
 
     if (phiCoord<lb):
-        print("desired target %s is out of range for %s matter what we do.  range=[%s,%s].  Failing."%(phi,eggName,lb,hb))
+        print("desired target phi=%s is out of range for %s matter what we do.  range=[%s,%s].  Failing."%(phi,eggName,lb,hb))
         sys.exit()
     return phiCoord
+
+def getThetaMotorCoordinates(eggName,theta):
+    thl0=kfDatabase.readVar(mainDb,eggName+"_TH_L/upstream")
+    ths0=kfDatabase.readVar(mainDb,eggName+"_TH_S/upstream")
+    lb=kfDatabase.readVar(mainDb,eggName+"_TH_L/lowbound")
+    hb=kfDatabase.readVar(mainDb,eggName+"_TH_L/highbound")
+
+    #parameters from dan's fit:
+    p=[0]*4
+    p[0]=9.67
+    p[1]=0.689
+    p[2]=-0.00208
+    p[3]=0.0000111
+
+    thsDeg=p[0]+p[1]*theta+p[2]*theta^2+p[3]*theta^3
+    #this ought to work, but is probably too snappy:
+    #ths=0
+    #for i in range(0,3):
+    #    ths=(ths+p[3-i])*theta
+    thlDeg=thsDeg+15+theta/2
+
+    #convert from degrees to rotations, including the offsets
+    #TODO:  check the relative angle definitions.  these may be backwards.
+    thsCoord=thsDeg/360.0+ths0
+    thlCoord=thlDeg/360.0+thl0
+
+    #check that they are within our reachable thL range, fix if we can.
+    if thlCoord>hb:
+        thlCoord=thlCoord-1.0
+    elif thlCoord<lb:
+        thlCoord=thlCoord+1.0
+
+    if (thlCoord<lb):
+        print("desired target theta=%s is out of range for  %s_TH_L matter what we do.  range=[%s,%s].  Failing."%(theta,eggName,lb,hb))
+        sys.exit()
+
+    #set the thS within our range of -1 to +1.  This can't fail;
+    while thsCoord >1
+        thsCoord=thsCoord-1
+     while thsCoord <-1
+        thsCoord=thsCoord+1
+    
+    return thsCoord, thlCoord
+    
 
 
 def aimAt(laserName="DEBUG",eggName=None, theta=None, phi=None):
@@ -81,18 +125,18 @@ def aimAt(laserName="DEBUG",eggName=None, theta=None, phi=None):
     #TODO:
     # if tooCloseToEdge:
     #     doExtraCalculations to find the offset that gets us a safe trajectory?
-    # or maybe we want the ability to steer /along/ the edge, for calibration purposes?
+    # or maybe we want the ability to steer /along/ the exit facet edge, for calibration purposes?
 
     debouncedPhi=debounce(phi, bouncesX,bouncesY)
 
     #TODO: see if this is in the lb-hb range of the phi motor, and add a bounce if it is not
     
     phiCoord=getPhiMotorCoordinate(eggName,debouncedPhi)
-    #TODO:  this or similar?  thetaS,thetaL=getThetaMotorCoordinates(eggName,theta)
+    thetaS,thetaL=getThetaMotorCoordinates(eggName,theta)
 
     retPh=goto(laserName+"_PH",phiCoord)
-    #retThS=goto(laserName+"_TH_S",thetaS)
-    #retThL=goto(laserName+"_TH_L",thetaL)
+    retThS=goto(laserName+"_TH_S",thetaS)
+    retThL=goto(laserName+"_TH_L",thetaL)
  
 
 
