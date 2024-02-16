@@ -28,7 +28,8 @@ def _reverseLookup(dict,val):
     return key
 
 def assignUARTsToPort(port, id0, id1):
-    print("assigning %s:  ax0:%s ax1:%s"%(port,id0,id1))
+    #print("assigning %s:  ax0:%s ax1:%s"%(port,id0,id1))
+    oldStatus=readback(ADDR['STATUS'])
     port_before=getCurrentPort()
     with open(PORTFILE, 'w') as file:
         file.write(port)
@@ -37,7 +38,7 @@ def assignUARTsToPort(port, id0, id1):
     writeXCD2([ADDR['STATUS'], 0])    #clear the 'boot' status for this board now that we have assigned it.
     with open(PORTFILE, 'w') as file:
         file.write(port_before)
-    print("assigning %s:  ax0:%s ax1:%s. status:%s"%(port,id0,id1,readback(ADDR['STATUS'])))
+    print("assigned %s:  ax0:%s ax1:%s. status:%s==>%s"%(port,id0,id1,oldStatus,readback(ADDR['STATUS'])))
 
 
 if __name__ == "__main__":
