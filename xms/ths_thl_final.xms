@@ -70,18 +70,16 @@ while 1
       delay 500
       disable
 
+      V17 = FPOS //higher position we found
+
       // drive to negative way until stop
       // drive to low bound
       set S_IND = 0
       enable
-      V17 = FPOS
       velocityloop -1.5
       delay 300
-      while abs(V18 - FPOS) > 10*ENR & abs(V17 - FPOS) < 0.6
+      while abs(V18 - FPOS) > 10*ENR & abs(V17 - FPOS) < 0.8
          V18 = FPOS
-         if S_IND <> 0
-            V17 = FPOS
-         end
          delay 100
       end
       velocityloop 0.0
@@ -97,14 +95,10 @@ while 1
       set S_IND = 0
       enable
       velocityloop 1.5
-      while S_IND = 0 & abs(V18 - FPOS) > 10*ENR
+      while S_IND = 0 & FPOS < V3
       end
       velocityloop 0.0
       disable
-
-      if abs(V18 - FPOS) > 10*ENR
-         V19 = 7
-      end
 
       // sets encoder latch pos, reset encoder latch flag
       V4 = FPOS
