@@ -40,7 +40,14 @@ def _reverseLookup(dict,val):
 
 #homeAttenuator() should return success, lowbound, highbound,home, in that order.
 
-def homeEgg(laser, referenceEgg): 
+def homeEgg(laser, referenceEgg):
+    dbRef=["default"]*3
+    laserAxisName=["default_laser"]*3
+    hResult=[False]*3
+    lb=[0]*3
+    hb=[0]*3
+    home=[0]*3
+        
     dbRef[0]=referenceEgg+"_TH_L"
     dbRef[1]=referenceEgg+"_TH_S"
     dbRef[2]=referenceEgg+"_PH"
