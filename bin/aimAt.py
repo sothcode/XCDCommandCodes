@@ -102,8 +102,10 @@ def getThetaMotorCoordinates(eggName,theta):
 
     #check that they are within our reachable thL range, fix if we can.
     if thlCoord>hb:
+        print("Desired thL=%s is > hb=%s, so trying -1: %s"%(thlCoord,hb,thlCoord-1))
         thlCoord=thlCoord-1.0
     elif thlCoord<lb:
+        print("Desired thL=%s is < lb=%s, so trying +1: %s"%(thlCoord,lb,thlCoord+1))
         thlCoord=thlCoord+1.0
 
     if (thlCoord<lb):

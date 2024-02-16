@@ -128,8 +128,24 @@ def gotoVettedQuiet(destination,COMM):
 
     if status!=0:
         print("NOT EXECUTED. Controller status is not 0. status: %s (%s)"%(status,_reverseLookup(STAT,status)))
-        return False, 0
+        return False, readback(ADDR['FPOS'])
+    
+    #load in our bounds as currently understood on the controller
+    lb=readback(ADDR['HARD_STOP1'])
+    hb=readback(ADDR['HARD_STOP2'])
 
+    #do one final massage of our position:  If it is >hb, reduce it by 1.0 until it is not
+    if COMM!=ALL_COMM["Dogleg"]: #dogleg does not get adjusted (not that we use it here in general)
+        while destination >hb:
+            destination=destination-1
+        while destination <lb: #ditto if it is below lowbound.
+            destination=destination+1
+        if destination >hb: #if that correction leaves us above the hb again, it is unreachable by defined bounds.
+            print("NOT EXECUTED. Controller requires %s<dest<%s, and that is not possible for any +N rotations of dest=%s"%(lb,hb,dest))
+            return False, readback(ADDR['FPOS'])
+        
+    
+    
     #look at our position.  if we are too close, we may not move at all, so move away before going toward.
     position=readback(ADDR['FPOS'])
     if abs(destination-position)<min_distance:
@@ -141,8 +157,6 @@ def gotoVettedQuiet(destination,COMM):
         jogtarget1=position+jogdir*2*min_distance
         jogtarget2=position-jogdir*3*min_distance
 
-        lb=readback(ADDR['HARD_STOP1'])
-        hb=readback(ADDR['HARD_STOP2'])
         #move away from our target first:
         if (jogtarget1>lb and jogtarget1<hb):
             gotoVettedQuiet(jogtarget1,COMM)

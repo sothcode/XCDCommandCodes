@@ -12,7 +12,7 @@ import sys
 import re
 import time
 import math
-from goto import gotoVettedQuiet
+from goto import gotoVettedQuiet, find_comm_and_set_tuning
 from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
 from variableDictionaryXCD2 import varStatusValues as STAT
 from variableDictionaryXCD2 import varAllCommands as ALL_COMM
@@ -22,8 +22,6 @@ sys.path.append("kfDatabase")
 import kfDatabase
 
 #tuning settings
-min_distance=0.1 #in rotations
-move_tolerance=0.001 #in rotations.  causes an error if it did not get this close in the final move.
 sleeptime=0.6 #in seconds
 timeout=10 #in seconds
 debug=False
@@ -32,16 +30,6 @@ portsDb="xcd2_ports.kfdb"
 #portsDb="test_only_xcd2_ports.kfdb"
 mainDb="test_only_axis_parameters.kfdb"
 PORTFILE="XCD_current_port"
-varTuning={
-#min_distance (minimum amount we can move without doing a backoff-and-recover),
-#move_tolerance (how far from destination we are allowed to be without marking it FAIL)
-'Phi':[0.1,0.001],
-'ThetaS':[0.00001,0.001],
-'ThetaL':[0.005,0.001],
-'Attenuator':[0.001,0.001],
-'Dogleg':[0.01,0.001]
-}
-
 
 #{later:
 #get current rotations
@@ -67,36 +55,6 @@ def is_number(s):
         return True
     except ValueError:
         return False
-
-def find_comm(axisName):
-    #return a command lookup table matching the axis.
-    #also let us know if the axis is a dogleg, so we know how to behave.
-    isDogleg=False
-    COMM={}
-    axisType=None
-    if bool(re.match(r'^.+_DL\d_A\d$',axisName)):
-        axisType='Dogleg'
-        isDogleg=True
-    elif bool(re.match(r'^.+_TH_S$',axisName)):
-        axisType='ThetaS'
-    elif bool(re.match(r'^.+_TH_L$',axisName)):
-        axisType='ThetaL'
-    elif bool(re.match(r'^.+_PH$',axisName)):
-        axisType='Phi'    
-    elif bool(re.match(r'^.+_AT$',axisName)):
-        axisType='Attenuator'
-    else:
-        print("no match of '%s' to axis types.  Critical failure!"%(axisName))
-        sys.exit()
-    COMM=ALL_COMM[axisType]
-    global min_distance, move_tolerance
-    min_distance=varTuning[axisType][0]
-    move_tolerance=varTuning[axisType][1]
-    print("Setting COMM. channel is type %s, min_distance=%s, move_tolerance=%s"%(axisType,min_distance,move_tolerance))
-    return isDogleg, COMM
-
-
-
  
 def gotoRelative( axisName=None, destination=None):
     if axisName==None or destination==None:
@@ -111,7 +69,7 @@ def gotoRelative( axisName=None, destination=None):
     targetPort,targetAxis=value[0],value[1]
     
     #set command lookup table to match the axis
-    isDogleg,COMM=find_comm(axisName)
+    isDogleg,COMM=find_comm_and_set_tuning(axisName)
     
     #check to see if the target is a number.
     #if number: make it a float.
@@ -144,7 +102,7 @@ def gotoRelative( axisName=None, destination=None):
     currentPos=readback(ADDR['FPOS'])
     targetPos=currentPos+relativePos
 
-    #now we can run the 'vetted' goto:
+    #now we can run the 'vetted' goto, which asumes the target position, comm, etc are all set to proper inputs
     #this does not have a return value.  errors must be inferred from readback.
     ret=gotoVettedQuiet(targetPos,COMM)
     if (ret[0]==False): #we didn't get where we need to go because of communication failures.
