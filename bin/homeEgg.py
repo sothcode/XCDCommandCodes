@@ -56,18 +56,21 @@ def homeEgg(laser, referenceEgg):
     laserAxisName[2]=laser+"_PH"
     
     cResult=changeAxis(laserAxisName[0])
+    writeXCD2([ADDR['STATUS'], 0])    
     if cResult==False:
         print("Could not changeAxis(%s)."%laserAxisName[0])
         return False
     hResult[0],lb[0],hb[0],home[0]=homeThetaL(dbRef[0])
 
     cResult=changeAxis(laserAxisName[1])
+    writeXCD2([ADDR['STATUS'], 0])
     if cResult==False:
         print("Could not changeAxis(%s)."%laserAxisName[1])
         return False
     hResult[1],lb[1],hb[1],home[1]=homeThetaS(dbRef[1])
 
     cResult=changeAxis(laserAxisName[2])
+    writeXCD2([ADDR['STATUS'], 0])
     if cResult==False:
         print("Could not changeAxis(%s)."%laserAxisName[2])
         return False
