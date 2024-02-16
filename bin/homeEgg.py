@@ -53,7 +53,7 @@ def homeEgg(laser, referenceEgg):
     dbRef[2]=referenceEgg+"_PH"
     laserAxisName[0]=laser+"_TH_L"
     laserAxisName[1]=laser+"_TH_S"
-    laserAxisName[1]=laser+"_PH"
+    laserAxisName[2]=laser+"_PH"
     
     cResult=changeAxis(laserAxisName[0])
     if cResult==False:
