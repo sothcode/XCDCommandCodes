@@ -34,7 +34,7 @@ def assignUARTsToPort(port, id0, id1):
         file.write(port)
     writeXCD2(['UART0_ADDRESS', id0])
     writeXCD2(['UART1_ADDRESS', id1])    
-    writeXCD2(['STATUS', 0])    #clear the 'boot' status for this board now that we have assigned it.
+    writeXCD2([ADDR['STATUS'], 0])    #clear the 'boot' status for this board now that we have assigned it.
     with open(PORTFILE, 'w') as file:
         file.write(port_before)
 
