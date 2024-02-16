@@ -58,7 +58,7 @@ while 1
       V19 = 9
 
       // check gain param, if not valid, set to 1
-      if V7 > 5 | V7 < 0
+      if V7 >= 5 | V7 <= 0
          V7 = 1
       end
 
