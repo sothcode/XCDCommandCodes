@@ -89,10 +89,14 @@ def getThetaMotorCoordinates(eggName,theta):
     #ths=0
     #for i in range(0,3):
     #    ths=(ths+p[3-i])*theta
-    thlDeg=thsDeg+15+theta/2
+
+    #Dan's calculation convention has thl and ths moving in the same direction when positive
+    thlDegDan=thsDeg+15+theta/2
+    #but the actual thl encoder counts positive in the opposite direction, so we flip the sign
+    thlDeg=-thlDegDan
 
     #convert from degrees to rotations, including the offsets
-    #TODO:  check the relative angle definitions.  these may be backwards.
+    #go to 'upstream', then go an additional amount to the desired coordinate.
     thsCoord=thsDeg/360.0+ths0
     thlCoord=thlDeg/360.0+thl0
 
