@@ -83,7 +83,7 @@ while 1
             V12 = FPOS + V16*0.25
             set TIME = 0
             move V12
-            while V16*(V12-FPOS) > 10*ENR & TIME < 10000
+            while V16*(V12-FPOS) > 10*ENR & TIME < 7000
             end
             move FPOS - V16*0.01
             delay 100
@@ -142,7 +142,7 @@ while 1
          V17 = abs(4*V18)
 
          // calculate dir'n to turn based on signed relative dist
-         V16 = 1
+         V16 = 1 //V16=dirMove (+1 for pos rotation, -1 for neg)
          if V18 < 0
             V16 = -1
          end
