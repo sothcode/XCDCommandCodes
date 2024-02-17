@@ -121,6 +121,7 @@ def gotoVettedQuiet(destination,COMM):
     #the vetting occurs in goto, so this should not be called 'bare'.
     #axisName is a real axis, destination is a float, COMM is set correctly
     #the portfile and axis is also set correctly
+    destination=float(destination)
 
     #check if controller is busy.  If so, exit with explanation
     if debug:
@@ -132,8 +133,8 @@ def gotoVettedQuiet(destination,COMM):
         return False, readback(ADDR['FPOS'])
     
     #load in our bounds as currently understood on the controller
-    lb=readback(ADDR['HARD_STOP1'])
-    hb=readback(ADDR['HARD_STOP2'])
+    lb=float(readback(ADDR['HARD_STOP1']))
+    hb=float(readback(ADDR['HARD_STOP2']))
 
     #do one final massage of our position:  If it is >hb, reduce it by 1.0 until it is not
     if COMM!=ALL_COMM["Dogleg"]: #dogleg does not get adjusted (not that we use it here in general)
@@ -335,14 +336,13 @@ def goto( axisName=None, destination=None):
 
     residual=targetPos-position
     if COMM!=ALL_COMM["Dogleg"]: #dogleg does not get adjusted (not that we use it here in general)
-        while destination >hb:
-            destination=destination-1
-        while destination <lb: #ditto if it is below lowbound.
-            destination=destination+1
-        if destination >hb: #if that correction leaves us above the hb again, it is unreachable by defined bounds.
-            print("NOT EXECUTED. Controller requires %s<dest<%s, and that is not possible for any +N rotations of dest=%s"%(lb,hb,dest))
-            return False, readback(ADDR['FPOS'])
-
+        while residual >1:
+            residual=residual-1
+        while residual <-1: #ditto if it is below lowbound.
+            residual=residual+1
+        if residual >1: #if that correction leaves us above the hb again, it is unreachable by defined bounds.
+            print("PANIC.  Residual is a number not between -1 and +1 after execution and reduction. Residual=%s"%(residual))
+            sys.exit()
 
     if status==STAT['READY']:
         if abs(residual)<move_tolerance:
