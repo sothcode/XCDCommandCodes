@@ -1,5 +1,4 @@
 #! /usr/bin/python3
-
 import sys
 import os
 from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
@@ -7,10 +6,9 @@ from variableDictionaryXCD2 import varUniqueID as AXID
 
 debug = False
 
-for i in AXID:
+for axisName in AXID:
 
-    filename = AXID
-    with open(os.path.join('/Users/smh28/Documents/Github/XCDCommandCodes/laserFiles', filename), "w") as file:
+    with open(os.path.join('/Users/smh28/Documents/Github/XCDCommandCodes/laserFiles', axisName), "w") as file:
 
         for varName, varVal in ADDR.items():
             enr = 6.103515625e-5
