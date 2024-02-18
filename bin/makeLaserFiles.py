@@ -7,9 +7,7 @@ from variableDictionaryXCD2 import varUniqueID as AXID
 debug = False
 
 for axisName in AXID:
-
-    filename = axisName
-    with open(os.path.join('/mnt/c/Users/smh28/Documents/Github/XCDCommandCodes/laserFiles', filename), "w") as file:
+    with open(os.path.join('/mnt/c/Users/smh28/Documents/Github/XCDCommandCodes/bin/laserFiles', axisName), "w") as file:
 
         for varName, varVal in ADDR.items():
             enr = 6.103515625e-5
@@ -17,11 +15,11 @@ for axisName in AXID:
             if (AXID[axisName] % 2) == 0:
                 axis = 1
             
-            if varVal == 'ID':
+            if varName == 'ID':
                 file.write('ID %s\n' % AXID[axisName])
-            elif varVal == 'XAXIS':
-                file.write('ID %s\n' % axis)
-            elif varVal == 'ENR':
-                file.write('ID %s\n' % enr)
+            elif varName == 'XAXIS':
+                file.write('XAXIS %s\n' % axis)
+            elif varName == 'ENR':
+                file.write('ENR %s\n' % enr)
             else:
-                file.write('%s %s\n' % (varVal, 0.0))
+                file.write('%s %s\n' % (varName, 0.0))
