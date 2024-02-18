@@ -8,7 +8,8 @@ debug = False
 
 for axisName in AXID:
 
-    with open(os.path.join('/Users/smh28/Documents/Github/XCDCommandCodes/laserFiles', axisName), "w") as file:
+    filename = axisName
+    with open(os.path.join('/mnt/c/Users/smh28/Documents/Github/XCDCommandCodes/laserFiles', filename), "w") as file:
 
         for varName, varVal in ADDR.items():
             enr = 6.103515625e-5
