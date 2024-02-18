@@ -15,6 +15,9 @@ from variableDictionaryXCD2 import varUniqueID as AXID
 sys.path.append("kfDatabase")
 import kfDatabase
 
+# to read and write laser files
+sys.path.append("laserConfigs")
+
 
 # tuning settings
 sleeptime=0.5 #in seconds
@@ -151,10 +154,10 @@ def changeAxis( targetIDstr ):
 
  
     # write all variables to file corresponding to current ID
-    writeToFile( currentIDstr + '.txt' )
+    writeToFile( currentIDstr )
 
     # find file corresponding to target ID and load from it
-    readBool = readFromFile( targetIDstr + '.txt' )
+    readBool = readFromFile( targetIDstr )
 
     # now read the current state:
     newAxis=readback(ADDR['XAXIS'])
