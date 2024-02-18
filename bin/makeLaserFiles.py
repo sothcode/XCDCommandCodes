@@ -13,11 +13,11 @@ for axisName in AXID:
         for varName, varVal in ADDR.items():
             enr = 6.103515625e-5
             axis = 0
-            if (AXID[i] % 2) == 0:
+            if (AXID[axisName] % 2) == 0:
                 axis = 1
             
             if varVal == 'ID':
-                file.write('ID %s\n' % AXID[i])
+                file.write('ID %s\n' % AXID[axisName])
             elif varVal == 'XAXIS':
                 file.write('ID %s\n' % axis)
             elif varVal == 'ENR':
