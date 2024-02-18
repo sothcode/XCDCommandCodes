@@ -36,7 +36,7 @@ def assignUARTsToPort(port, id0, id1):
     writeXCD2(['UART0_ADDRESS', id0])
     writeXCD2(['UART1_ADDRESS', id1])    
     writeXCD2([ADDR['STATUS'], 0])    #clear the 'boot' status for this board now that we have assigned it.
-    writeXCD2([ADDR['AXIS'], 0]) #always default to axis zero when we're assigning
+    writeXCD2([ADDR['XAXIS'], 0]) #always default to axis zero when we're assigning
     #writeXCD2([ADDR['ID'], id0) #and write the proper ID to it.  except this will provoke the changeAxis to overwrite possibly valid data in the file.
     print("assigned %s:  ax0:%s ax1:%s. status:%s==>%s"%(port,id0,id1,oldStatus,readback(ADDR['STATUS'])))
 
