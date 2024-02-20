@@ -25,7 +25,8 @@ varThetaSCommands = {
 varDoglegCommands = {
 # Variables listed below are definitions in dogleg_v3_test_final.xms
 'GOTO': 6,
-'HOME': 5
+'HOME': 5,
+'OPENLOOP':60
 }
 
 varAttenuatorCommands = {
@@ -64,6 +65,8 @@ varStatusValues={
 'FAIL_THL_HOME':3,
 'FAIL_DID_NOT_ARRIVE':4,
 'FAIL_DL_LAST_MOVE':5,
+'FAIL_ENC_ERROR':6,
+'NEED_ASSIGN_OL_PARAMS':7,
 'NEWCOMMAND':8,
 'BUSY':9,
 'TIMEOUT':80,

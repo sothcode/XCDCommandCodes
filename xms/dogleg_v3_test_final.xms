@@ -43,6 +43,8 @@ config 900, 0x00051001
 // initialize commandBYTE, motorID, and statusBYTE to IDLE
 V0 = 0
 V1 = 0
+V6 = -1
+V8 = -1000
 V19 = 98
 
 // set encoder latch POS flag to 0
@@ -150,7 +152,7 @@ while 1
          // begin moves - happens in quarter turn steps
          set S_IND = 0
          enable
-         while V17 > 1 & V11*V16 <= 3
+         while V17 > 1 & V11*V16 <= 3 & V19 = 9
             V12 = FPOS + V16*0.25
             set TIME = 0
             move V12
@@ -165,12 +167,16 @@ while 1
                set S_IND = 0
             end
 
+            if V16*(V10 - FPOS) > V16*V18
+               V19 = 6 //errorcode FAIL_ENC_ERROR
+            end
+
             // after every quarter turn, decrement numSteps (V17)
             V17 = V17 - 1
          end
 
          // perform final move if still in bounds (7 secs to complete)
-         if V11*V16 <= 3 & V16*(V10 - FPOS) < 0.3
+         if V11*V16 <= 3 & V16*(V10 - FPOS) < 0.3 & V19 = 9
             set TIME = 0
             move V10
             while V16*(V10-FPOS) > 10*ENR & TIME < 7000
@@ -181,15 +187,17 @@ while 1
                set S_IND = 0
             end
 
-            if V16*(V10-FPOS) > 10*ENR
+            if V16*(V10-FPOS) > 10*ENR 
                V19 = 4 //errorcode FAIL_DID_NOT_ARRIVE
             else
                V19 = 0 //errorcode SUCCESS
             end
 
          else
-            // set statusBYTE FAIL_DL_LAST_MOVE
-            V19 = 5
+            if V19 <> 6
+               // set statusBYTE FAIL_DL_LAST_MOVE
+               V19 = 5
+            end
          end
          disable
 
@@ -201,6 +209,42 @@ while 1
    // end dogleg goto procedure
    end
 
+
+   // openloop control routine (in case doglegs shit themselves)
+   if V0 = 60
+
+      // set statusBYTE BUSY
+      V19 = 9
+
+      // check time parameter if not set
+      if V6 < 0 | V6 > 1000
+         V19 = 7 //errorcode NEED_ASSIGN_OL_PARAMS
+      end
+
+      // check openloop PWM supply percentage
+      if V10 < -100 | V10 > 100
+         V19 = 7 //errorcode NEED_ASSIGN_OL_PARAMS
+      end
+
+      // if time and openloop parameters are valid (status has not changed)
+      // then execute openloop move for given time
+      if V19 = 9
+         enable
+         set TIME = 0
+         openloop V10
+         while TIME < V6
+         end
+         openloop 0
+         disable
+
+         V19 = 0 //errorcode SUCCESS
+      end
+
+      // reset to IDLE state
+      V0 = 0
+
+   // end openloop control routine
+   end
 
 
    // retry loop every half second
