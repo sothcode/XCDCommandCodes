@@ -71,19 +71,20 @@ def changeAxis( targetIDstr ):
     if debug:
         print("changeAxis:  Check status:")
 
-    #commenting out the status check, which causes failures if something is unplugged -- we're unable to switch away.
-    #    print("before readback")
+    # commenting out the status check, which causes failures if something is unplugged -- we're unable to switch away.
+    # print("before readback")
 #    status=readback(ADDR['STATUS'])
 #    print("after readback")
 #    
 #    if status!=0:
 #        if status == 98.0:
 #            print("Axis must be set by calling setAxis.py")
-#
 #        else:
 #            print("NOT EXECUTED. Controller status is not 0.")
 #            sys.exit()
+#
 #    print('about to look in AXID keys')
+
     # check if axis we want to change to is a valid motor, and if not exit
     if targetIDstr not in AXID.keys():
         print("changeAxis: Axis ID '%s' not recognized. Axis ID list given as:"%targetIDstr)
@@ -94,12 +95,14 @@ def changeAxis( targetIDstr ):
     # first open port database file
     # print("about to query db")
     success, values = kfDatabase.readVar(portsDb, targetIDstr)
-    print("kfDatabase returns %s"%values)
 
     # exit if we don't have a port
     if not success:
         print("changeAxis: Axis ID '%s' not found in database '%s'.  Run updatePorts.py." % (targetIDstr, portsDb))
         return False
+    
+    # otherwise print the port and axis returned
+    print("kfDatabase returns %s" % values)
 
     # before we go, save the old FPOS and nturns, just in case:
     oldID=readback(ADDR['ID'])
@@ -107,26 +110,29 @@ def changeAxis( targetIDstr ):
     oldStatus=readback(ADDR['STATUS'])
     oldPos=readback(ADDR['FPOS'])
     oldTurns=readback(ADDR['TURNS'])
-    with open(PORTFILE, 'r') as file:
-        oldPort = file.readline()
-        
-    # otherwise, assign new port to targetPort
-    targetPort = values[0]
-    targetAxis = values[1]
-   # (this will change to object in class when we refactor)
+
+    # (this will change to object in class when we refactor)
     if not (os.path.exists(PORTFILE)):
         print("changeAxis: PORTFILE %s does not exist.  PANIC" % PORTFILE)
         return False
+
+    # pull old port from PORTFILE
+    with open(PORTFILE, 'r') as file:
+        oldPort = file.readline()
+        
+    # extract port and axis
+    targetPort = values[0]
+    targetAxis = values[1]
     
     # set active port
     with open(PORTFILE, 'w') as file:
         file.write(targetPort)
 
     
-    # readback current axis and current axis ID and find target axis ID
+    # readback current axis to compare with target axis
     currentAxis = readback(ADDR['XAXIS'])
     
-    # create lookup table of axis variables
+    # create lookup table of motor ID variables
     IDlookup = {v:k for k, v in AXID.items()}
 
     # check if current ID and target ID are the same
@@ -139,7 +145,7 @@ def changeAxis( targetIDstr ):
             return True
         else:
             print("changeAxis: Port changed from %s . XAXIS is already set correctly on %s. (target:%s. %s says this is %s, axis %s) Values remain from last use, not loaded from file."%(oldPort,targetIDstr,targetPort,portsDb,targetPort,targetAxis))
-            newAxis=readback(ADDR['XAXIS'])
+            writeXCD2([ADDR['ID'], ])
             newPos=readback(ADDR['FPOS'])
             newStatus=readback(ADDR['STATUS'])
             newTurns=readback(ADDR['TURNS'])
