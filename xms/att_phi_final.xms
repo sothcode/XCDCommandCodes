@@ -262,11 +262,11 @@ while 1
          set TIME = 0
          enable
          move V10
-         while (V10 - FPOS) > 10*ENR & TIME < 7000
+         while abs(V10 - FPOS) > 10*ENR & TIME < 7000
          end
          disable
          
-         if (V10 - FPOS) > 10*ENR
+         if abs(V10 - FPOS) > 10*ENR
             V19 = 4 //errorcode DID_NOT_ARRIVE
          else
             V19 = 0 //errorcode SUCCESS
