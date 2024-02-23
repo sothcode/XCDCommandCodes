@@ -154,7 +154,7 @@ def changeAxis( targetIDstr ):
             return True
         else:
             print("changeAxis: Port changed from %s . XAXIS is already set correctly on %s. (target:%s. %s says this is %s, axis %s) Values remain from last use, not loaded from file."%(oldPort,targetIDstr,targetPort,portsDb,targetPort,targetAxis))
-            writeXCD2([ADDR['ID'], ])
+            # writeXCD2([ADDR['ID'], ])
             newPos=readback(ADDR['FPOS'])
             newStatus=readback(ADDR['STATUS'])
             newTurns=readback(ADDR['TURNS'])
