@@ -116,6 +116,8 @@ def _reverseLookup(dict,val):
 class Controller:
 
     def __init__():
+
+
         return
 
     def getPort():
@@ -123,6 +125,17 @@ class Controller:
         with open(PORTFILE, 'r') as file:
             currentPort = file.readline().rstrip()
         return currentPort
+    
+    def _findPorts():
+        # 
+        ttyUSB_ports = os.listdir('/dev/ttyUSB*')
+
+        # Return the list of found ttyUSB ports
+        return ttyUSB_ports
+
+    def getMotors():
+
+        return
     
     def getUART01_Address( port ):
 
@@ -167,17 +180,6 @@ class Controller:
 
         return
 
-    def _findPorts():
-        # 
-        ttyUSB_ports = os.listdir('/dev/ttyUSB*')
-
-        # Return the list of found ttyUSB ports
-        return ttyUSB_ports
-
-    def getMotors():
-
-        return
-
 
 
 # Motor class
@@ -189,7 +191,7 @@ class Controller:
 # writing to kfdb must be done serially, so maybe it prints write requests
 # in full lines to the screen for humans to copy/paste?
 class Motor:
-
+ 
     # constructor
     def __init__(self, name):
         # look up if name exists in database file
