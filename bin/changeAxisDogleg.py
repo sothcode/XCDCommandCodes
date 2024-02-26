@@ -146,7 +146,7 @@ def changeAxis( targetIDstr ):
 
     # write all variables to file corresponding to old ID before switching ports
     if oldPortExists:
-        oldIDstr = _reverseLookup(oldID)
+        oldIDstr = _reverseLookup(AXID, oldID)
         writeToFile( oldIDstr )
     
     # set active port
