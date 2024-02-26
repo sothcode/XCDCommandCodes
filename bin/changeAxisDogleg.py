@@ -15,9 +15,6 @@ from variableDictionaryXCD2 import varUniqueID as AXID
 sys.path.append("kfDatabase")
 import kfDatabase
 
-# to read and write laser files
-sys.path.append("laserConfigs")
-
 
 # tuning settings
 sleeptime=0.5 #in seconds
@@ -179,7 +176,7 @@ def changeAxis( targetIDstr ):
     #if the axis on the desired port is already what we desire, there is no need to load new info.  This needs more discussion.
 
     # find file corresponding to target ID and load from it
-    readBool = readFromFile( targetIDstr )
+    readBool = readFromFile('laserConfigs/' + targetIDstr )
 
     # now read the current state:
     newAxis=readback(ADDR['XAXIS'])
