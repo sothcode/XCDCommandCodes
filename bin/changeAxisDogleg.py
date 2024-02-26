@@ -26,6 +26,16 @@ portsDb="xcd2_ports.kfdb"
 PORTFILE="XCD_current_port"
 
 
+def _reverseLookup(dict,val):
+    #set up the reverse dictionary
+    reverse_mapping={v: k for k, v in dict.items()}
+    try:
+        key=reverse_mapping[val]
+    except KeyError as e:
+        print(f"gotoDogleg lookup failed.  KeyError: {e}")
+        sys.exit()
+    return key  
+
 
 def writeToFile( filename ):
 
@@ -104,6 +114,11 @@ def changeAxis( targetIDstr ):
     # otherwise print the port and axis returned
     print("kfDatabase returns %s" % dbResponse)
 
+    # extract port and axis from the database return value
+    targetPort = dbResponse[0]
+    targetAxis = dbResponse[1]
+
+
     # (this will change to object in class when we refactor)
     if not (os.path.exists(PORTFILE)):
         print("changeAxis: PORTFILE %s does not exist.  PANIC" % PORTFILE)
@@ -114,6 +129,7 @@ def changeAxis( targetIDstr ):
         oldPort = file.readline()
     
     # before we go, if the current port exists, save the old FPOS and nturns, just in case:
+    oldPortExists=False
     oldID=-1
     oldAxis=-1
     oldStatus=-1
@@ -128,10 +144,10 @@ def changeAxis( targetIDstr ):
         oldTurns=readback(ADDR['TURNS'])
 
 
-        
-    # extract port and axis from the database return value
-    targetPort = dbResponse[0]
-    targetAxis = dbResponse[1]
+    # write all variables to file corresponding to old ID before switching ports
+    if oldPortExists:
+        oldIDstr = _reverseLookup(oldID)
+        writeToFile( oldIDstr )
     
     # set active port
     with open(PORTFILE, 'w') as file:
@@ -140,40 +156,27 @@ def changeAxis( targetIDstr ):
     
     # readback current axis to compare with target axis
     currentAxis = readback(ADDR['XAXIS'])
-    
-    # create lookup table of motor ID variables
-    IDlookup = {v:k for k, v in AXID.items()}
-
     # check if current ID and target ID are the same, or if the correct port's axis is the same as our target
     currentID = readback(ADDR['ID'])
-    currentIDstr = IDlookup[currentID]
+    currentIDstr = _reverseLookup(AXID, currentID)
+    
     if (currentAxis == targetAxis):
         if (oldPortExists and oldPort==targetPort):
             print("changeAxis: XAXIS and Port are unchanged. (target:%s. %s says this is %s, axis %s) Values remain from last use, not loaded from file."%(targetIDstr,portsDb,targetPort,targetAxis))
-            print("remains: %s port=%s, pos=%s, axis=%s, stat=%s, turns=%s"%(IDlookup[oldID],oldPort,oldPos,oldAxis,oldStatus,oldTurns))
+            print("remains: %s port=%s, pos=%s, axis=%s, stat=%s, turns=%s"%(_reverseLookup(AXID, oldID),oldPort,oldPos,oldAxis,oldStatus,oldTurns))
             return True
         else:
             print("changeAxis: Port changed from %s . XAXIS is already set correctly on %s. (target:%s. %s says this is %s, axis %s) Values remain from last use, not loaded from file."%(oldPort,targetIDstr,targetPort,portsDb,targetPort,targetAxis))
-            # writeXCD2([ADDR['ID'], ])
-            newPos=readback(ADDR['FPOS'])
-            newStatus=readback(ADDR['STATUS'])
-            newTurns=readback(ADDR['TURNS'])
+            currentPos=readback(ADDR['FPOS'])
+            currentStatus=readback(ADDR['STATUS'])
+            currentTurns=readback(ADDR['TURNS'])
             if (oldPortExists):
-                print("was: %s port=%s, pos=%s, axis=%s, stat=%s, turns=%s"%(IDlookup[oldID],oldPort,oldPos,oldAxis,oldStatus,oldTurns))
+                print("was: %s port=%s, pos=%s, axis=%s, stat=%s, turns=%s"%(_reverseLookup(AXID, oldID),oldPort,oldPos,oldAxis,oldStatus,oldTurns))
             else:
                 print("was: invalid port %s"%oldPort)
-            print("now: %s port=%s, pos=%s, axis=%s, stat=%s, turns=%s"%(currentIDstr,targetPort,newPos,newAxis,newStatus,newTurns))
+            print("now: %s port=%s, pos=%s, axis=%s, stat=%s, turns=%s"%(currentIDstr,targetPort,currentPos,currentAxis,currentStatus,currentTurns))
             return True
     #if the axis on the desired port is already what we desire, there is no need to load new info.  This needs more discussion.
-
-    # newAxis = readback(ADDR['XAXIS'])
-    # if oldAxis == newAxis:
-    #     print("changeAxis: Port changed but axis unchanged. Variables not updated.")
-    #     return
-
- 
-    # write all variables to file corresponding to current ID
-    writeToFile( currentIDstr )
 
     # find file corresponding to target ID and load from it
     readBool = readFromFile( targetIDstr )
@@ -195,8 +198,8 @@ def changeAxis( targetIDstr ):
         print("changeAxis: Axis changed to '%s' on port '%s'"% (targetIDstr, targetPort))
     else:
         print("FAILURE: changeAxis: Axis could not be changed to '%s' on port '%s' - variables not read from file."% (targetIDstr, targetPort))
-    print("was: %s(%s) port=%s, axis=%s, pos=%s, stat=%s, turns=%s"%(IDlookup[oldID],oldID,oldPort,oldAxis,oldPos,oldStatus,oldTurns)) 
-    print("now: %s(%s) port=%s, axis=%s, pos=%s, stat=%s, turns=%s"%(IDlookup[newID],newID,targetPort,newAxis,newPos,newStatus,newTurns)) 
+    print("was: %s(%s) port=%s, axis=%s, pos=%s, stat=%s, turns=%s"%(_reverseLookup(AXID, oldID),oldID,oldPort,oldAxis,oldPos,oldStatus,oldTurns)) 
+    print("now: %s(%s) port=%s, axis=%s, pos=%s, stat=%s, turns=%s"%(_reverseLookup(AXID, newID),newID,targetPort,newAxis,newPos,newStatus,newTurns)) 
     
     return readBool  
 
