@@ -144,7 +144,7 @@ def changeAxis( targetIDstr ):
     # write all variables to file corresponding to old ID before switching ports
     if oldPortExists:
         oldIDstr = _reverseLookup(AXID, oldID)
-        writeToFile( oldIDstr )
+        writeToFile('laserConfigs/' +  oldIDstr )
     
     # set active port
     with open(PORTFILE, 'w') as file:
