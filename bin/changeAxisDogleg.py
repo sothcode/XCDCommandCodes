@@ -168,10 +168,10 @@ def changeAxis( targetIDstr ):
             currentStatus=readback(ADDR['STATUS'])
             currentTurns=readback(ADDR['TURNS'])
             if (oldPortExists):
-                print("was: %s port=%s, pos=%s, axis=%s, stat=%s, turns=%s"%(_reverseLookup(AXID, oldID),oldPort,oldPos,oldAxis,oldStatus,oldTurns))
+                print("was: %s(%s) port=%s, pos=%s, axis=%s, stat=%s, turns=%s"%(_reverseLookup(AXID, oldID),oldID,oldPort,oldPos,oldAxis,oldStatus,oldTurns))
             else:
                 print("was: invalid port %s"%oldPort)
-            print("now: %s port=%s, pos=%s, axis=%s, stat=%s, turns=%s"%(currentIDstr,targetPort,currentPos,currentAxis,currentStatus,currentTurns))
+            print("now: %s(%s) port=%s, pos=%s, axis=%s, stat=%s, turns=%s"%(currentIDstr,currentID,targetPort,currentPos,currentAxis,currentStatus,currentTurns))
             return True
     #if the axis on the desired port is already what we desire, there is no need to load new info.  This needs more discussion.
 
