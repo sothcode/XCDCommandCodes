@@ -235,7 +235,7 @@ while 1
       disable
 
       // check V2, V3, V4 flags and set statusBYTE accordingly
-      if abs(V2 - FPOS) > 10*ENR
+      if abs(V2 - FPOS) > 20*ENR
          V19 = 2 //errorcode DIDNT_GET_HOME
       else
          V19 = 0 //errorcode SUCCESS
