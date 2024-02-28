@@ -148,6 +148,7 @@ def aimAt(laserName="DEBUG",eggName=None, theta=None, phi=None, sOff=0, lOff=0):
     retPh=goto(laserName+"_PH",phiCoord)
     retThS=goto(laserName+"_TH_S",thetaS+float(sOff))
     retThL=goto(laserName+"_TH_L",thetaL+float(lOff))
+    print("aimAt attempted:  %s_PH:%s  %s_TH_S:%s  %s_TH_L:%s"%(laserName,phiCoord,laserName,thetaS,laserName,thetaL))
     print("aimAt returns:  %s_PH:%s  %s_TH_S:%s  %s_TH_L:%s"%(laserName,retPh,laserName,retThS,laserName,retThL))
 
 
