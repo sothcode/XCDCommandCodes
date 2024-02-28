@@ -112,7 +112,8 @@ def getThetaMotorCoordinates(eggName,theta):
     if (thlCoord<lb):
         print("desired target theta=%s is out of range for  %s_TH_L matter what we do.  range=[%s,%s].  Failing."%(theta,eggName,lb,hb))
         sys.exit()
-    '''
+
+'''
     #set the thS within our range of -1 to +1.  This can't fail;
     while thsCoord >1:
         thsCoord=thsCoord-1
@@ -123,7 +124,7 @@ def getThetaMotorCoordinates(eggName,theta):
     
 
 
-def aimAt(laserName="DEBUG",eggName=None, theta=None, phi=None):
+def aimAt(laserName="DEBUG",eggName=None, theta=None, phi=None, sOff=None, lOff=None):
     #assume we have phi and theta in degrees
 
     #TODO: sanity check the inputs
@@ -145,8 +146,8 @@ def aimAt(laserName="DEBUG",eggName=None, theta=None, phi=None):
     print("(%s,%s)==>Move %s(%s) to:(p%s,ts%s,tl%s)"%(theta,phi,laserName,eggName,phiCoord,thetaS,thetaL))
 
     retPh=goto(laserName+"_PH",phiCoord)
-    retThS=goto(laserName+"_TH_S",thetaS)
-    retThL=goto(laserName+"_TH_L",thetaL)
+    retThS=goto(laserName+"_TH_S",thetaS+sOff)
+    retThL=goto(laserName+"_TH_L",thetaL+lOff)
 
     print("aimAt returns:  %s_PH:%s  %s_TH_S:%s  %s_TH_L:%s"%(laserName,retPh,laserName,retThS,laserName,retThL))
 
@@ -161,6 +162,8 @@ if __name__ == "__main__":
         eggName=sys.argv[1]
         theta=sys.argv[2]
         phi=sys.argv[3]
+        shortOffset=0
+        longOffset=0
     elif len(sys.argv)==6:
         #assume (eggDbName,theta,phi).
         #TODO:  specify which laser (port,axis), and which egg?  Or should we mate those permanently in the db?
@@ -176,4 +179,4 @@ if __name__ == "__main__":
         sys.exit()
     #if wrong arguments, exit with explanation
 
-    aimAt("DEBUG",eggName,theta,phi)
+    aimAt("DEBUG",eggName,theta,phi,shortOffset,longOffset)
