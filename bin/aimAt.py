@@ -124,7 +124,7 @@ def getThetaMotorCoordinates(eggName,theta):
     
 
 
-def aimAt(laserName="DEBUG",eggName=None, theta=None, phi=None, sOff=None, lOff=None):
+def aimAt(laserName="DEBUG",eggName=None, theta=None, phi=None, sOff=0, lOff=0):
     #assume we have phi and theta in degrees
 
     #TODO: sanity check the inputs
