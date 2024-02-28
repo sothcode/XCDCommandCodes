@@ -2,7 +2,15 @@
 
 import sys
 
-
+varTuning = {
+#min_distance (minimum amount we can move without doing a backoff-and-recover),
+#move_tolerance (how far from destination we are allowed to be without marking it FAIL)
+'Phi':[0.1,0.001],
+'ThetaS':[0.01,0.001],
+'ThetaL':[0.02,0.001],
+'Attenuator':[0.001,0.001],
+'Dogleg':[0.01,0.001]
+}
 
 varPhiCommands = {
 # Variables listed below are definitions in phi_test_final.xms

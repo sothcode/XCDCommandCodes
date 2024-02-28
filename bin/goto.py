@@ -15,21 +15,25 @@ import math
 from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
 from variableDictionaryXCD2 import varStatusValues as STAT
 from variableDictionaryXCD2 import varAllCommands as ALL_COMM
+from variableDictionaryXCD2 import varTuning as TUNE
 
 # to load tty data from the db so we know which tty we want:
 sys.path.append("kfDatabase")
 import kfDatabase
 
 #tuning settings
+'''
+this is now in the variableDictionary
 varTuning={
 #min_distance (minimum amount we can move without doing a backoff-and-recover),
 #move_tolerance (how far from destination we are allowed to be without marking it FAIL)
 'Phi':[0.1,0.001],
 'ThetaS':[0.00001,0.001],
-'ThetaL':[0.05,0.01],
+'ThetaL':[0.02,0.001],
 'Attenuator':[0.001,0.001],
 'Dogleg':[0.01,0.001]
 }
+'''
     
 min_distance=0.1 #in rotations
 move_tolerance=0.001 #in rotations.  causes an error if it did not get this close in the final move.
@@ -90,16 +94,18 @@ def find_comm_and_set_tuning(axisName):
         sys.exit()
     COMM=ALL_COMM[axisType]
     global min_distance, move_tolerance
-    min_distance=varTuning[axisType][0]
-    move_tolerance=varTuning[axisType][1]
+    min_distance=TUNE[axisType][0]
+    move_tolerance=TUNE[axisType][1]
     #if debug:
     print("Setting COMM. channel is type %s, min_distance=%s, move_tolerance=%s"%(axisType,min_distance,move_tolerance))
     return isDogleg, COMM
 
 
 def set_tuning( axisType ):
-
+'''
+this is now in the variableDictionary
     #tuning settings
+
     varTuning={
     #min_distance (minimum amount we can move without doing a backoff-and-recover),
     #move_tolerance (how far from destination we are allowed to be without marking it FAIL)
@@ -109,9 +115,9 @@ def set_tuning( axisType ):
     'Attenuator':[0.001,0.001],
     'Dogleg':[0.01,0.001]
     }
-
-    min_distance=varTuning[axisType][0]
-    move_tolerance=varTuning[axisType][1]
+'''
+    min_distance=TUNE[axisType][0]
+    move_tolerance=TUNE[axisType][1]
 
     return min_distance, move_tolerance
 
@@ -127,10 +133,11 @@ def gotoVettedQuiet(destination,COMM):
     if debug:
         print("gotoVQ:  Check status:")
     status=readback(ADDR['STATUS'])
+    position=readback(ADDR['FPOS'])
 
     if status!=0:
         print("NOT EXECUTED. Controller status is not 0. status: %s (%s)"%(status,_reverseLookup(STAT,status)))
-        return False, readback(ADDR['FPOS'])
+        return False, position)
     
     #load in our bounds as currently understood on the controller
     lb=float(readback(ADDR['HARD_STOP1']))
@@ -144,12 +151,15 @@ def gotoVettedQuiet(destination,COMM):
             destination=destination+1
         if destination >hb: #if that correction leaves us above the hb again, it is unreachable by defined bounds.
             print("NOT EXECUTED. Controller requires %s<dest<%s, and that is not possible for any +N rotations of dest=%s"%(lb,hb,destination))
-            return False, readback(ADDR['FPOS'])
+            return False, position
         
+    #if we are within move tolerance of our destination, dont' move.
+    if abs(destination-position)<move_tolerance:
+        print("gotoVQ: dest=%s, pos=%s, abs(dest-pos)=%s<%s.  No motion necessary."%(destination, pos,abs(destination-position),move_tolerance))
+        return True, position
     
     
     #look at our position.  if we are too close, we may not move at all, so move away before going toward.
-    position=readback(ADDR['FPOS'])
     if abs(destination-position)<min_distance:
         print("gotoVettedQuiet: destination:%s is too close to position %s.  Attempting to jog"%(destination,position))
         #try to move in the direction away from the actual destination
