@@ -137,7 +137,7 @@ def gotoVettedQuiet(destination,COMM):
 
     if status!=0:
         print("NOT EXECUTED. Controller status is not 0. status: %s (%s)"%(status,_reverseLookup(STAT,status)))
-        return False, position)
+        return False, position
     
     #load in our bounds as currently understood on the controller
     lb=float(readback(ADDR['HARD_STOP1']))
