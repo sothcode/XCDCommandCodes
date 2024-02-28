@@ -155,7 +155,7 @@ def gotoVettedQuiet(destination,COMM):
         
     #if we are within move tolerance of our destination, dont' move.
     if abs(destination-position)<move_tolerance:
-        print("gotoVQ: dest=%s, pos=%s, abs(dest-pos)=%s<%s.  No motion necessary."%(destination, pos,abs(destination-position),move_tolerance))
+        print("gotoVQ: dest=%s, pos=%s, abs(dest-pos)=%s<%s.  No motion necessary."%(destination, position,abs(destination-position),move_tolerance))
         return True, position
     
     
