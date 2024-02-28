@@ -102,8 +102,8 @@ def find_comm_and_set_tuning(axisName):
 
 
 def set_tuning( axisType ):
-'''
-this is now in the variableDictionary
+    '''
+    this is now in the variableDictionary
     #tuning settings
 
     varTuning={
@@ -115,7 +115,7 @@ this is now in the variableDictionary
     'Attenuator':[0.001,0.001],
     'Dogleg':[0.01,0.001]
     }
-'''
+    '''
     min_distance=TUNE[axisType][0]
     move_tolerance=TUNE[axisType][1]
 
