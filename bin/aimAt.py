@@ -146,9 +146,8 @@ def aimAt(laserName="DEBUG",eggName=None, theta=None, phi=None, sOff=0, lOff=0):
     print("(%s,%s)==>Move %s(%s) to:(p%s,ts%s,tl%s)"%(theta,phi,laserName,eggName,phiCoord,thetaS,thetaL))
 
     retPh=goto(laserName+"_PH",phiCoord)
-    retThS=goto(laserName+"_TH_S",thetaS+sOff)
-    retThL=goto(laserName+"_TH_L",thetaL+lOff)
-
+    retThS=goto(laserName+"_TH_S",thetaS+float(sOff))
+    retThL=goto(laserName+"_TH_L",thetaL+float(lOff))
     print("aimAt returns:  %s_PH:%s  %s_TH_S:%s  %s_TH_L:%s"%(laserName,retPh,laserName,retThS,laserName,retThL))
 
 
