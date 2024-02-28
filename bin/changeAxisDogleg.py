@@ -172,6 +172,7 @@ def changeAxis( targetIDstr ):
             else:
                 print("was: invalid port %s"%oldPort)
             print("now: %s(%s) port=%s, pos=%s, axis=%s, stat=%s, turns=%s"%(currentIDstr,currentID,targetPort,currentPos,currentAxis,currentStatus,currentTurns))
+            writeXCD2([ADDR['STATUS'], 0])
             return True
     #if the axis on the desired port is already what we desire, there is no need to load new info.  This needs more discussion.
 
@@ -187,6 +188,7 @@ def changeAxis( targetIDstr ):
         newAxis=readback(ADDR['XAXIS'])
     newID=readback(ADDR['ID'])
     newStatus=readback(ADDR['STATUS'])
+    writeXCD2([ADDR['STATUS'], 0])
     newTurns=readback(ADDR['TURNS'])
         
         
