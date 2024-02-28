@@ -101,7 +101,7 @@ def getThetaMotorCoordinates(eggName,theta):
     thlCoord=thlDeg/360.0+thl0
 
     #check that they are within our reachable thL range, fix if we can.
-    if thlCoord>hb:
+'''    if thlCoord>hb:
         print("Desired thL=%s is > hb=%s, so trying -1: %s"%(thlCoord,hb,thlCoord-1))
         thlCoord=thlCoord-1.0
     elif thlCoord<lb:
@@ -111,7 +111,7 @@ def getThetaMotorCoordinates(eggName,theta):
     if (thlCoord<lb):
         print("desired target theta=%s is out of range for  %s_TH_L matter what we do.  range=[%s,%s].  Failing."%(theta,eggName,lb,hb))
         sys.exit()
-
+'''
     #set the thS within our range of -1 to +1.  This can't fail;
     while thsCoord >1:
         thsCoord=thsCoord-1
@@ -160,6 +160,15 @@ if __name__ == "__main__":
         eggName=sys.argv[1]
         theta=sys.argv[2]
         phi=sys.argv[3]
+    elif len(sys.argv)==6:
+        #assume (eggDbName,theta,phi).
+        #TODO:  specify which laser (port,axis), and which egg?  Or should we mate those permanently in the db?
+        #get its port from the db
+        eggName=sys.argv[1]
+        theta=sys.argv[2]
+        phi=sys.argv[3]
+        shortOffset=sys.argv[4]
+        longOffset=sys.argv[5]
     else:
         print("NOT EXECUTED. Wrong number of arguments.  Correct usage is:")
         print("   ./steetTo.py egg_name theta phi")
