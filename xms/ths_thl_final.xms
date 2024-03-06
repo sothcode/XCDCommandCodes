@@ -77,10 +77,11 @@ while 1
 
       // drive in negative dir'n to lowbound until stop
       set S_IND = 0
+      set TIME = 0
       enable
       velocityloop -1.5*V7
       delay 100
-      while abs(V18 - FPOS) > 10*ENR & abs(V17 - FPOS) < 0.8
+      while abs(V18 - FPOS) > ENR & abs(V17 - FPOS) < 0.8 & TIME < 7000
          V18 = FPOS
          delay 100
       end

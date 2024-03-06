@@ -9,6 +9,10 @@ from variableDictionaryXCD2 import varStatusValues as STAT
 from variableDictionaryXCD2 import varDoglegCommands as COMM
 #import random #for testing
 
+#tuning settings
+sleeptime=0.5 #in seconds
+debug=False
+
 
 def _reverseLookup(dict,val):
     #set up the reverse dictionary
@@ -20,17 +24,8 @@ def _reverseLookup(dict,val):
         sys.exit()
     return key  
 
-if __name__ == "__main__":
-    #tuning settings
-    sleeptime=0.5 #in seconds
-    debug=False
 
-    #check args
-
-    if len(sys.argv) != 1: #note that sys.argv has arg 1 as the command itself
-        print("NOT EXECUTED. Wrong number of arguments.  Correct usage is ./clearDogleg.py")
-        sys.exit()
-    #if wrong arguments, exit with explanation
+def clearDogleg():
 
     #check if controller is busy.  If so, exit with explanation
     if debug:
@@ -45,3 +40,14 @@ if __name__ == "__main__":
     writeXCD2([ADDR['COMMAND'], 0])
     new_status=readback(ADDR['STATUS'])
     print("DONE.  Dogleg status was ",status," (",_reverseLookup(STAT,status),"), is nowstatus:",new_status," (",_reverseLookup(STAT,new_status),").")
+
+
+    return
+
+if __name__ == "__main__":
+    #check args
+    if len(sys.argv) != 1: #note that sys.argv has arg 1 as the command itself
+        print("NOT EXECUTED. Wrong number of arguments.  Correct usage is ./clearDogleg.py")
+        sys.exit()
+    clearDogleg()
+    #if wrong arguments, exit with explanation
