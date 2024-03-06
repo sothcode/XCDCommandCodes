@@ -244,10 +244,7 @@ EGG4_TH_L/dandiode0 0.30975341796875
 EGG4_TH_S/dandiode0 -0.3624267578125
 EGG6_TH_L/lowbound -0.446777
 EGG6_TH_L/highbound 0.203223
-<<<<<<< HEAD
 EGG2_PH/dandiode0 0.09039306640625
-=======
->>>>>>> refs/remotes/origin/main
 EGG8_TH_L/lowbound -0.072205
 EGG8_TH_L/highbound 0.577795
 EGG7_TH_L/lowbound -0.229492
