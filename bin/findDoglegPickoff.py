@@ -8,6 +8,7 @@ from updatePorts import find_ttyUSB_ports
 from quickAssign import writeXCD2
 from quickReport import readback
 from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
+from variableDictionaryXCD2 import varStatusValues as STAT 
 from gotoDogleg import gotoDogleg
 from clearDogleg import clearDogleg
 
@@ -22,6 +23,16 @@ stopXMS = './killXCD2.sh'
 startXMS = './startXMS.sh'
 
 
+def _reverseLookup(dict,val):
+    #set up the reverse dictionary
+    reverse_mapping={v: k for k, v in dict.items()}
+    try:
+        key=reverse_mapping[val]
+    except KeyError as e:
+        print(f"errorCode lookup failed.  KeyError: {e}")
+        sys.exit()
+    return key  
+
 
 def findDoglegPickoff():
 
@@ -35,7 +46,7 @@ def findDoglegPickoff():
         # check status, then initialize proper variables
         status=readback(ADDR['STATUS'])
         if status!=0:
-            print("findDoglegPickoff.py initilization failed. Please check status.")
+            print("findDoglegPickoff.py initilization failed. Status is",status," (",_reverseLookup(STAT,status),").")
             return
 
         t_arr = [0.0]*12
