@@ -144,7 +144,7 @@ def homeThetaL(referenceEgg=None):
             match=False
         if not match:
             if  (present[0] and present[1] and present[2]):
-                print("FAIL.  Readback-db residuals are larger than tolerance %s:\n\tspan:%s-%s=%s.\n\tlbrel:%s-%s=%s.\n\thbrel:%s-%s=%s."%(matchTolerance,span,spanDb,varSpan,lbRel,lbRelDb,varLb,hbRel,hbRel,varHb))
+                print("FAIL.  Readback-db residuals are larger than tolerance %s:\n\tspan:%s-%s=%s.\n\tlbrel:%s-%s=%s.\n\thbrel:%s-%s=%s."%(matchTolerance,span,spanDb,varSpan,lbRel,lbRelDb,varLb,hbRel,hbRelDb,varHb))
                 print("   This does not match the expectations for %s.  If you are sure this really is %s, and want to update %s with new parameters, run the following commands:"%(referenceEgg,referenceEgg,mainDb))
             if  (not present[0] or not present[1] or not present[2]):
                 print("FAIL.  Not all values are in the database for egg %s."%(referenceEgg))
@@ -154,7 +154,7 @@ def homeThetaL(referenceEgg=None):
             print("   ./kfDatabase/kfDatabase.py %s %s/%s %f %s"%(mainDb,referenceEgg,"highbound",hbRel,"new"*(not present[2])))
             print("   NOTE:  If there are values for diode positions, those may move by the POSI residual as well.")
         elif match:
-            print("SUCCESS.  Readback-db residuals are within tolerance %s:\n\tspan:%s-%s=%s.\n\tlbrel:%s-%s=%s.\n\thbrel:%s-%s=%s."%(matchTolerance,span,spanDb,varSpan,lbRel,lbRelDb,varLb,hbRel,hbRel,varHb))
+            print("SUCCESS.  Readback-db residuals are within tolerance %s:\n\tspan:%s-%s=%s.\n\tlbrel:%s-%s=%s.\n\thbrel:%s-%s=%s."%(matchTolerance,span,spanDb,varSpan,lbRel,lbRelDb,varLb,hbRel,hbRelDb,varHb))
         print("Setting current position relative to home and updating onboard hardstops.")
         writeXCD2([ADDR['FPOS'], posRel])
         writeXCD2([ADDR['HARD_STOP1'], lbRel])
