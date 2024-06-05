@@ -15,7 +15,8 @@ varTuning = {
 varPhiCommands = {
 # Variables listed below are definitions in phi_test_final.xms
 'GOTO': 2,
-'HOME': 1
+'HOME': 1,
+'OPENLOOP': 100
 }
 
 varThetaLCommands = {
@@ -40,7 +41,8 @@ varDoglegCommands = {
 varAttenuatorCommands = {
 # Variables listed below are definitions in dogleg_v3_test_final.xms
 'GOTO': 10,
-'HOME': 9
+'HOME': 9,
+'OPENLOOP': 100
 }
 
 varAllCommands = {
