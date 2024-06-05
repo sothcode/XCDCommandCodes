@@ -38,6 +38,9 @@ def countBounces(theta,phi):
     # if we are at an edge, we will need to do some special calculation/steering
 
     # rcc:  for now, assume we are not close to an edge, and assume zero bounces
+
+
+
     return False,0,0
 
 def debounce(phi, bouncesX, bouncesY):

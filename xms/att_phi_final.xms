@@ -308,7 +308,7 @@ while 1
          openloop V16*100
          while V16*(V10 - FPOS) > 0 & TIME < 7000
          end
-         opeloop 0.0
+         openloop 0.0
          disable
          
          if abs(V10 - FPOS) > 20*ENR
