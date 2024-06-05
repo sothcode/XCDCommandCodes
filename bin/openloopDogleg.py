@@ -11,6 +11,7 @@ from changeAxisDogleg import changeAxis
 
 #tuning settings
 sleeptime = 0.1 # in seconds
+timeout = 10
 debug = False
 
 #{later:
@@ -46,7 +47,7 @@ def openloopDogleg(time, PWM):
         print("Error: Not a valid number for duration to pulse drive signal.")
         return False, 0
     
-    writeXCD2(['V6', ])
+    writeXCD2(['V6', duration])
     
     try:
         intensity = float(PWM)
