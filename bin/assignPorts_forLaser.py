@@ -52,8 +52,8 @@ def assignPorts_forLaser(laserPosition):
         return False
 
     #now we are guaranteed we have a valid laser argument
-    assignUARTsToPort("/dev/ttyUSB0", ID["%s_DL0_A0"%(laserPosition)], ID["%s_DL1_A0"%(laserPosition)])
-    assignUARTsToPort("/dev/ttyUSB1", ID["%s_DL0_A1"%(laserPosition)], ID["%s_DL1_A1"%(laserPosition)])
+    assignUARTsToPort("/dev/ttyUSB0", ID["%s_DL0_A0"%(laserPosition)], ID["%s_DL0_A1"%(laserPosition)])
+    assignUARTsToPort("/dev/ttyUSB1", ID["%s_DL1_A0"%(laserPosition)], ID["%s_DL1_A1"%(laserPosition)])
     assignUARTsToPort("/dev/ttyUSB2", ID["%s_TH_S"%(laserPosition)], ID["%s_TH_L"%(laserPosition)])
     assignUARTsToPort("/dev/ttyUSB3", ID["%s_PH"%(laserPosition)], ID["%s_AT"%(laserPosition)])
     

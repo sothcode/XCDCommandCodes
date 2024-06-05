@@ -2,7 +2,7 @@
 
 # a quick function to set the UARTS on ttyUSB0 and ttyUSB1 so that updatePorts sees two doglegs.
 from quickAssign import writeXCD2
-from quickReport import readback
+from quickReport import readback, getAxis
 from xcdSerial import getCurrentPort
 import sys
 import time
@@ -52,8 +52,8 @@ def assignPorts_forDogleg(laserPosition):
         return False
 
     #now we are guaranteed we have a valid laser argument
-    assignUARTsToPort("/dev/ttyUSB0", ID["%s_DL0_A0"%(laserPosition)], ID["%s_DL1_A0"%(laserPosition)])
-    assignUARTsToPort("/dev/ttyUSB1", ID["%s_DL0_A1"%(laserPosition)], ID["%s_DL1_A1"%(laserPosition)])
+    assignUARTsToPort("/dev/ttyUSB0", ID["%s_DL0_A0"%(laserPosition)], ID["%s_DL0_A1"%(laserPosition)])
+    assignUARTsToPort("/dev/ttyUSB1", ID["%s_DL1_A0"%(laserPosition)], ID["%s_DL1_A1"%(laserPosition)])
 
 
 if __name__ == "__main__":
@@ -67,7 +67,7 @@ if __name__ == "__main__":
         print("Note:  This has NOT assigned the ID of the current axis (axis 0), so your first changeAxis will write to junk file and read in from the correct.")
         print("Be sure to changeAxis before you begin to steer.")
     else:
-        print("NOT EXECUTED. Wrong number of arguments.  Correct usage is ./assignPorts_forEgg.py 12S (etc)")
+        print("NOT EXECUTED. Wrong number of arguments.  Correct usage is ./assignPorts_fordoglegs.py 12S (etc)")
         sys.exit()
      
     print("Done.")
