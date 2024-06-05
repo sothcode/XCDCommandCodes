@@ -123,7 +123,7 @@ def set_tuning( axisType ):
 
 
 
-def gotoVettedQuiet(destination,COMM):
+def gotoVettedQuiet(destination,COMM,OLBool):
     #the vetting occurs in goto, so this should not be called 'bare'.
     #axisName is a real axis, destination is a float, COMM is set correctly
     #the portfile and axis is also set correctly
@@ -158,30 +158,37 @@ def gotoVettedQuiet(destination,COMM):
         print("gotoVQ: dest=%s, pos=%s, abs(dest-pos)=%s<%s.  No motion necessary."%(destination, position,abs(destination-position),move_tolerance))
         return True, position
     
-    
-    #look at our position.  if we are too close, we may not move at all, so move away before going toward.
-    if abs(destination-position)<min_distance:
-        print("gotoVettedQuiet: destination:%s is too close to position %s.  Attempting to jog"%(destination,position))
-        #try to move in the direction away from the actual destination
-        jogdir=-1
-        if (destination<position):
-            jogdir=1
-        jogtarget1=position+jogdir*2*min_distance
-        jogtarget2=position-jogdir*3*min_distance
+    #if using openloop goto, no need to jog back and forth
+    #if using regular goto (using closedloop move), jogging may be necessary
+    if OLBool:
+        print("gotoVQ: sending command %s (%s) destination:%s"%(COMM['OPENLOOP'],'OPENLOOP',destination))
+        commandSent=sendcommand(COMM['OPENLOOP'],destination) # this sleeps until it sees the status change from new_command
+    else:
+        #look at our position.  if we are too close, we may not move at all, so move away before going toward.
+        if abs(destination-position)<min_distance:
+            print("gotoVettedQuiet: destination:%s is too close to position %s.  Attempting to jog"%(destination,position))
+            #try to move in the direction away from the actual destination
+            jogdir=-1
+            if (destination<position):
+                jogdir=1
+            jogtarget1=position+jogdir*2*min_distance
+            jogtarget2=position-jogdir*3*min_distance
 
-        #move away from our target first:
-        if (jogtarget1>lb and jogtarget1<hb):
-            gotoVettedQuiet(jogtarget1,COMM)
-        #if that doesn't work, overshoot the target instead
-        elif (jogtarget2>lb and jogtarget2<hb):
-            gotoVettedQuiet(jogtarget2,COMM)
-        #if neither work, admit our failure and do our best:
-        else:
-            print("gotoVettedQuiet: Original dest %s was too close to fpos %s, so tried to jog to %s or %s, but both are out of bounds (lb:%s, hb:%s)"%(destination,position,jogtarget1,jogtarget2,lb,hb))
+            #move away from our target first:
+            if (jogtarget1>lb and jogtarget1<hb):
+                gotoVettedQuiet(jogtarget1,COMM,OLBool)
+            #if that doesn't work, overshoot the target instead
+            elif (jogtarget2>lb and jogtarget2<hb):
+                gotoVettedQuiet(jogtarget2,COMM,OLBool)
+            #if neither work, admit our failure and do our best:
+            else:
+                print("gotoVettedQuiet: Original dest %s was too close to fpos %s, so tried to jog to %s or %s, but both are out of bounds (lb:%s, hb:%s)"%(destination,position,jogtarget1,jogtarget2,lb,hb))
             
     
-    print("gotoVQ: sending command %s (%s) destination:%s"%(COMM['GOTO'],'GOTO',destination))
-    commandSent=sendcommand(COMM['GOTO'],destination) # this sleeps until it sees the status change from new_command
+        print("gotoVQ: sending command %s (%s) destination:%s"%(COMM['GOTO'],'GOTO',destination))
+        commandSent=sendcommand(COMM['GOTO'],destination) # this sleeps until it sees the status change from new_command
+    
+    # check that goto command was sent
     if not commandSent:
         return False, readback(ADDR['FPOS'])
     
@@ -232,7 +239,7 @@ def gotoVettedQuiet(destination,COMM):
     return True, readback(ADDR['FPOS'])
 
         
-def goto( axisName=None, destination=None):
+def goto( axisName=None, destination=None, OLBool=False):
     if axisName==None or destination==None:
         print("wrong args for goto.  requires two arguments.")
         return False
@@ -333,7 +340,7 @@ def goto( axisName=None, destination=None):
 
     #now that we have set up the environment, we can run the 'vetted' goto:
     #this does not have a return value.  errors must be inferred from readback.
-    ret=gotoVettedQuiet(targetPos,COMM)
+    ret=gotoVettedQuiet(targetPos,COMM,OLBool)
     if (ret[0]==False): #we didn't get where we need to go because of communication failures.
         return ret
 
@@ -362,7 +369,8 @@ def goto( axisName=None, destination=None):
             print("SUCCESS. goto %s %s complete. status: %s (%s) position:%1.6f (with wrap-around) axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName, destination, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
             return True, position
         else:
-            print("FAIL. goto %s %s failed in .py tolerance check: position more than %s from %s, even with wrap-arounds. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName,destination,move_tolerance,targetPos, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
+            print("FAIL. goto %s %s failed in .py tolerance check: position more than %s from %s, even with wrap-arounds. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f" \
+                  %(axisName,destination,move_tolerance,targetPos, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
             return False, position
     else:
         print("FAIL. goto %s %s failed in controller. status: %s (%s) position:%1.6f axis:%s turns:%s lb:%1.5f hb:%1.5f"%(axisName, destination, status,_reverseLookup(STAT,status),position,axis, turns,lb,hb))
@@ -378,10 +386,19 @@ if __name__ == "__main__":
         #get its port from the db
         axis=sys.argv[1]
         dest=sys.argv[2]
+        openloop=False
+    elif len(sys.argv)==4:
+        if sys.argv[3] != "ol":
+            print("NOT EXECUTED. Wrong number of arguments.  Correct usage is:")
+            print("   ./goto.py laser_name position")
+            sys.exit()
+        axis=sys.argv[1]
+        dest=sys.argv[2]
+        openloop=True
     else:
         print("NOT EXECUTED. Wrong number of arguments.  Correct usage is:")
         print("   ./goto.py laser_name position")
         sys.exit()
     #if wrong arguments, exit with explanation
 
-    goto(axis,dest)
+    goto(axis,dest,openloop)
