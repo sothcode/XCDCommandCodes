@@ -99,7 +99,7 @@ while 1
       set TIME = 0
       enable
       velocityloop 1.5*V7
-      while S_IND = 0 & FPOS < V3 & TIME < 7000
+      while S_IND = 0 & FPOS < V3 & TIME < 4000
       end
       velocityloop 0.0
       disable
