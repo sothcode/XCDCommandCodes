@@ -26,7 +26,7 @@ def _reverseLookup(dict,val):
     try:
         key=reverse_mapping[val]
     except KeyError as e:
-        print(f"gotoDogleg lookup failed.  KeyError: {e}")
+        print(f"openloopPhiAtt lookup failed.  KeyError: {e}")
         sys.exit()
     return key  
 
@@ -94,10 +94,10 @@ def openloopPhiAtt( whereToGo ):
     #status=readback(ADDR['STATUS'])  this is already read in the way we left the while loop above.
     lastpos=readback(ADDR['FPOS'])
     if status==STAT['READY']:
-        print("SUCCESS. gotoDogleg complete.  status:",status," (", _reverseLookup(STAT,status),") position:{:.4g} (ax{:.1g})".format(readback(ADDR['FPOS']),readback(ADDR['XAXIS'])), "nTurns:",readback(ADDR['TURNS']));
+        print("SUCCESS. openloopPhiAtt complete.  status:",status," (", _reverseLookup(STAT,status),") position:{:.4g} (ax{:.1g})".format(readback(ADDR['FPOS']),readback(ADDR['XAXIS'])), "nTurns:",readback(ADDR['TURNS']));
         return True, lastpos
     
-    print("FAIL. openloopDogleg failed.  status:",status," (", _reverseLookup(STAT,status),") position:{:.4g} (ax{:.1g})".format(readback(ADDR['FPOS']),readback(ADDR['XAXIS'])), "nTurns:",readback(ADDR['TURNS']));
+    print("FAIL. openloopPhiAtt failed.  status:",status," (", _reverseLookup(STAT,status),") position:{:.4g} (ax{:.1g})".format(readback(ADDR['FPOS']),readback(ADDR['XAXIS'])), "nTurns:",readback(ADDR['TURNS']));
     return False, lastpos
 
 if __name__ == "__main__":
@@ -106,5 +106,5 @@ if __name__ == "__main__":
         openloopPhiAtt( location )
     else:
         print("NOT EXECUTED. Wrong number of arguments.  Correct usage is:")
-        print("     ./openloopDogleg.py [duration] [intensity]")
+        print("     ./openloopPhiAtt.py [duration] [intensity]")
         sys.exit()
