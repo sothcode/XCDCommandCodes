@@ -61,7 +61,7 @@ def homeThetaS(referenceEgg=None):
         hardstop1=readback(ADDR['HARD_STOP1'])
         hardstop2=readback(ADDR['HARD_STOP2'])
         home=readback(ADDR['HOME'])
-        print("position:",readback(ADDR['FPOS'])," status:",status, "lb:",hardstop1, "hb:",hardstop2, "posi:",home)
+        print("position:",readback(ADDR['FPOS'])," status:",status, "lb:",hardstop1, "hb:",hardstop2, "home:",home)
 
         if debug:
             print ("homeThetaS: loop: check status:")
@@ -83,7 +83,7 @@ def homeThetaS(referenceEgg=None):
         hardstop1=readback(ADDR['HARD_STOP1'])
         hardstop2=readback(ADDR['HARD_STOP2'])
         home=readback(ADDR['HOME'])
-        print("position (recheck):",readback(ADDR['FPOS'])," status:",status, "lb:",hardstop1, "hb:",hardstop2, "posi:",home)
+        print("position (recheck):",readback(ADDR['FPOS'])," status:",status, "lb:",hardstop1, "hb:",hardstop2, "home:",home)
 
         if debug:
             print ("homeThetaS: loop: check status:")
