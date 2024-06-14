@@ -242,7 +242,7 @@ def gotoVettedQuiet(destination,COMM,OLBool):
 def goto( axisName=None, destination=None, OLBool=False):
     if axisName==None or destination==None:
         print("wrong args for goto.  requires two arguments.")
-        return False
+        return False, 0
     
     #check if that axis is connected.  Fail if not
 
@@ -291,7 +291,7 @@ def goto( axisName=None, destination=None, OLBool=False):
 
     didAxisChange = changeAxis( axisName )
     if not didAxisChange:
-        return False
+        return False, 0
     
     #set command lookup table to match the axis
     isDogleg,COMM=find_comm_and_set_tuning(axisName)
@@ -314,19 +314,19 @@ def goto( axisName=None, destination=None, OLBool=False):
         success,value=kfDatabase.readVar(mainDb, keyName)
         if not success:
             print("goto: kfDatabase failed.  destination '%s' not found for %s. (kfdb=%s, key=%s)" % (destination,axisName,mainDb,keyName))
-            return False        
+            return False, 0
         #  check to see if the dict value is a number.
         #  if number: make it a float.
         if (is_number(value)):
             targetPos=float(value)
         else:
             print("goto: kfDatabase key '%s' has non-numeric value %s" % (keyName,str(value)))
-            return False
+            return False, 0
 
     #refuse to move if we are asking a dogleg to move to a numeric position (to prevent accidents)
     if isDogleg and is_number(destination):
         print("goto: refused.  To prevent breaking alignment by accident, you must use gotoDogleg, not goto, to move '%s' to '%s'."%(axisName,destination))
-        return
+        return False, 0
     
     #now we are guaranteed we have a reachable axis, and a target position as a float.
     #we are also guaranteed that we are not moving a dogleg to a numeric position.
@@ -390,14 +390,14 @@ if __name__ == "__main__":
     elif len(sys.argv)==4:
         if sys.argv[3] != "ol":
             print("NOT EXECUTED. Wrong number of arguments.  Correct usage is:")
-            print("   ./goto.py laser_name position")
+            print("   ./goto.py laser_name position ol")
             sys.exit()
         axis=sys.argv[1]
         dest=sys.argv[2]
         openloop=True
     else:
         print("NOT EXECUTED. Wrong number of arguments.  Correct usage is:")
-        print("   ./goto.py laser_name position")
+        print("   ./goto.py laser_name position (ol)")
         sys.exit()
     #if wrong arguments, exit with explanation
 
