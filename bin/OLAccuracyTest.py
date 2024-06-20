@@ -122,7 +122,7 @@ if __name__ == "__main__":
             print("NOT EXECUTED. Second argument can only be an integer to denote number of times to loop.  Correct usage is:")
             print("   ./OLAccuracyTest.py laser_name loop_number(int)")
             sys.exit()
-        testOLAccuracy(numPts)
+        testOLAccuracy(axis, numPts)
     else:
         print("NOT EXECUTED. Wrong number of arguments.  Correct usage is:")
         print("   ./OLAccuracyTest.py laser_name loop_number")
