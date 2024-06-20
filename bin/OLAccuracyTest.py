@@ -84,14 +84,18 @@ def testOLAccuracy( axis, numPoints=1 ):
         didGoTo, position = goto(axis, destination, True)
         if not didGoTo:
             print("OLAccuracyTest.py: goto move iteration ", i, " failed.")
-            return
+            if position == 0:
+                status = 99
+            status = readback(ADDR['STATUS'])
 
         #record end time of open-loop move
         t2 = time.time()
 
+        status = 0
+
         # write to file previous location, new desired location, new arrived location, and move time
         with open(REPORTFILE, "a") as file:
-            file.write('%s %s %s %s\n' % (old_pos, destination, position, t2-t1))
+            file.write('%s %s %s %s\n' % (old_pos, destination, position, t2-t1, status))
 
         # sleep a little before next iteration
         time.sleep(t_hang)
