@@ -95,7 +95,7 @@ def testOLAccuracy( axis, numPoints=1 ):
 
         # write to file previous location, new desired location, new arrived location, and move time
         with open(REPORTFILE, "a") as file:
-            file.write('%s %s %s %s\n' % (old_pos, destination, position, t2-t1, status))
+            file.write('%s %s %s %s %s\n' % (old_pos, destination, position, t2-t1, status))
 
         # sleep a little before next iteration
         time.sleep(t_hang)
