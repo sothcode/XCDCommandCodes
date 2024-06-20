@@ -77,11 +77,17 @@ def testOLAccuracy( axis, numPoints=1 ):
         # choose a random point in between bounds
         destination = random.uniform(lb, hb)
 
+        # correct for systematic overshoot ~0.007
+        correction = 0.007
+        if(destination - old_pos) < 0:
+            correction  = -1*correction
+        newdest = destination - correction
+
         # record start time of open-loop move
         t1 = time.time()
 
         # move to random point using open-loop
-        didGoTo, position = goto(axis, destination, True)
+        didGoTo, position = goto(axis, newdest, True)
         if not didGoTo:
             print("OLAccuracyTest.py: goto move iteration ", i, " failed.")
             if position == 0:
