@@ -48,7 +48,7 @@ def gotoDogleg( whereToGo ):
 
     commandSent=sendcommand(COMM['GOTO'],destination) # this sleeps until it sees the status change from new_command
     if not commandSent:
-        return False, readback(ADDR['FPOS'])
+        return False, 0
 
     #monitor the controller position and report at intervals of sleeptime
     if debug:
