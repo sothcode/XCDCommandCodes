@@ -9,14 +9,15 @@ from quickAssign import writeXCD2
 from quickReport import readback
 from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
 from variableDictionaryXCD2 import varStatusValues as STAT 
+from changeAxisDogleg import changeAxis
 from gotoDogleg import gotoDogleg
 from clearDogleg import clearDogleg
 
 # SET GLOBAL VARIABLES
-lb = -2.9       # low bound to travel to
-home = 0        # home value to travel to
-hb = 2.9        # high bound to travel to
-t_hang = 0.5    # wait time between successive gotoDogleg calls
+lb = -2.9                       # low bound to travel to
+hb = 2.9                        # high bound to travel to
+ss = 0.1                        # step size to take in search
+numsteps = int((hb-lb)/ss - 1)  # numsteps to take
 
 # set reset command - just run shell script
 stopXMS = './killXCD2.sh'
@@ -34,50 +35,65 @@ def _reverseLookup(dict,val):
     return key  
 
 
-def findDoglegPickoff():
+def gridSearch( input_dogleg ):
 
-    # pulls current port from PORTFILE (specified in xcdSerial)
-    ttyUSB_port = getCurrentPort()
+    # label axes to move from input dogleg
+    DL_A0 = input_dogleg + '_A0'
+    DL_A1 = input_dogleg + '_A1'
 
-    # check if port exists
-    if os.path.exists(ttyUSB_port):
-        print(">>>>>>>testing controller on", ttyUSB_port, "...")
+    # start by moving chosen dogleg to (-2.9, 2.9)
+    init_A0 = changeAxis(DL_A0)
+    goto_A0, pos0 = gotoDogleg(lb)
+    init_A1 = changeAxis(DL_A1)
+    goto_A1, pos1 = gotoDogleg(lb)
+    if not (init_A0 and goto_A0 and init_A1 and goto_A1):
+        return
 
-        # check status, then initialize proper variables
-        status=readback(ADDR['STATUS'])
-        if status!=0:
-            print("findDoglegPickoff.py initilization failed. Status is",status," (",_reverseLookup(STAT,status),").")
+    # define initial moves
+    move_A0 = hb
+    move_A1 = lb + ss
+
+    for i in range(numsteps):
+
+        # change to DL0
+        didChangeAxis = changeAxis(DL_A0)
+
+        # move A0 from to either lb or hb
+        didGoto, pos = gotoDogleg(move_A0)
+
+        # change to DL1
+        didChangeAxis = changeAxis(DL_A1)
+
+        # move A1 up by step size ss
+        didGoto, pos = gotoDogleg(move_A1)
+
+        x = input("Press enter to perform next move.  Press any key then enter to abort.")
+        if x != "":
             return
+        else:
+            move_A0 = -1*move_A0
+            move_A1 = move_A1 + ss
 
-        t_arr = [0.0]*12
-        stat = [0.0]*6
-        posi = [0.0]*6
-
-        tRunStart = time.time()
-
-        # start on XAXIS 0
-        print(">>>>>>>AXIS 0:")
-        writeXCD2(['XAXIS', 0])
-        time.sleep(t_hang)
-    
-        # move first to high bound and if timeout then reset
-        t_arr[0] = time.time()
-        succ, posi[0] = gotoDogleg(hb)
-        t_arr[1] = time.time()
-        if not succ:
-            stat[0] = readback(ADDR['STATUS'])
-            clearDogleg()
-        time.sleep(t_hang)
-
-    else:
-        print("port not found by shell.  Huh?")
+    print("findDoglegPickoff:gridSearch finished.")
 
     return
 
 
+
+
+def spiralSearch():
+
+
+
+    return
+
+
+
 if __name__ == "__main__":
     #check args
-    if len(sys.argv) == 1:
-        findDoglegPickoff()
+    if len(sys.argv) == 2:
+        input_dl = sys.argv[1]
+        gridSearch( input_dl )
     else:
+        print("")
         sys.exit()
