@@ -78,7 +78,7 @@ def testOLAccuracy( axis, numPoints=1 ):
         destination = random.uniform(lb, hb)
 
         # correct for systematic overshoot ~0.007
-        correction = 0.007
+        correction = 0.0007
         if(destination - old_pos) < 0:
             correction  = -1*correction
         newdest = destination - correction
