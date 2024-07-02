@@ -380,7 +380,7 @@ if __name__ == "__main__":
         axis = sys.argv[1]
         spiralSearch(axis)
     elif len(sys.argv) == 11:
-        axis, x_DL00, x_DL01, x_DL10, x_DL11, ns0, ns1, step_size, autorun, img_bool = sys.argv[1:10]
+        axis, x_DL00, x_DL01, x_DL10, x_DL11, ns0, ns1, step_size, autorun, img_bool = sys.argv[1:11]
         spiralSearch(axis, x_DL00, x_DL01, x_DL10, x_DL11, ns0, ns1, step_size, autorun, img_bool)
     else:
         print("findDiode.py WRONG ARGS")
