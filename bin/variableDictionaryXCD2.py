@@ -22,20 +22,22 @@ varPhiCommands = {
 varThetaLCommands = {
 # Variables listed below are definitions in thetaL_test_final.xms
 'GOTO': 4,
-'HOME': 3
+'HOME': 3,
+'OPENLOOP': 101
 }
 
 varThetaSCommands = {
 # Variables listed below are definitions in thetaS_test_final.xms
 'GOTO': 8,
-'HOME': 7
+'HOME': 7,
+'OPENLOOP': 101
 }
 
 varDoglegCommands = {
 # Variables listed below are definitions in dogleg_v3_test_final.xms
 'GOTO': 6,
 'HOME': 5,
-'OPENLOOP':60
+'OPENLOOP': 60
 }
 
 varAttenuatorCommands = {
@@ -59,6 +61,7 @@ varInterfaceAddresses= {
 'ID':'V1',
 'HARD_STOP1':'V2',
 'HARD_STOP2':'V3',
+'TH_L_GAIN':'V7',
 'HOME':'POSI',
 'ARG':'V10',
 'TURNS':'V11',
