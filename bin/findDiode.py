@@ -388,9 +388,10 @@ if __name__ == "__main__":
             x_DL1_A1 = float(x_DL11)
             nums0 = int(ns0)
             nums1 = int(ns1)
+            steps = int(step_size)
         except ValueError:
             sys.exit()
-        spiralSearch(axis, x_DL0_A0, x_DL0_A1, x_DL1_A0, x_DL1_A1, nums0, nums1, step_size, autorun, img_bool)
+        spiralSearch(axis, x_DL0_A0, x_DL0_A1, x_DL1_A0, x_DL1_A1, nums0, nums1, steps, autorun, img_bool)
     else:
         print("findDiode.py WRONG ARGS")
         sys.exit()
