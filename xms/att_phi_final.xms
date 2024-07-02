@@ -328,7 +328,15 @@ while 1
    end
 
 
-   // retry loop every 100 milliseconds
-   delay 100
+
+   // ping procedure
+   if V0 = -1
+      
+      // reset to IDLE state
+      V0 = 0
+
+   // end ping procedure
+   end
+
 
 end

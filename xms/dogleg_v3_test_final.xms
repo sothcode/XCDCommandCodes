@@ -247,7 +247,5 @@ while 1
    end
 
 
-   // retry loop every half second
-   delay 100
 
 end

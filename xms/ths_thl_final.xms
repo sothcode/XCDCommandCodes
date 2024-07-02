@@ -256,7 +256,60 @@ while 1
    end
 
 
-   // retry loop every 100 milliseconds
-   delay 100
+
+   // open loop goto procedure
+   if V0 = 101
+
+      // set statusBYTE BUSY
+      V19 = 9
+
+      // check if V10 a valid input and if so move (2.5secs to complete)
+      // if not, throw error code V19 = 4
+      if V10 >= V2 & V10 <= V3
+
+         // calculate relative move distance
+         V18 = V10 - FPOS
+
+         // calculate dir'n to turn based on signed relative dist
+         V16 = 1 //V16=dirMove (+1 for pos rotation, -1 for neg)
+         if V18 < 0
+            V16 = -1
+         end
+
+         set TIME = 0
+         enable
+         openloop V16*100
+         while V16*(V10 - FPOS) > 0 & TIME < 2500
+         end
+         openloop 0.0
+         disable
+         
+         if abs(V10 - FPOS) > 10*ENR
+            V19 = 4 //errorcode DID_NOT_ARRIVE
+         else
+            V19 = 0 //errorcode SUCCESS
+         end
+
+      else
+         V19 = 1 //errorcode FAIL_OUT_OF_BOUNDS
+      end
+
+      // reset to IDLE state
+      V0 = 0
+
+   // end phi goto procedure
+   end
+
+
+   // ping procedure
+   if V0 = -1
+      
+      // reset to IDLE state
+      V0 = 0
+
+   // end ping procedure
+   end
+
+
 
 end
