@@ -113,7 +113,7 @@ def wrapChangeAxis(axis, dummy=True):
 
 
 
-def spiralSearch(test_axis, x_DL00=0.0, x_DL01=0.0, x_DL10=0.0, x_DL11=0.0, ns0:int=ns, \
+def spiralSearch(test_axis, x_DL00:float=0.0, x_DL01:float=0.0, x_DL10:float=0.0, x_DL11:float=0.0, ns0:int=ns, \
                  ns1:int=ns, step_size:int=ss, autorun:bool=True, img_bool:bool=True):
 
     # label axes to move from input axis
