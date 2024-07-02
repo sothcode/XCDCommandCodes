@@ -140,8 +140,8 @@ def spiralSearch(test_axis, x_DL00:float=0.0, x_DL01:float=0.0, x_DL10:float=0.0
 
     # save first image
     count:int = 0
-    filename = str(count) + '_' + "{:.4f}".format(x_DL00) + '_' + "{:.4f}".format(x_DL01) + \
-                '_' + "{:.4f}".format(x_DL10) + '_' + "{:.4f}".format(x_DL11) + '.png'
+    filename = str(count) + '_' + str(f"{x_DL00:.4f}") + '_' + str(f"{x_DL01:.4f}") + \
+                '_' + str(f"{x_DL10:.4f}") + '_' + str(f"{x_DL11:.4f}") + '.png'
     img_save = curl_pref + filename + curl_suff
     os.system(img_save)
     count += 1
@@ -381,7 +381,16 @@ if __name__ == "__main__":
         spiralSearch(axis)
     elif len(sys.argv) == 11:
         axis, x_DL00, x_DL01, x_DL10, x_DL11, ns0, ns1, step_size, autorun, img_bool = sys.argv[1:11]
-        spiralSearch(axis, x_DL00, x_DL01, x_DL10, x_DL11, ns0, ns1, step_size, autorun, img_bool)
+        try:
+            x_DL0_A0 = float(x_DL00)
+            x_DL0_A1 = float(x_DL01)
+            x_DL1_A0 = float(x_DL10)
+            x_DL1_A1 = float(x_DL11)
+            nums0 = int(ns0)
+            nums1 = int(ns1)
+        except ValueError:
+            sys.exit()
+        spiralSearch(axis, x_DL0_A0, x_DL0_A1, x_DL1_A0, x_DL1_A1, nums0, nums1, step_size, autorun, img_bool)
     else:
         print("findDiode.py WRONG ARGS")
         sys.exit()
