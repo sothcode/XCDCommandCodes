@@ -140,8 +140,8 @@ def spiralSearch(test_axis, x_DL00=0.0, x_DL01=0.0, x_DL10=0.0, x_DL11=0.0, ns0:
 
     # save first image
     count:int = 0
-    filename = str(count) + '_' + f"{x_DL00:.4f}" + '_' + f"{x_DL01:.4f}" + \
-                '_' + f"{x_DL10:.4f}" + '_' + f"{x_DL11:.4f}" + '.png'
+    filename = str(count) + '_' + "{:.4f}".format(x_DL00) + '_' + "{:.4f}".format(x_DL01) + \
+                '_' + "{:.4f}".format(x_DL10) + '_' + "{:.4f}".format(x_DL11) + '.png'
     img_save = curl_pref + filename + curl_suff
     os.system(img_save)
     count += 1
