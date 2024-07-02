@@ -94,7 +94,7 @@ def gridSearch( test_axis ):
     return
 
 
-def wrapGoto(position, dummy=False):
+def wrapGoto(position, dummy=True):
     if dummy:
         print("gotoDogleg " + str(position))
         return True, position
@@ -102,7 +102,7 @@ def wrapGoto(position, dummy=False):
         didGoto, pos = gotoDogleg(position)
         return didGoto, pos
     
-def wrapChangeAxis(axis, dummy=False):
+def wrapChangeAxis(axis, dummy=True):
     if dummy:
         print("changeAxis " + str(axis))
         return True
@@ -381,7 +381,7 @@ if __name__ == "__main__":
         spiralSearch(axis)
     elif len(sys.argv) == 10:
         axis, x_DL00, x_DL01, x_DL10, x_DL11, ns0, ns1, step_size, autorun, img_bool = sys.argv[1:10]
-        spiralSearch(axis, x_DL00, x_DL01, x_DL10, x_DL11, ns0, ns1, step_size, autorun, False)
+        spiralSearch(axis, x_DL00, x_DL01, x_DL10, x_DL11, ns0, ns1, step_size, autorun, img_bool)
     else:
         print("findDiode.py WRONG ARGS")
         sys.exit()
