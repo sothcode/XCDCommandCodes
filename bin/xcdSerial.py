@@ -28,7 +28,8 @@ def sendline(port, command):
             port, #now drawn from input:  port='/dev/ttyUSB0', # Set serial port
             baudrate=115200,     # Set baud rate
             parity=serial.PARITY_NONE,
-            bytesize=serial.EIGHTBITS
+            bytesize=serial.EIGHTBITS,
+            stopbits=serial.STOPBITS_ONE
         )
         if (ser.isOpen()):
             phrase = bytes(command)
