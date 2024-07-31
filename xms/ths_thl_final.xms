@@ -164,9 +164,10 @@ while 1
 
       // rotate in positive dir'n to find encoder home
       set S_IND = 0
+      set TIME = 0
       enable
       velocityloop 5.0
-      while S_IND = 0
+      while S_IND = 0 & TIME < 7000
       end
       velocityloop 0.0
       disable
