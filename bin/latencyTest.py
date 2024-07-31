@@ -5,9 +5,7 @@ import sys
 import serial
 import time
 import math
-from xcdSerial import sendline, getCurrentPort
-from quickAssign import writeXCD2
-from quickReport import readback, reportXCD2
+from xcdSerial import sendline, getCurrentPort, _decode
 from variableDictionaryXCD2 import varInterfaceAddresses as ADDR
 
 
@@ -23,27 +21,48 @@ def velLatency(  ):
 
 def latencyTest():
 
-    command = [228, 165, 0, 213, 8, 5, 6, 134, 1008, 0, 218]
-
-    count = 7
-
+    # assign V0 = -1 so it 
+    assignV0 = [228, 165, 0, 213, 8, 5, 6, 134, 1000, -1, 218]
+    count = 8
     # reassign packet length and block length bytes
-    command[4] = int(count+6)
-    command[5] = int(count+3)
-    # add stop byte
-    command += [218]
+    assignV0[4] = int(count+6)
+    assignV0[5] = int(count+3)
 
-    success,ret=sendline(getCurrentPort(),command)
+    # construct report V0 command until it reports back 0
+    reportV0 = [228, 165, 0, 213, 8, 5, 6, 134, 1000, -1, 218]
+    reportV0[4] = int(count+6)
+    reportV0[5] = int(count+3)
+    
+    t1 = time.time()
+    success,ret=sendline(getCurrentPort(),assignV0)
+    
+    while ret[0] != 0:
+        success,ret=sendline(getCurrentPort(),reportV0)
+    
+    t2 = time.time()
+    t = t2-t1
 
-    return success, ret
+    return t, ret
+
+
+def latencyLoop( numTimes=1 ):
+
+
+
+    return
+
 
 
 if __name__ == "__main__":
-    if len(sys.argv) == 2:
-        if sys.argv[1] == 'v':
-            velLatency()
-        else:
-            latencyTest()
+    if len(sys.argv) == 1:
+        latencyLoop()
+    elif len(sys.argv) == 2:
+        try:
+            n = float(sys.argv[1])
+            latencyLoop(n)
+        except ValueError:
+            print("You didn't put in a number")
+            sys.exit()
     else:
         print("STUPID")
         sys.exit()
